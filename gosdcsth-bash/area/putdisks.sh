@@ -757,7 +757,7 @@ fi
 if [ -f datain/disks/AcornUser/GamesDisc-AcornUser.zip ]
 then
 	mkdir -p dataout/disks/AcornUser/GamesDisc-AcornUser
-	unzip -j -o datain/disks/AcornUser/GamesDisc-AcornUser.zip *.ssd -d dataout/disks/AcornUser/GamesDisc-AcornUser
+	unzip -j -o datain/disks/AcornUser/GamesDisc-AcornUser.zip *.dsd -d dataout/disks/AcornUser/GamesDisc-AcornUser
 	echo ADD DFS DISC I AcornUser.GamesDisc-AcornUser disks/AcornUser/GamesDisc-AcornUser/GamesDisc-AcornUser.dsd >>dataout/script.disk
 fi
 
@@ -2458,7 +2458,7 @@ fi
 if [ -f datain/disks/BugByte/Dunjunz.zip ]
 then
 	mkdir -p dataout/disks/BugByte/Dunjunz
-	unzip -j -o datain/disks/BugByte/Dunjunz.zip *.ssd -d dataout/disks/BugByte/Dunjunz
+	unzip -j -o datain/disks/BugByte/Dunjunz.zip *.dsd -d dataout/disks/BugByte/Dunjunz
 	echo ADD DFS DISC I BugByte.Dunjunz disks/BugByte/Dunjunz/Dunjunz.dsd >>dataout/script.disk
 fi
 
@@ -4706,140 +4706,140 @@ if [ -f datain/disks/Firebird/3DPool-prerelease.zip ]
 then
 	mkdir -p dataout/disks/Firebird/3DPool-prerelease
 	unzip -j -o datain/disks/Firebird/3DPool-prerelease.zip *.ssd -d dataout/disks/Firebird/3DPool-prerelease
-	echo ADD DFS DISC Nfirebird.3DPool-prerelease disks/Firebird/3DPool-prerelease/3DPool-prerelease.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.3DPool-prerelease disks/Firebird/3DPool-prerelease/3DPool-prerelease.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/3DPool.zip ]
 then
 	mkdir -p dataout/disks/Firebird/3DPool
 	unzip -j -o datain/disks/Firebird/3DPool.zip *.ssd -d dataout/disks/Firebird/3DPool
-	echo ADD DFS DISC Nfirebird.3DPool disks/Firebird/3DPool/3DPool.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.3DPool disks/Firebird/3DPool/3DPool.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/AcidDrops.zip ]
 then
 	mkdir -p dataout/disks/Firebird/AcidDrops
 	unzip -j -o datain/disks/Firebird/AcidDrops.zip *.ssd -d dataout/disks/Firebird/AcidDrops
-	echo ADD DFS DISC Nfirebird.AcidDrops disks/Firebird/AcidDrops/AcidDrops.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.AcidDrops disks/Firebird/AcidDrops/AcidDrops.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/BirdStrike.zip ]
 then
 	mkdir -p dataout/disks/Firebird/BirdStrike
 	unzip -j -o datain/disks/Firebird/BirdStrike.zip *.ssd -d dataout/disks/Firebird/BirdStrike
-	echo ADD DFS DISC Nfirebird.BirdStrike disks/Firebird/BirdStrike/BirdStrike.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.BirdStrike disks/Firebird/BirdStrike/BirdStrike.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/BubbleBobble.zip ]
 then
 	mkdir -p dataout/disks/Firebird/BubbleBobble
 	unzip -j -o datain/disks/Firebird/BubbleBobble.zip *.ssd -d dataout/disks/Firebird/BubbleBobble
-	echo ADD DFS DISC Nfirebird.BubbleBobble disks/Firebird/BubbleBobble/BubbleBobble.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.BubbleBobble disks/Firebird/BubbleBobble/BubbleBobble.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/Cholo.zip ]
 then
 	mkdir -p dataout/disks/Firebird/Cholo
 	unzip -j -o datain/disks/Firebird/Cholo.zip *.ssd -d dataout/disks/Firebird/Cholo
-	echo ADD DFS DISC Nfirebird.Cholo disks/Firebird/Cholo/Cholo.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.Cholo disks/Firebird/Cholo/Cholo.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/Duck.zip ]
 then
 	mkdir -p dataout/disks/Firebird/Duck
 	unzip -j -o datain/disks/Firebird/Duck.zip *.ssd -d dataout/disks/Firebird/Duck
-	echo ADD DFS DISC Nfirebird.Duck disks/Firebird/Duck/Duck.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.Duck disks/Firebird/Duck/Duck.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/Estra.zip ]
 then
 	mkdir -p dataout/disks/Firebird/Estra
 	unzip -j -o datain/disks/Firebird/Estra.zip *.ssd -d dataout/disks/Firebird/Estra
-	echo ADD DFS DISC Nfirebird.Estra disks/Firebird/Estra/Estra.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.Estra disks/Firebird/Estra/Estra.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/FatManSam.zip ]
 then
 	mkdir -p dataout/disks/Firebird/FatManSam
 	unzip -j -o datain/disks/Firebird/FatManSam.zip *.ssd -d dataout/disks/Firebird/FatManSam
-	echo ADD DFS DISC Nfirebird.FatManSam disks/Firebird/FatManSam/FatManSam.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.FatManSam disks/Firebird/FatManSam/FatManSam.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/GoldDigger.zip ]
 then
 	mkdir -p dataout/disks/Firebird/GoldDigger
 	unzip -j -o datain/disks/Firebird/GoldDigger.zip *.ssd -d dataout/disks/Firebird/GoldDigger
-	echo ADD DFS DISC Nfirebird.GoldDigger disks/Firebird/GoldDigger/GoldDigger.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.GoldDigger disks/Firebird/GoldDigger/GoldDigger.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/HarveyHeadbanger.zip ]
 then
 	mkdir -p dataout/disks/Firebird/HarveyHeadbanger
 	unzip -j -o datain/disks/Firebird/HarveyHeadbanger.zip *.ssd -d dataout/disks/Firebird/HarveyHeadbanger
-	echo ADD DFS DISC Nfirebird.HarveyHeadbanger disks/Firebird/HarveyHeadbanger/HarveyHeadbanger.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.HarveyHeadbanger disks/Firebird/HarveyHeadbanger/HarveyHeadbanger.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/Microcosm.zip ]
 then
 	mkdir -p dataout/disks/Firebird/Microcosm
 	unzip -j -o datain/disks/Firebird/Microcosm.zip *.ssd -d dataout/disks/Firebird/Microcosm
-	echo ADD DFS DISC Nfirebird.Microcosm disks/Firebird/Microcosm/Microcosm.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.Microcosm disks/Firebird/Microcosm/Microcosm.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/MrFreeze.zip ]
 then
 	mkdir -p dataout/disks/Firebird/MrFreeze
 	unzip -j -o datain/disks/Firebird/MrFreeze.zip *.ssd -d dataout/disks/Firebird/MrFreeze
-	echo ADD DFS DISC Nfirebird.MrFreeze disks/Firebird/MrFreeze/MrFreeze.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.MrFreeze disks/Firebird/MrFreeze/MrFreeze.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/StarDrifter.zip ]
 then
 	mkdir -p dataout/disks/Firebird/StarDrifter
 	unzip -j -o datain/disks/Firebird/StarDrifter.zip *.ssd -d dataout/disks/Firebird/StarDrifter
-	echo ADD DFS DISC Nfirebird.StarDrifter disks/Firebird/StarDrifter/StarDrifter.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.StarDrifter disks/Firebird/StarDrifter/StarDrifter.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/TheHacker.zip ]
 then
 	mkdir -p dataout/disks/Firebird/TheHacker
 	unzip -j -o datain/disks/Firebird/TheHacker.zip *.ssd -d dataout/disks/Firebird/TheHacker
-	echo ADD DFS DISC Nfirebird.TheHacker disks/Firebird/TheHacker/TheHacker.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.TheHacker disks/Firebird/TheHacker/TheHacker.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/TheSentinel.zip ]
 then
 	mkdir -p dataout/disks/Firebird/TheSentinel
 	unzip -j -o datain/disks/Firebird/TheSentinel.zip *.ssd -d dataout/disks/Firebird/TheSentinel
-	echo ADD DFS DISC Nfirebird.TheSentinel disks/Firebird/TheSentinel/TheSentinel.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.TheSentinel disks/Firebird/TheSentinel/TheSentinel.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Firebird/VideoClassics.zip ]
 then
 	mkdir -p dataout/disks/Firebird/VideoClassics
 	unzip -j -o datain/disks/Firebird/VideoClassics.zip *.ssd -d dataout/disks/Firebird/VideoClassics
-	echo ADD DFS DISC Nfirebird.VideoClassics disks/Firebird/VideoClassics/VideoClassics.ssd >>dataout/script.disk
+	echo ADD DFS DISC N Firebird.VideoClassics disks/Firebird/VideoClassics/VideoClassics.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/FirstByte/StarforceLander.zip ]
 then
 	mkdir -p dataout/disks/FirstByte/StarforceLander
 	unzip -j -o datain/disks/FirstByte/StarforceLander.zip *.ssd -d dataout/disks/FirstByte/StarforceLander
-	echo ADD DFS DISC NfirstByte.StarforceLander disks/FirstByte/StarforceLander/StarforceLander.ssd >>dataout/script.disk
+	echo ADD DFS DISC N FirstByte.StarforceLander disks/FirstByte/StarforceLander/StarforceLander.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/FirstByte/StarTrader.zip ]
 then
 	mkdir -p dataout/disks/FirstByte/StarTrader
 	unzip -j -o datain/disks/FirstByte/StarTrader.zip *.ssd -d dataout/disks/FirstByte/StarTrader
-	echo ADD DFS DISC NfirstByte.StarTrader disks/FirstByte/StarTrader/StarTrader.ssd >>dataout/script.disk
+	echo ADD DFS DISC N FirstByte.StarTrader disks/FirstByte/StarTrader/StarTrader.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/FirstByte/ValleyOfThePharaohs.zip ]
 then
 	mkdir -p dataout/disks/FirstByte/ValleyOfThePharaohs
 	unzip -j -o datain/disks/FirstByte/ValleyOfThePharaohs.zip *.ssd -d dataout/disks/FirstByte/ValleyOfThePharaohs
-	echo ADD DFS DISC NfirstByte.ValleyOfThePharaohs disks/FirstByte/ValleyOfThePharaohs/ValleyOfThePharaohs.ssd >>dataout/script.disk
+	echo ADD DFS DISC N FirstByte.ValleyOfThePharaohs disks/FirstByte/ValleyOfThePharaohs/ValleyOfThePharaohs.ssd >>dataout/script.disk
 fi
 
 if [ -f datain/disks/Futura/PowerboatRace.zip ]
@@ -6168,7 +6168,7 @@ fi
 if [ -f datain/disks/Mandarin/Lancelot.zip ]
 then
 	mkdir -p dataout/disks/Mandarin/Lancelot
-	unzip -j -o datain/disks/Mandarin/Lancelot.zip *.ssd -d dataout/disks/Mandarin/Lancelot
+	unzip -j -o datain/disks/Mandarin/Lancelot.zip *.dsd -d dataout/disks/Mandarin/Lancelot
 	echo ADD DFS DISC I Mandarin.Lancelot disks/Mandarin/Lancelot/Lancelot.dsd >>dataout/script.disk
 fi
 
@@ -7099,7 +7099,7 @@ fi
 if [ -f datain/disks/Mosaic/SecretDiaryOfAdrianMole.zip ]
 then
 	mkdir -p dataout/disks/Mosaic/SecretDiaryOfAdrianMole
-	unzip -j -o datain/disks/Mosaic/SecretDiaryOfAdrianMole.zip *.ssd -d dataout/disks/Mosaic/SecretDiaryOfAdrianMole
+	unzip -j -o datain/disks/Mosaic/SecretDiaryOfAdrianMole.zip *.dsd -d dataout/disks/Mosaic/SecretDiaryOfAdrianMole
 	echo ADD DFS DISC I Mosaic.SecretDiaryOfAdrianMole disks/Mosaic/SecretDiaryOfAdrianMole/SecretDiaryOfAdrianMole.dsd >>dataout/script.disk
 fi
 
@@ -10067,7 +10067,7 @@ fi
 if [ -f datain/disks/Unreleased/DanoSoftCollection.zip ]
 then
 	mkdir -p dataout/disks/Unreleased/DanoSoftCollection
-	unzip -j -o datain/disks/Unreleased/DanoSoftCollection.zip *.ssd -d dataout/disks/Unreleased/DanoSoftCollection
+	unzip -j -o datain/disks/Unreleased/DanoSoftCollection.zip *.dsd -d dataout/disks/Unreleased/DanoSoftCollection
 	echo ADD DFS DISC I Unreleased.DanoSoftCollection disks/Unreleased/DanoSoftCollection/DanoSoftCollection.dsd >>dataout/script.disk
 fi
 
@@ -10116,7 +10116,7 @@ fi
 if [ -f datain/disks/Unreleased/QuestI-unfinished.zip ]
 then
 	mkdir -p dataout/disks/Unreleased/QuestI-unfinished
-	unzip -j -o datain/disks/Unreleased/QuestI-unfinished.zip *.ssd -d dataout/disks/Unreleased/QuestI-unfinished
+	unzip -j -o datain/disks/Unreleased/QuestI-unfinished.zip *.dsd -d dataout/disks/Unreleased/QuestI-unfinished
 	echo ADD DFS DISC I Unreleased.QuestI-unfinished disks/Unreleased/QuestI-unfinished/QuestI-unfinished.dsd >>dataout/script.disk
 fi
 
