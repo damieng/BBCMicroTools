@@ -1,2 +1,8 @@
 # Actual images
 datain/
+dataout/
+
+# Temporary files
+temp/
+script.disk
+script.tape
