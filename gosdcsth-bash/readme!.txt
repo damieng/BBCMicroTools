@@ -27,7 +27,7 @@ Now :
   combine, type './lump.sh’, else './area.sh’.
 - Type './putdisks.sh’ to convert the downloaded disks for GoSDC. The result
   will be put in the 'dataout' directory, and consists of a directory tree with
-  disk images under 'disks' and a script for GoSDCio.mac in 'script.disk'.
+  disk images under 'disks' and a script for GoSDCio in 'script.disk'.
 - Type './puttapes.sh’ to convert the downloaded tapes for GoSDC. This outputs
   to the 'tapes' directory and 'script.tape' script.
 
@@ -36,10 +36,12 @@ everything that hasn't been downloaded, i.e. the relevant files will not appear
 in 'dataout', and the script will not refer to them.
 
 You can now simply 'cd' to the 'dataout' directory and run script.disk and/or
-script.tape through GoSDCio.mac (refer to GoSDCio's documentation for further
-info). E.g. if your flash card appears to the system as drive J, typing :
+script.tape through GoSDCio (refer to GoSDCio's documentation for further
+info).  To identify your flash drive location on Mac OS type: diskutil -list
 
-GoSDCio.mac -dJ -f script.disk script.tape
+E.g. if your flash card appears to the system as drive /dev/disk1, type:
+
+GoSDCio -d/dev/disk1 -f script.disk script.tape
 
 will add all the disks and tapes to the flash card. Omit either script if
 appropriate.
@@ -50,8 +52,8 @@ Now insert your flash card into GoSDC and do an *SDCList. Disk names start
 If you did not combine, and your flash card is larger than 4 GiB, you may want
 to consider putting the disks and tapes in different areas. E.g. type :
 
-GoSDCio.mac -dJ -a1 -f script.disk
-GoSDCio.mac -dJ -a2 -f script.tape
+GoSDCio -d/dev/disk1 -a1 -f script.disk
+GoSDCio -d/dev/disk1 -a2 -f script.tape
 
 to put the disks in area 1 and the tapes in area 2.
 
