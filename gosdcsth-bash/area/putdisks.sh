@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p -p dataout/disks
-echo # GoXXC script start >cdataout/script.disk
+echo "# GoXXC script start" >dataout/script.disk
 
 # 1-disks
 

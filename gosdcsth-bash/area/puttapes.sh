@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p dataout/tapes
-echo # GoXXC script start >dataout/script.tape
+echo "# GoXXC script start" >dataout/script.tape
 mkdir -p temp
 rm temp/*
 
