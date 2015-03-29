@@ -13,10 +13,10 @@ If your disc doesn't boot with <kbd>Shift</kbd> <kbd>Break</kbd> and you'd like 
 
 1. Type ``*CAT`` to see what's on the disc
 2. Figure out (through trial an error) which file you need to run. Typically it will either be a ``CHAIN "filename"`` or ``*RUN filename`` or maybe even a ``*EXEC filename`` or just ``*filename``
-3. Type ``*BUILD !BOOT`` then `Enter` and you will see an editor
+3. Type ``*BUILD !BOOT`` then <kbd>Enter</kbd> and you will see an editor
 4. Type the command you used to run the software
-5. Press `Enter` then `Break`
-6. Type ``*OPT 4,3`` then `Enter` to make the disc ``*EXEC !BOOT`` when `Shift` `Break` is pressed
+5. Press <kbd>Enter</kbd> then <kbd>Break</kbd>
+6. Type ``*OPT 4,3`` then `Enter` to make the disc ``*EXEC !BOOT`` when <kbd>Shift</kbd><kbd>Break</kbd> is pressed
 
 If you use ``*CAT`` (or ``*.``) to see the contents again you will now notice the new !BOOT file and Option 3 (EXEC) to execute it. The whole process looks something like:
 
@@ -66,6 +66,6 @@ These are basic Acorn DFS commands, other implementations and ADFS may vary.
 
 | Command | Description |
 |---------|-------------|
-| ``*KEY10 "OLD \|\| RUN"`` | Restart program on break 
-| ``*FX 200,1`` | Disable escape
-| ``*FX 200,3`` | Disable escape + clear ram on  break
+| ``*KEY10 "OLD \|\| RUN"`` | Restart program on <kbd>Break</kbd> 
+| ``*FX 200,1`` | Disable <kbd>Escape</kbd>
+| ``*FX 200,3`` | Disable <kbd>Escape</kbd> and clear ram on <kbd>Break</kbd>
