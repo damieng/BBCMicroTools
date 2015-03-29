@@ -16,7 +16,7 @@ If your disc doesn't boot with <kbd>Shift</kbd> <kbd>Break</kbd> and you'd like 
 3. Type ``*BUILD !BOOT`` then <kbd>Enter</kbd> and you will see an editor
 4. Type the command you used to run the software
 5. Press <kbd>Enter</kbd> then <kbd>Break</kbd>
-6. Type ``*OPT 4,3`` then `Enter` to make the disc ``*EXEC !BOOT`` when <kbd>Shift</kbd><kbd>Break</kbd> is pressed
+6. Type ``*OPT 4,3`` then <kbd>Enter</kbd> to make the disc ``*EXEC !BOOT`` when <kbd>Shift</kbd><kbd>Break</kbd> is pressed
 
 If you use ``*CAT`` (or ``*.``) to see the contents again you will now notice the new !BOOT file and Option 3 (EXEC) to execute it. The whole process looks something like:
 
