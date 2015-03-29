@@ -1,0 +1,844 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/css; charset=UTF-8">
+<meta name="Author" lang="nl" content="John Kortink">
+
+<title>GoSDC Guide - Installation</title>
+
+<style type="text/css">
+
+<!--
+
+body        { color : black ; background-color : white }
+img         { border : 0px }
+table.boxed { border : 1px solid gray }
+td.boxed1   { border : 1px solid black ; text-align : center ; width : 25px }
+td.boxed2   { border : 1px solid black ; padding-left : 5px ; padding-right : 5px }
+
+-->
+
+</style>
+
+</head>
+
+<table width="100%">
+
+<tbody>
+
+<tr>
+<td style="color : gray" align="left">GoSDC Guide</td>
+<td align="right"><a href="../index.html">..</a></td>
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<hr>
+
+<p>
+
+<h1>Installation</h1>
+
+<p>
+
+<hr>
+
+<p>
+
+<h2>General information</h2>
+
+<p>
+
+GoSDC can be installed in a BBC model B, BBC Master, BBC B+ or Electron.
+
+<p>
+
+<b>1)</b> Take note of GoSDC's 6-pin configuration header (the one with the red
+jumper on it), in the following picture :
+
+<p><img src="install_jumpers.jpg" alt="GoSDC's 6-pin configuration header"><p>
+
+Its pins (in the orientation shown in the picture) are numbered :
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<td class="boxed1">5</td>
+<td class="boxed1">6</td>
+
+<tr>
+<td class="boxed1">3</td>
+<td class="boxed1">4</td>
+
+<tr>
+<td class="boxed1">1</td>
+<td class="boxed1">2</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+So, in this example, there's a red jumper on 4+6 (note that your jumper may be
+a different colour). There's always a jumper on either 2+4 (disabling GoSDC) or
+4+6 (enabling GoSDC). The 'adapter', if installed (see below), connects to 3+5.
+Nothing should ever be connected to pin 1.
+
+<p>
+
+<b>2)</b> Take note of the 'extras' that were supplied with your GoSDC :
+
+<p>
+
+<ul>
+
+<li>A plain IC socket (used in BBC Master installation only)
+
+<li>A 'socket-to-wire-to-jumper' adapter (used in BBC model B installation
+only)
+
+</li>
+
+</ul>
+
+<p>
+
+<b>3)</b> Now skip ahead to
+
+<a href="#INSTALLBBCMODELB">BBC model B installation</a>,
+
+<a href="#INSTALLBBCMASTER">BBC Master installation</a>,
+
+<a href="#INSTALLBBCBPLUS">BBC B+ installation</a> or
+
+<a href="#INSTALLELECTRON">Electron installation</a>,
+
+depending on which machine you have.
+
+<p>
+
+<hr>
+
+<p>
+
+<a name="INSTALLBBCMODELB"></a>
+
+<p>
+
+<h2>BBC model B installation</h2>
+
+<p>
+
+<b>1)</b> Establish orientation inside the machine. Looking at the components,
+with the keyboard facing you, take note of 'north', 'south', 'east' and 'west'
+(e.g. the power supply is now 'north-west').
+
+<p>
+
+<b>2)</b> Take note of the ROM sockets that are available for installation.
+They are :
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed1">IC number</th>
+<th class="boxed1">ROM number</th>
+
+<tr>
+<td class="boxed1">101</td>
+<td class="boxed1">15</td>
+
+<tr>
+<td class="boxed1">100</td>
+<td class="boxed1">14</td>
+
+<tr>
+<td class="boxed1">88</td>
+<td class="boxed1">13</td>
+
+<tr>
+<td class="boxed1">52</td>
+<td class="boxed1">12</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+They are located below the keyboard, on the 'east' side of the machine. The IC
+numbers are hard to read, because they're in a small gap between the sockets.
+So, for your reference, from the 'east' side of the machine, going 'west', they
+are 101, 100, 88 and 52. The BASIC ROM is usually ROM number 12, but note that
+you can move it to any other socket, if need be.
+
+<p>
+
+<b>3)</b> About the 'socket-to-wire-to-jumper' adapter (henceforth called 'the
+adapter') that came with your GoSDC. Only with the adapter installed, GoSDC can
+use the 'free ROM bank on GoSDC' to auto-load patched filing systems (refer to
+other parts of this manual for details). If you have sideways RAM banks in your
+machine that GoSDC can use instead, or you're going to have one or more PROMs
+with a particular patched filing system permanently installed in your machine,
+installing the adapter is not really necessary.
+
+<p>
+
+<b>4)</b> Choose one of the following recommended configuration options :
+
+<p>
+
+<table class="boxed">
+
+<thead>
+
+<tr>
+<th class="boxed1">Option</th>
+<th class="boxed1">GoSDC ROM</th>
+<th class="boxed1">Adapter ROM</th>
+<th class="boxed1">Comment</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td class="boxed1">A</td>
+<td class="boxed1">14</td>
+<td class="boxed1">-</td>
+<td class="boxed2">Free&nbsp;ROM&nbsp;bank&nbsp;unusable</td>
+
+<tr>
+<td class="boxed1">B</td>
+<td class="boxed1">14</td>
+<td class="boxed1">15</td>
+<td class="boxed2">GoSDC&nbsp;can&nbsp;control&nbsp;15</td>
+
+<tr>
+<td class="boxed1">C</td>
+<td class="boxed1">14</td>
+<td class="boxed1">12</td>
+<td class="boxed2">GoSDC&nbsp;can't&nbsp;control&nbsp;15</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+There are other options, but these will either short the adapter wire against
+the GoSDC PCB, or weaken GoSDC's control over other ROM sockets (the higher the
+ROM number of GoSDC, the more control it has). Note that GoSDC will not fit in
+IC101, because it's a little too wide.
+
+<p>
+
+Note that, if the 'adapter' is used, it doesn't matter which socket contains
+GoSDC or the adapter. Hardware trickery will ensure that GoSDC always occupies
+the highest ROM number of the two. I.e., whichever two sockets you choose, you
+may always swap GoSDC and the adapter. The end result will be the same.
+
+<p>
+
+<h3>Option A</h3>
+
+<p>
+
+<ul>
+
+<li>Power down your machine.
+
+<li>Gently but firmly insert GoSDC into the chosen ROM socket.
+
+</li>
+
+</ul>
+
+<p>
+
+You should now have something resembling this picture :
+
+<p><img src="install_modelb_1.jpg" alt="GoSDC in a BBC model B without adapter"><p>
+
+<p>
+
+Ready.
+
+<p>
+
+<h3>Option B or C</h3>
+
+<p>
+
+<ul>
+
+<li>Power down your machine.
+
+<li>Gently but firmly insert the adapter socket into the chosen ROM socket.
+
+<li>Gently but firmly insert GoSDC into the chosen ROM socket.
+
+<li>Push the adapter jumper on pin 3+5 of GoSDC's configuration header.
+
+</ul>
+
+<p>
+
+You should now have something resembling this picture :
+
+<p><img src="install_modelb_2.jpg" alt="GoSDC in a BBC model B with adapter"><p>
+
+Note and check the correct orientation of the adapter socket.
+
+<p>
+
+Ready.
+
+<p>
+
+<hr>
+
+<p>
+
+<a name="INSTALLBBCMASTER"></a>
+
+<p>
+
+<h2>BBC Master installation</h2>
+
+<p>
+
+<b>1)</b> Establish orientation inside the machine. Looking at the components,
+with the keyboard facing you, take note of 'north', 'south', 'east' and 'west'
+(e.g. the power supply is now 'north-west').
+
+<p>
+
+<b>2)</b> Take note of the ROM sockets that are available for installation.
+They are :
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed1">IC number</th>
+<th class="boxed1">ROM number</th>
+
+<tr>
+<td class="boxed1">37</td>
+<td class="boxed1">6+7</td>
+
+<tr>
+<td class="boxed1">27</td>
+<td class="boxed1">8</td>
+
+<tr>
+<td class="boxed1">41</td>
+<td class="boxed1">4+5</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+They are located just 'south' of the MOS ROM (IC24), on the 'east' side of the
+machine. The IC numbers are hard to read, because they're in a small gap
+between the sockets. So, for your reference, from the MOS ROM, going 'south',
+they are 37, 27 and 41.
+
+<p>
+
+<b>3)</b> About the plain IC socket (henceforth called 'the extra socket') that
+came with your GoSDC. You must mount this 'between' GoSDC and the sideways ROM
+socket in the Master, to gain extra height (else the underside of the GoSDC PCB
+will short against links LK19, LK18 or LK12 on the Master motherboard).
+
+<p>
+
+<b>4)</b> Choose one of the following recommended configuration options :
+
+<p>
+
+<table class="boxed">
+
+<thead>
+
+<tr>
+<th class="boxed1">Option</th>
+<th class="boxed1">GoSDC ROM</th>
+<th class="boxed1">Comment</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td class="boxed1">A</td>
+<td class="boxed1">6+7</td>
+<td class="boxed2">You&nbsp;lose&nbsp;sideways&nbsp;RAM&nbsp;banks&nbsp;6&nbsp;and&nbsp;7</td>
+
+<tr>
+<td class="boxed1">B</td>
+<td class="boxed1">8</td>
+<td class="boxed2">You&nbsp;lose&nbsp;the&nbsp;free&nbsp;ROM&nbsp;bank&nbsp;on&nbsp;GoSDC</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+There are other options, but these are physically impossible (for example,
+GoSDC as ROM number 4+5).
+
+<p>
+
+<h3>Option A</h3>
+
+<p>
+
+<ul>
+
+<li>Power down your machine.
+
+<li>Ensure that link LK19 on the Master motherboard is set to the 'east'
+position.
+
+<li>Gently but firmly insert GoSDC (<b>with</b> the extra socket under it, see
+above) into the chosen ROM socket.
+
+</li>
+
+</ul>
+
+<p>
+
+<h3>Option B</h3>
+
+<p>
+
+<ul>
+
+<li>Power down your machine.
+
+<li>You are free to set link LK19 on the Master motherboard to either the
+'east' or 'west' position.
+
+<li>Gently but firmly insert GoSDC (<b>with</b> the extra socket under it, see
+above) into the chosen ROM socket.
+
+</li>
+
+</ul>
+
+<p>
+
+In both cases you should now have something resembling this picture :
+
+<p><img src="install_master_1.jpg" alt="GoSDC in a BBC Master"><p>
+
+<p>
+
+Ready.
+
+<p>
+
+<hr>
+
+<p>
+
+<a name="INSTALLBBCBPLUS"></a>
+
+<p>
+
+<h2>BBC B+ installation</h2>
+
+<p>
+
+<b>1)</b> Note that you need the 'UNI' version of GoSDC, and must run the 'UNI'
+version of the GoSDC software. The 'MBE' GoSDC and software will not work on a
+B+, because its ROM sockets are electronically different.
+
+<p>
+
+<b>2)</b> Establish orientation inside the machine. Looking at the components,
+with the keyboard facing you, take note of 'north', 'south', 'east' and 'west'
+(e.g. the power supply is now 'north-west').
+
+<p>
+
+<b>3)</b> Take note of the ROM sockets that are available for installation.
+They are :
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed1">IC number</th>
+<th class="boxed1">ROM number</th>
+<th class="boxed1">32/16K link</th>
+
+<tr>
+<td class="boxed1">62</td>
+<td class="boxed1">8+9</td>
+<td class="boxed1">LK15</td>
+
+<tr>
+<td class="boxed1">68</td>
+<td class="boxed1">10+11</td>
+<td class="boxed1">LK18</td>
+
+<tr>
+<td class="boxed1">35</td>
+<td class="boxed1">2+3</td>
+<td class="boxed1">LK9</td>
+
+<tr>
+<td class="boxed1">44</td>
+<td class="boxed1">4+5</td>
+<td class="boxed1">LK11</td>
+
+<tr>
+<td class="boxed1">57</td>
+<td class="boxed1">6+7</td>
+<td class="boxed1">LK12</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Both the sockets and their links are located near the power supply. The IC
+numbers should be sufficiently readable. Leave IC71 well alone, it contains the
+MOS + BASIC ROM.
+
+<p>
+
+<b>4)</b> Choose any one of the ROM sockets for installation. The socket for
+ROM numbers 10+11 is preferred, since it maximizes GoSDC's control over other
+ROMs.
+
+<p>
+
+Then :
+
+<p>
+
+<ul>
+
+<li>Power down your machine.
+
+<li>Move the 32/16K link of the chosen ROM socket (see table above) to the
+'east' (32K) position.
+
+<li>Gently but firmly insert GoSDC into the chosen ROM socket.
+
+</li>
+
+</ul>
+
+<p>
+
+You should now have something resembling this picture :
+
+<p><img src="install_bplus.jpg" alt="GoSDC in a BBC B+"><p>
+
+<p>
+
+Ready.
+
+<p>
+
+<hr>
+
+<p>
+
+<a name="INSTALLELECTRON"></a>
+
+<p>
+
+<h2>Electron installation</h2>
+
+<p>
+
+<b>1)</b> Note that you need the 'GoSDC to Electron' interface (old or new
+version) or the 'GoSDC to cartridge' interface (henceforth called 'the
+interface') to connect GoSDC to your Electron.
+
+<p>
+
+Look at the pictures below to determine which interface you have, and continue
+reading there.
+
+<p>
+
+<h3>GoSDC to Electron (old)</h3>
+
+<p>
+
+<b>2)</b> Establish orientation on the interface. Looking at the side where the
+components are, with the Electron expansion port connector facing you, take
+note of 'north', 'south', 'east' and 'west' (e.g. said connector is now
+'south').
+
+<p>
+
+<b>3)</b> Note that the interface has two free IC sockets. The 32-pin (west)
+one is the 'utility' socket. The 28-pin (east) one is where you will install
+GoSDC.
+
+<p>
+
+<b>4)</b> Note the jumper just 'east' of the 28-pin socket. It is the ROM/SRAM
+jumper. See below.
+
+<p>
+
+Then :
+
+<p>
+
+<ul>
+
+<li>Power down your machine.
+
+<li>Install a chip in the utility socket on the interface, or leave it empty.
+See below.
+
+<li>Gently but firmly insert GoSDC into its designated 28-pin socket on the
+interface.
+
+</li>
+
+</ul>
+
+<p>
+
+I.e. first you had something like this :
+
+<p>
+
+<img src="install_electron_a1.jpg" alt="GoSDC-to-Electron interface (old version) without GoSDC">
+
+<p>
+
+and after installing GoSDC, you have something like this :
+
+<p>
+
+<img src="install_electron_a2.jpg" alt="GoSDC-to-Electron interface (old version) with GoSDC">
+
+<p>
+
+The utility socket on the interface may remain empty. But it is meant to take a
+ROM or SRAM chip, providing up to 2 (for 28-pin chips) or 8 (for 32-pin chips)
+sideways ROM (if ROM) or RAM (if SRAM) banks. The chip must be suitable, e.g.
+it must have a standard JEDEC pinout, like a 27C1001 or 628128. If you put in a
+ROM, the ROM/SRAM jumper must be set 'west', else 'east'. If you put in a
+28-pin chip, it must be 'lined up' to the south side of the 32-pin socket (i.e.
+the northmost 4 holes, 2 on each side, remain unoccupied). Before you actually
+put anything in the utility socket, refer to
+
+<a href="../Use/use.html#SIDEWAYSROMRAM">'Sideways ROM/RAM'</a>.
+
+<p>
+
+Now simply plug this 'combo' into your Electron's expansion port, at the back
+of the machine.
+
+<p>
+
+Ready.
+
+<p>
+
+<h3>GoSDC to Electron (new)</h3>
+
+<p>
+
+<b>2)</b> Establish orientation on the interface. Looking at the side where the
+components are, with the Electron expansion port connector facing you, take
+note of 'north', 'south', 'east' and 'west' (e.g. said connector is now
+'south').
+
+<p>
+
+<b>3)</b> Note that the interface has one free IC socket. It is the one where
+you will install GoSDC.
+
+<p>
+
+Then :
+
+<p>
+
+<ul>
+
+<li>Power down your machine.
+
+<li>Gently but firmly insert GoSDC into its designated 28-pin socket on the
+interface.
+
+</li>
+
+</ul>
+
+<p>
+
+I.e. first you had something like this :
+
+<p>
+
+<img src="install_electron_b1.jpg" alt="GoSDC-to-Electron interface (new version) without GoSDC">
+
+<p>
+
+and after installing GoSDC, you have something like this :
+
+<p>
+
+<img src="install_electron_b2.jpg" alt="GoSDC-to-Electron interface (new version) with GoSDC">
+
+<p>
+
+The interface always has 128 KB of SRAM on board, providing 8 sideways RAM
+banks. Refer to
+
+<a href="../Use/use.html#SIDEWAYSROMRAM">'Sideways ROM/RAM'</a>
+
+for the ROM numbers you can use.
+
+<p>
+
+Now simply plug this 'combo' into your Electron's expansion port, at the back
+of the machine.
+
+<p>
+
+Ready.
+
+<p>
+
+<h3>GoSDC to cartridge</h3>
+
+<p>
+
+<b>2)</b> Establish orientation on the interface. Looking at the side where the
+components are, with the cartridge connector facing you, take note of 'north',
+'south', 'east' and 'west' (e.g. said connector is now 'south').
+
+<p>
+
+<b>3)</b> Note that the interface has two free IC sockets. The northmost one is
+where you will install GoSDC. The southmost one can be used to add sideways
+RAM.
+
+<p>
+
+<b>4)</b> Note the jumpers just 'west' of the two sockets. They are the ROM
+number jumpers. See below.
+
+<p>
+
+Then :
+
+<p>
+
+<ul>
+
+<li>Power down your machine.
+
+<li>Install a 32 KB SRAM chip in the southmost socket on the interface, or
+leave it empty. See below.
+
+<li>Gently but firmly insert GoSDC into its designated 28-pin socket on the
+interface.
+
+</li>
+
+</ul>
+
+<p>
+
+I.e. first you had something like this :
+
+<p>
+
+<img src="install_electron_c1.jpg" alt="GoSDC-to-Cartridge interface without GoSDC">
+
+<p>
+
+and after installing GoSDC, you have something like this :
+
+<p>
+
+<img src="install_electron_c2.jpg" alt="GoSDC-to-Cartridge interface with GoSDC">
+
+<p>
+
+The southmost socket on the interface may remain empty. But it is meant to take
+a 32 KB SRAM chip, providing up to 2 sideways RAM banks. The chip must be
+suitable, e.g. it must have a standard JEDEC pinout, like a 62256. The ROM
+number jumper of each socket can be used to map that socket to ROM number 13
+(jumper on side marked '13'), 0+1 or 2+3 (jumper on other side, which pair
+depends on the cartridge slot used), or none (no jumper). Note that if you
+choose '13', you cannot use the free ROM bank on GoSDC (northmost socket) or
+the second sideways RAM bank (southmost socket).
+
+<p>
+
+Now simply plug this 'combo' into an Acorn Plus 1 (or compatible) cartridge
+slot (with its components facing the back of the machine, not the front !).
+
+<p>
+
+Ready.
+
+<p>
+
+<hr>
+
+</body>
+
+</html>
+

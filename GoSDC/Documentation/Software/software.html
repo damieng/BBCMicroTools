@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/css; charset=UTF-8">
+<meta name="Author" lang="nl" content="John Kortink">
+
+<title>GoSDC Guide - Software</title>
+
+<style type="text/css">
+
+<!--
+
+body { color : black ; background-color : white }
+
+-->
+
+</style>
+
+</head>
+
+<table width="100%">
+
+<tbody>
+
+<tr>
+<td style="color : gray" align="left">GoSDC Guide</td>
+<td align="right"><a href="../index.html">..</a></td>
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<hr>
+
+<p>
+
+<h1>Software</h1>
+
+<p>
+
+<hr>
+
+<p>
+
+The latest version of the GoSDC software is 1.05 (1 September 2014). It is
+included with this guide, in
+
+<a href="../../Software">this</a>
+
+directory.
+
+<p>
+
+The files in the 'all' directory are for all versions of GoSDC. The files in
+the 'mbe' and 'uni' directories are files that are different for the 'MBE' and
+'UNI' version of GoSDC, respectively. Combine the files in the 'all' directory
+and the relevant other directory as required.
+
+<p>
+
+Place the files where they need to be :
+
+<p>
+
+<ul>
+
+<li>UPSDC
+
+<p>
+
+This file contains the GoSDC software. Copy it to the root directory of a
+FAT12/16/32 formatted flash card, insert the card into GoSDC, and issue
+'*SDCTool SDCUp' to start the update process. Wait for it to complete. Then
+switch off your machine. And on again.
+
+<li>SDCUP
+
+<p>
+
+If the contents of the flash ROM on GoSDC have become corrupted, and you can
+therefore no longer issue '*SDCTool SDCUp' to restore them, you will have to
+transfer this (BASIC) file to your BBC or Electron, and 'CHAIN' it.
+
+<li>TOOLROM
+
+<p>
+
+If programmed into a PROM, allows access to SDCUP via the ROM filing system.
+
+<li>storage_struct and osword_b0
+
+<p>
+
+These are text files. Put and read them where you want.
+
+<li>GoSDCio.exe
+
+<p>
+
+This belongs on an (IBM compatible) PC running Windows XP (or any compatible
+flavour). <b>NOTE</b> that you need to put a file called 'cygwin1.dll' in the
+same directory as GoSDCio.exe before it will run. The quick route to obtain
+'cygwin1.dll' is by visiting
+
+<a href="http://cygwin.com/mirrors.html">the CygWin mirrors page</a>,
+
+proceed to one of the mirrors, download e.g. (version numbers may differ
+somewhat) 'release/cygwin/cygwin-1.7.9-1.tar.bz2', unpack it (e.g. with
+'7-Zip'), and copy 'cygwin1.dll' out of the 'usr/bin' directory. The slow route
+is installing all of CygWin.
+
+<li>GoSDCio.unx
+
+<p>
+
+This belongs on an (IBM compatible) PC running x86 Linux. You may want to
+rename it to 'gosdcio' once it is there.
+
+<li>GoSDCio.mac
+
+<p>
+
+This belongs on an Apple Mac running Mac OS X. You may want to rename it to
+'gosdcio' once it is there.
+
+<li>Updates
+
+<p>
+
+This is a text file. Read it to know what changed since the last version of the
+software.
+
+</ul>
+
+<p>
+
+Refer to the
+
+<a href="../Use/use.html">Use</a>
+
+section of this manual for <i>all</i> additional information, including how to
+use this software (and the files in the 'ROMs' directory).
+
+<p>
+
+To update your GoSDC software, see the description of 'UPSDC'.
+
+<p>
+
+<hr>
+
+</body>
+
+</html>
+

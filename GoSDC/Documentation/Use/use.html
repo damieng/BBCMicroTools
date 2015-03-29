@@ -1,0 +1,3198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/css; charset=UTF-8">
+<meta name="Author" lang="nl" content="John Kortink">
+
+<title>GoSDC Guide - Use</title>
+
+<style type="text/css">
+
+<!--
+
+body        { color : black ; background-color : white }
+table.boxed { border : 1px solid gray }
+td.boxed    { border : 1px solid black ; padding-left : 5px ; padding-right : 5px }
+th.boxed    { text-align : left ; padding-left : 5px ; padding-right : 5px }
+
+-->
+
+</style>
+
+</head>
+
+<table width="100%">
+
+<tbody>
+
+<tr>
+<td style="color : gray" align="left">GoSDC Guide</td>
+<td align="right"><a href="../index.html">..</a></td>
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<hr>
+
+<p>
+
+<h1>Use</h1>
+
+<p>
+
+<hr>
+
+<p>
+
+<h2>Introduction</h2>
+
+<p>
+
+GoSDC is a storage system for the Acorn BBC model B, BBC Master and Electron.
+
+<p>
+
+It allows storage of practically any number of floppy discs, harddiscs and
+tapes, all on one flash card (MMC, SD or SDHC). Once stored, any one of them
+may be selected by name (with a simple *-command), and used just like before
+(only much faster and quieter). GoSDC is completely self-contained, and can
+make do with a 'bare' machine (without any floppy or harddisc hardware or
+software).
+
+<p>
+
+GoSDC is powerful, and there is a lot to tell. Perhaps too much to do it all in
+one go. Therefore, this manual is split into two parts.
+
+<p>
+
+The
+
+<a href="#BASICUSE">'Basic use'</a>
+
+section attempts to describe basic use of GoSDC only, and hold back on details.
+If you're a first time user of GoSDC, or an advanced user looking for only
+basic information, read this section.
+
+<p>
+
+The
+
+<a href="#ADVANCEDUSE">'Advanced use'</a>
+
+section provides systematic, detailed descriptions of all (other) aspects of
+GoSDC. It's there if you're ready for more, or need to know more details.
+
+<p>
+
+<h2>Home base</h2>
+
+<p>
+
+GoSDC's 'home base' is on the Internet, at :
+
+<p>
+
+<a href="http://web.inter.nl.net/users/J.Kortink/home/hardware/gosdc/index.htm">http://web.inter.nl.net/users/J.Kortink/home/hardware/gosdc/index.htm</a>
+
+<p>
+
+The most recent information, documentation, software, links, etc. can be found
+there. If you cannot locate the home base, it may have moved since this
+documentation was written. Use a search engine to find its new location, or
+email me (refer to the
+
+<a href="../Epilogue/epilogue.html">Epilogue</a>
+
+section).
+
+<p>
+
+There is also a mailing list, called the 'GoMMC mailing list' (named after
+GoSDC's predecessor), at :
+
+<p>
+
+<a href="http://groups.yahoo.com/group/gommc">http://groups.yahoo.com/group/gommc</a>
+
+<p>
+
+This is the place where new developments are announced, and various GoSDC
+related topics can be discussed in a user group context. Refer to the 'Useful
+things' section of the home base if you cannot locate the mailing list.
+
+<p>
+
+<hr>
+
+<p>
+
+<a name="BASICUSE"></a>
+
+<p>
+
+<h1>Basic use</h1>
+
+<p>
+
+<h2>Overview</h2>
+
+<p>
+
+Basic use of GoSDC requires these main ingredients :
+
+<p>
+
+<b>1)</b> Installation
+
+<br>
+
+<b>2)</b> Getting discs onto the flash card
+
+<br>
+
+<b>3)</b> Running patched filing systems
+
+<br>
+
+<b>4)</b> Select and use discs
+
+<p>
+
+<h2>Installation</h2>
+
+<p>
+
+<b>Step 1 : Hardware installation</b>
+
+<p>
+
+Follow the instructions in the
+
+<a href="../Installation/installation.html">Installation</a>
+
+section of this manual.
+
+<p>
+
+When you've finished hardware installation, a brief checkup can be performed :
+
+<p>
+
+<ul>
+
+<li>Power down the machine.
+
+<li>Remove the flash card plugged into GoSDC (if any).
+
+<li>Power up the machine. The top of the screen should say :
+
+<p>
+
+<i>GoSDC : No flash card inserted</i>
+
+<li>Enter '*SDCInfo'. It should display something like :
+
+<p>
+
+<i>GoSDC (abc) x.xx (day month year)</i>
+
+<br>
+
+...
+
+<br>
+
+<i>Flash card : not present</i>
+
+<br>
+
+...
+
+</li>
+
+</ul>
+
+<p>
+
+So far so good ! Now, if you have a flash card :
+
+<p>
+
+<ul>
+
+<li>Power down the machine.
+
+<li>Plug the flash card into GoSDC.
+
+<li>Power up the machine.
+
+<li>Enter '*SDCInfo'.
+
+</li>
+
+</ul>
+
+<p>
+
+This should now show the type and capacity of the flash card. If the flash card
+is already (GoSDC-)formatted, and you enter '*SDCArea', it should also show the
+free and used space, and the number of objects.
+
+<p>
+
+Note that the flash card is divided into one or more 'areas', numbered 1
+through 8. Refer to the discussion of '*SDCArea' in the Advanced section of
+this manual for details. In the Basic section, we will only deal with 'Area 1'
+(the ubiquitous and therefore default area).
+
+<p>
+
+Note that powering down before inserting or removing the flash card is not
+strictly necessary. But if you don't, always press CTRL-BREAK afterwards.
+
+<p>
+
+<b>Step 2 : Software installation</b>
+
+<p>
+
+Follow the instructions in the
+
+<a href="../Software/software.html">Software</a>
+
+section of this manual.
+
+<p>
+
+<b>Step 3 : Format your flash card</b>
+
+<p>
+
+Before GoSDC can use your flash card, you must format it with SDCFO. If you
+bought the flash card together with GoSDC, it will already be formatted, so you
+can skip ahead to step 4. Otherwise :
+
+<p>
+
+Power down, plug the flash card into GoSDC, and power up. Then enter '*SDCTool
+SDCFO'.
+
+<p>
+
+You should see something similar to :
+
+<p>
+
+<i>Formatting area ... done</i>
+
+<br>
+
+<i>Verifying format ... ok</i>
+
+<br>
+
+<i>Please hard-reset your machine now</i>
+
+<p>
+
+Do so, e.g. press CTRL-BREAK.
+
+<p>
+
+<b>Step 4 : Verify that your flash card works ok</b>
+
+<p>
+
+Enter '*SDCArea' and verify the logic of what it displays (8704 bytes will be
+'used', the other values follow from that and the flash card's capacity).
+
+<p>
+
+If it says 'Selected area not formatted', you have not (successfully) formatted
+your flash card, and your flash card <i>may</i> be incompatible with GoSDC (but
+this is exceedingly rare, so do try step 3 again first, then if it keeps
+failing, contact me).
+
+<p>
+
+<h2>Getting discs onto the flash card</h2>
+
+<p>
+
+Note : if you want to add tapes to the flash card, refer to
+
+<a href="#TAPES">'Tapes'</a>
+
+in the Advanced section of this manual.
+
+<p>
+
+Discs (floppies, harddiscs) can be put on the flash card in two main ways (skip
+to the one you want to use) :
+
+<p>
+
+<b>1) Via the machine with GoSDC</b>
+
+<p>
+
+This must have an actual, physical floppy and/or hard drive installed, or it
+must run something like 65Link (which is highly recommended as companion for
+GoSDC).
+
+<p>
+
+You will be running GoSDC tool SDCADI to add DFS or ADFS discs.
+
+<p>
+
+To add a physical floppy disc to the flash card, insert it into your floppy
+drive, and ensure that it can be accessed (e.g. enter '*Cat'). Then run SDCADI,
+giving it the right parameters. For example (note : replace &lt;your disc
+name&gt; with the name you want to give to the disc on the flash card) :
+
+<p>
+
+*SDCTool SDCADI DN $1$ &lt;your disc name&gt;
+
+<p>
+
+if it is a single-sided, 200 KB, DFS disc, or
+
+<p>
+
+*SDCTool SDCADI AN $1$ &lt;your disc name&gt;
+
+<p>
+
+if it is a single-sided, 320 KB, ADFS disc, or
+
+<p>
+
+*SDCTool SDCADI DN $2$ &lt;your disc name&gt;
+
+<p>
+
+if it is a double-sided, 400 KB, DFS disc, or
+
+<p>
+
+*SDCTool SDCADI AN $2$ &lt;your disc name&gt;
+
+<p>
+
+if it is a double-sided, 640 KB, ADFS disc.
+
+<p>
+
+To add a hard disc to the flash card, use :
+
+<p>
+
+*SDCTool SDCADI AN $4$ &lt;your disc name&gt;
+
+<p>
+
+If you happen to have floppy or hard disc images in files (e.g. if you're
+running 65Link and they're on your host machine's harddisc), you can use :
+
+<p>
+
+*SDCTool SDCADI DN &lt;disc image file name&gt; &lt;your disc name&gt;
+
+<p>
+
+for DFS disc images, or (for ADFS disc images)
+
+<p>
+
+*SDCTool SDCADI AN &lt;disc image file name&gt; &lt;your disc name&gt;
+
+<p>
+
+if they are not 'track interleaved' (otherwise, use 'DI' instead of 'DN', or
+'AI' instead of 'AN' ; you may need to do this for e.g. '.dsd' disc images).
+
+<p>
+
+<b>2) Via a PC with a flash card reader</b>
+
+<p>
+
+You will be running GoSDCio. Refer to
+
+<a href="#RUNNINGGOSDCIO">'Running GoSDCio'</a>
+
+for details.
+
+<p>
+
+Your floppy or hard discs will have to be available as disc image files (e.g.
+'.ssd' or '.adf' files, as downloadable from Internet).
+
+<p>
+
+To add a disc to the flash card, use (note : refer to
+
+<a href="#RUNNINGGOSDCIO">'Running GoSDCio'</a>
+
+for what letter to use instead of 'Q') :
+
+<p>
+
+GoSDCio -dQ -c "ADD DFS DISC N &lt;your disc name&gt; &lt;disc image file
+name&gt;"
+
+<p>
+
+for DFS disc images, or (for ADFS disc images)
+
+<p>
+
+GoSDCio -dQ -c "ADD ADFS DISC N &lt;your disc name&gt; &lt;disc image file
+name&gt;"
+
+<p>
+
+if they are not 'track interleaved' (otherwise, use 'I' instead of 'N' ; you
+may need to do this for e.g. '.dsd' disc images).
+
+<p>
+
+Note that if you want to add more than one disc in one go, you can put the
+commands you would have put between the double quotes in a plain text file (as
+separate lines), call it (e.g.) 'script', and use :
+
+<p>
+
+GoSDCio -dQ script
+
+<p>
+
+instead.
+
+<p>
+
+Note that you can add 'empty' DFS or ADFS discs of practically any size as
+well, by using GoSDCio's 'NEW' command (for details, refer to
+
+<a href="#TOOLSGOSDCIO">'Tools : GoSDCio'</a>
+
+in the Advanced section of this manual). E.g. use :
+
+<p>
+
+GoSDCio -dQ -c "NEW DFS DISC &lt;your disc name&gt; 400K"
+
+<p>
+
+to add an empty, double-sided DFS disc.
+
+<p>
+
+<a name="RUNNINGPATCHEDFILINGSYSTEMS"></a>
+
+<p>
+
+<h2>Running patched filing systems</h2>
+
+<p>
+
+A patched filing system (an original filing system patched for GoSDC) is needed
+to access the discs on the flash card. Accessing DFS discs requires a DFS type
+filing system, accessing ADFS discs requires an ADFS type filing system.
+
+<p>
+
+The filing systems that GoSDC supports (i.e. provides patches for) are listed
+under
+
+<a href="#SUPPORTEDFILINGSYSTEMS">'Supported filing systems'</a>
+
+in the Advanced section of this manual.
+
+<p>
+
+To obtain the filing system ROM image (containing either an original or patched
+version of the filing system), go to
+
+<a href="../../Software/all/ROMs/fs">this directory</a>.
+
+<p>
+
+The first character of the file name, 'O' or 'P', indicates original or patched
+respectively. The second, 'D' or 'A', indicates 'DFS' or 'ADFS' respectively.
+The number that ends the file name indicates the version of the filing system.
+E.g. 'PAFS130.BIN' is the patched version of Acorn ADFS 1.30.
+
+<p>
+
+You can run a patched filing system in two ways. Via sideways ROM, or via
+sideways RAM.
+
+<p>
+
+<b>1) Via sideways ROM</b>
+
+<p>
+
+You simply program the 'P' image of the filing system into a PROM and insert
+that into a free sideways ROM socket (but note that this can only be done with
+filing systems that don't need to run from sideways RAM).
+
+<p>
+
+<b>2) Via sideways RAM</b>
+
+<p>
+
+You auto-load the patched filing system into sideways RAM via GoSDC (this also
+takes care of resetting the machine for you, so it almost seems like the filing
+system was in ROM).
+
+<p>
+
+On your GoSDC-equipped machine, enter '*SDCConfig FSNR x' (where x is the GoSDC
+'internal' filing system number, which would be 3 for the patched ADFS 1.30),
+and '*SDCConfig FSRM y' (where y is the number of the sideways RAM bank that
+the filing system should be loaded into, or, alternatively, the ROM number of
+the free ROM bank on GoSDC). Refer to
+
+<a href="#SIDEWAYSROMRAM">'Sideways ROM/RAM'</a>
+
+in the Advanced section of this manual for details about the sideways ROM/RAM
+banks available on your particular machine.
+
+Then either power cycle your machine or enter '*SDCReset' to auto-load the
+selected filing system.
+
+<p>
+
+<h2>Select and use discs</h2>
+
+<p>
+
+With the patched filing system of choice up and running, now simply select a
+DFS or ADFS disc (as appropriate for the filing system) with *SDCDisc. E.g.
+enter '*SDCDisc Work' if you have put a disc called 'Work' on the flash card.
+Then press CTRL-BREAK, and start using the disc as if it were a regular floppy
+or harddisc.
+
+<p>
+
+Select another disc with *SDCDisc at any time you wish, but remember to press
+CTRL-BREAK immediately afterwards (although GoSDC doesn't need it, the filing
+system may need it to notice the disc change).
+
+<p>
+
+Refer to
+
+<a href="#GOSDCROMSTARCOMMANDS">'GoSDC ROM : Star commands'</a>
+
+in the Advanced section of this manual for more information about the star
+commands that you can now start using.
+
+<p>
+
+Have fun !
+
+<p>
+
+<a name="RUNNINGGOSDCIO"></a>
+
+<p>
+
+<h2>Running GoSDCio</h2>
+
+<p>
+
+Running GoSDCio requires a PC, with a flash card reader, running Windows XP,
+(x86) Linux, Mac OS X, or something compatible. GoSDCio is an important tool,
+so if you don't have such a machine, it is highly recommended to get (access
+to) one.
+
+<p>
+
+You will find GoSDCio among the GoSDC software :
+
+<p>
+
+<ul>
+
+<li>GoSDCio.exe is for PCs running Microsoft Windows XP
+
+<li>GoSDCio.unx (rename it to gosdcio and ensure it has 'execute' access) is
+for PCs running (x86) Linux
+
+<li>GoSDCio.mac (rename it to gosdcio and ensure it has 'execute' access) is
+for Apple Macs running Mac OS X.
+
+</li>
+
+</ul>
+
+<p>
+
+Remove all flash cards from your flash card reader. Connect your flash card
+reader to your PC. Insert your flash card. If you run Windows XP, new 'drives'
+will pop up in your 'My Computer' window, usually 4 or more, each representing
+a slot on your flash card reader. Find the flash card by double-clicking on
+every new drive icon, and picking the one <b>not</b> complaining 'Please insert
+a disk ...', but something like '... not formatted' instead. Take note of the
+drive letter, and use it instead of 'Q' (see below). If you run Linux or Mac OS
+X, you will have to find out which device in /dev/ represents the flash card
+(e.g. '/dev/sdc'), and use that instead of 'Q'.
+
+<p>
+
+Open a command window (e.g., under Windows XP, by clicking 'Start', then 'Run
+...', and entering 'Command', or, under Linux or Mac OS X, by opening a
+terminal window). Go ('cd') to the directory containing GoSDCio (e.g. 'cd
+\gosdc').
+
+<p>
+
+You are now ready to run GoSDCio. Test it, e.g. by entering :
+
+<p>
+
+GoSDCio -dQ -c "" -l
+
+<p>
+
+which will list the contents of your flash card.
+
+<p>
+
+<hr>
+
+<p>
+
+<a name="ADVANCEDUSE"></a>
+
+<p>
+
+<h1>Advanced use</h1>
+
+<p>
+
+<h2>The hardware</h2>
+
+<p>
+
+There are a few important things to note about the GoSDC hardware before you
+use the software.
+
+<p>
+
+Most importantly this : GoSDC has two on-board 16 KB ROM banks, one of which
+contains the GoSDC ROM software (as programmed by SDCUP), and one which is
+'free' (referred to as 'the free ROM bank on GoSDC'). To the machine, the free
+ROM bank is no different than any other ROM bank : it is read-only, and it
+appears as ROM number x (what x is depends on the machine, refer to
+
+<a href="#SIDEWAYSROMRAM">'Sideways ROM/RAM'</a>
+
+for details). But it is empty on powerup, and its contents can be changed by
+software, in particular the GoSDC ROM software (via configuration options FSNR
+and FSRM). I.e. the free ROM bank is similar to a read-only sideways RAM bank.
+
+<p>
+
+Note also that GoSDC can be 'read disabled', to prevent corrupted code in one
+or both of GoSDC's ROM banks from crashing the machine. Refer to
+
+<a href="#RECOVERY">'Recovery'</a>
+
+for details.
+
+<p>
+
+<h2>The software</h2>
+
+<p>
+
+The GoSDC software consists of several components :
+
+<p>
+
+<ul>
+
+<li>A sideways ROM providing basic facilities
+
+<li>A set of tools for the '8-bit' (BBC/Electron) environment
+
+<li>A set of tools for the (IBM compatible) PC environment
+
+</li>
+
+</ul>
+
+<p>
+
+The sideways ROM provides low level access to the flash card, interfaces with
+patched filing systems and provides simple interactive functionality (select
+and use discs). The tools mainly allow discs and other data to be added to the
+flash card. They are mostly command-line utilities, to allow operation in batch
+mode (e.g. from an *EXEC file).
+
+<p>
+
+The 8-bit tools provide for :
+
+<p>
+
+<ul>
+
+<li>Updating the GoSDC ROM (SDCUP)
+
+<li>Formatting the flash card (SDCFO)
+
+<li>Adding floppy or hard discs to the flash card (SDCADI)
+
+<li>Adding filing systems (original or patched) to the flash card (SDCAFS)
+
+<li>Adding tools to the flash card (SDCATO)
+
+<li>Deleting objects from the flash card (SDCDEL)
+
+<li>Writing discs on the flash card back to physical floppy (SDCFlop)
+
+<li>Quick interactive selection of a disc or tape (SDCMenu)
+
+<li>Displaying some interesting flash card info (SDCCXD)
+
+</li>
+
+</ul>
+
+<p>
+
+The PC tools provide for :
+
+<p>
+
+<ul>
+
+<li>Add/extract/delete/rename discs/tapes/tools/filing systems to/from/on the
+flash card (GoSDCio.exe, GoSDCio.unx and GoSDCio.mac)
+
+</li>
+
+</ul>
+
+<p>
+
+The functionality provided by the GoSDC ROM is discussed in the sections titled
+'GoSDC ROM : etc.'. The tools are discussed in the sections titled 'Tools :
+etc.'.
+
+<p>
+
+<a name="FILINGSYSTEMS"></a>
+
+<p>
+
+<h2>Filing systems</h2>
+
+<p>
+
+Probably the most 'difficult' part of using GoSDC is how to handle (patched)
+filing systems. This is mainly a consequence of the fact that GoSDC supports
+not just one, but many different filing systems.
+
+<p>
+
+Filing systems reside in sideways ROM or RAM. It is highly recommended that you
+first read
+
+<a href="#SIDEWAYSROMRAM">'Sideways ROM/RAM'</a>,
+
+to get to know more about the sideways ROM/RAM banks in your machine.
+
+<p>
+
+Regular/original filing systems like DFS and ADFS cannot access the flash card
+'out of the box'. Most of them were meant to (and can only) access physical
+floppies and harddiscs, e.g. via a floppy disc interface (based on an 8271 or
+1770 floppy disc controller).
+
+<p>
+
+Regular/original filing systems can, however, be patched to access the flash
+card (via GoSDC) instead of physical media (note that such a patched filing
+system can no longer access physical media !). In GoSDC parlance, these filing
+systems are simply called 'patched filing systems'. Wherever in this manual I
+refer to a 'patched filing system', such a filing system is meant.
+
+<p>
+
+A patched filing system can be introduced to the system in PROM (insert this
+into a free sideways ROM socket), or by auto-loading it into either a sideways
+RAM bank (see configuration options FSNR and FSRM for details) or the free ROM
+bank on GoSDC.
+
+<p>
+
+GoSDC provides suitable patches for a large number of filing systems. Refer to
+
+<a href="#SUPPORTEDFILINGSYSTEMS">'Supported filing systems'</a>
+
+for details (and to
+
+<a href="#RUNNINGPATCHEDFILINGSYSTEMS">'Running patched filing systems'</a>
+
+for details on where to obtain the filing system images).
+
+<p>
+
+You will usually need to run both the original and patched versions of a filing
+system. The first to be able to copy the contents of your physical discs to the
+flash card, the second to be able to access them from there. But note that
+original and patched versions of the same filing system cannot be run together
+at the same time.
+
+<p>
+
+On the BBC Master, the mechanism to arrange this is simple. When you need to
+add physical discs to the flash card, ensure you've *INSERTed the original
+version of the filing system, and *UNPLUGged the patched version of the filing
+system (if any). When you wish to access those discs via GoSDC, ensure you've
+*INSERTed the patched version, and *UNPLUGged the original version.
+
+<p>
+
+On the BBC B/BBC B+/Electron, there is no standard mechanism, but the GoSDC ROM
+software can help. This is only fully reliable when it runs as ROM number 15,
+because only ROMs with lower numbers can be affected. To 'unplug' a ROM, enter
+:
+
+<p>
+
+*SDCConfig ROMx 1
+
+<p>
+
+where 'x' is the ROM number (0 through 9 and A through F for ROMs 0 through 15
+respectively). To 'insert' a ROM, enter :
+
+<p>
+
+*SDCConfig ROMx 0
+
+<p>
+
+Then enter '*SDCReset' (or power-cycle your machine). The 'unplugged' ROM will
+now be inactive and the 'inserted' one will be active.
+
+<p>
+
+NOTE !!! If the original and patched versions of a filing system do not differ
+in their first 1K bytes, the OS will permanently disable the one with the
+lowest ROM number (currently, this is the case for, e.g., DFS 2.26). In such a
+case, call the higher numbered one 'x' and the lower numbered one 'y', and then
+not only
+
+<p>
+
+*SDCConfig ROMx 1
+
+<p>
+
+but <b>also</b>
+
+<p>
+
+*SDCConfig ROMy 2
+
+<p>
+
+(i.e. 2 instead of 0). This ensures that the lower numbered ROM is not disabled
+by the OS (or, rather, that it is re-enabled by GoSDC).
+
+<p>
+
+Note that GoSDC is perfectly happy to serve multiple filing systems at the same
+time. E.g. it's perfectly possible to run both DFS 2.26 and ADFS 1.30 at the
+same time, and, e.g., copy files between them.
+
+<p>
+
+<h2>Tools : 8-bit environment</h2>
+
+<p>
+
+The tools called SDCUP, SDCFO, SDCAFS, SDCATO, SDCADI and SDCDEL run on your
+BBC or Electron only. They are all command-line utilities, some taking
+arguments, some not.
+
+<p>
+
+In addition, there is a tool called 'SDCFlop' (which allows you to write discs
+on the flash card back to a physical floppy), a tool called 'SDCMenu' (which is
+an interactive disc or tape selection program), and a tool called 'SDCCXD'
+(which displays some interesting information about your flash card). All three
+are BASIC programs.
+
+<p>
+
+You run the tools via the *SDCTool command. The standard tools (i.e. those
+mentioned so far) are always there (they are stored in GoSDC's on-board flash
+ROM). Additional tools, which must have names that differ from those of the
+standard tools, may be stored on the flash card (refer to the discussion of
+'*SDCTool' for more details).
+
+<p>
+
+<h2>Tools : PC environment</h2>
+
+<p>
+
+A powerful tool called GoSDCio is provided, allowing you to manipulate the
+flash card contents on a PC with a flash card reader that accepts MMCs, SD
+cards, and/or SDHC cards.
+
+<p>
+
+<a name="TOOLSSDCUP"></a>
+
+<p>
+
+<h2>Tools : SDCUP</h2>
+
+<p>
+
+This tool updates GoSDC's on-board flash ROM (which contains the GoSDC ROM and
+all the standard tools and filing systems). It takes no arguments (enter
+'*SDCTool SDCUP').
+
+<p>
+
+A separate file called 'UPSDC' provides the actual data. To give SDCUP access
+to 'UPSDC', simply copy 'UPSDC' to the root directory of a FAT formatted flash
+card, and then move the flash card to GoSDC. E.g., on a PC running Windows,
+simply format your flash card via 'My Computer' (if needed), and then drag
+'UPSDC' to it.
+
+<p>
+
+Usually, a previous version of the GoSDC ROM will already be running on your
+machine. If so, GoSDC's ROM number will be determined automatically. If not,
+you will be asked for it.
+
+<p>
+
+After running SDCUP, always power-cycle the machine (switch it off, wait a few
+seconds, then switch it on again).
+
+<p>
+
+<h2>Tools : SDCFO</h2>
+
+<p>
+
+This tool formats a flash card for use by GoSDC. It takes no arguments (enter
+'*SDCTool SDCFO').
+
+<p>
+
+Note that all the usual formatting warnings apply, especially that all data
+previously stored on the flash card is lost, so use this tool with care.
+
+<p>
+
+After running SDCFO, always press CTRL-BREAK.
+
+<p>
+
+<h2>Tools : SDCAFS</h2>
+
+<p>
+
+Generally, you will not use this tool. It allows you to add your own patched
+and/or original filing systems to the flash card, so they can be auto-loaded
+(see configuration options FSNR and FSRM). These filing systems should have
+different numbers than the standard ones stored in 'Area X'.
+
+<p>
+
+Enter '*SDCTool SDCAFS &lt;file name&gt;' where &lt;file name&gt; is the file
+name of the filing system ROM image (it must be exactly 16 KB in size). If the
+image is recognized, it is added to the flash card. Refer to
+
+<a href="#SUPPORTEDFILINGSYSTEMS">'Supported filing systems'</a>
+
+for details (and to
+
+<a href="#RUNNINGPATCHEDFILINGSYSTEMS">'Running patched filing systems'</a>
+
+for details on where to obtain the filing system ROM images).
+
+<p>
+
+Note that both the original and patched version of a filing system may be
+available for auto-load. When you make use of the filing system auto-load
+functions, this allows you to switch easily between the original and patched
+filing system (simply reconfigure to the other one and *SDCReset or power-cycle
+the machine to auto-load it).
+
+<p>
+
+<h2>Tools : SDCATO</h2>
+
+<p>
+
+Generally, you will not use this tool. It allows you to add your own (GoSDC)
+tools to the flash card, so they can be run directly from the flash card,
+without a disc containing those tools needing to be present (and the filing
+system needed to access it). These tools should have different names than the
+standard ones stored in 'Area X'.
+
+<p>
+
+Enter '*SDCTool SDCATO &lt;file name&gt; &lt;tool name&gt;' to add tool
+&lt;file name&gt; under the name &lt;tool name&gt;. Thereafter, you can run the
+tool using '*SDCTool &lt;tool name&gt;'.
+
+<p>
+
+Note that a tool may be a BASIC program as well as a machine code program. For
+details, refer to the discussion of *SDCTool.
+
+<p>
+
+<a name="TOOLSSDCADI"></a>
+
+<p>
+
+<h2>Tools : SDCADI</h2>
+
+<p>
+
+This tool allows you to add discs to the flash card. A.k.a. "what it's all
+about" ! ;-)
+
+<p>
+
+It takes either a disc image (i.e. an image of a floppy or hard disc in a file)
+or a physical floppy or hard disc as its input. Disc image files may be on any
+filing system you want, you only need to ensure that the file is accessible
+when you run SDCADI.
+
+<p>
+
+Enter e.g. '*SDCTool SDCADI DN &lt;file name&gt; &lt;disc name&gt;' to add a
+disc image in file &lt;file name&gt; to the flash card under name &lt;disc
+name&gt; (the latter is what you thereafter specify to *SDCDisc, *SDCExtra and
+*SDCList to find the disc).
+
+<p>
+
+The disc name may be up to 48 characters long. Note, in this respect, that you
+can use a simple kind of 'directory' structure (refer to the discussion of
+*SDCPrefix), so it pays to put a little thought in how to name discs.
+
+<p>
+
+'SDCADI DN' (Add Disc DFS Non-interlaced) is used to add DFS type floppy discs,
+with either a disc image file or a physical floppy as the source. A floppy disc
+image may be any size, up to 800 K (for a dual-drive, double-sided disc image),
+must contain &lt;drive 0&gt; &lt;drive 2&gt; &lt;drive 1&gt; &lt;drive 3&gt;,
+in that order, and results in a disc of the same size as the disc image (but
+rounded up to a 512 byte multiple). To copy a physical floppy to the flash
+card, specify $1$, $2$ or $3$ as the &lt;file name&gt;, to copy, respectively,
+a single single-sided (200K), a single double-sided (400K), or double
+double-sided (800K) floppy (i.e. two floppies in two drives !).
+
+<p>
+
+'SDCADI DN' also accepts $4$. This is like $1$ but copies from drive 2 instead
+of drive 0. 'SDCADI DN' also accepts $5$ through $8$, which are exactly like
+$1$ through $4$, resulting in the same total disc size on the flash card, but
+copy only the first 40 tracks of every physical drive (the last 100K of every
+drive on the flash card therefore becomes unused and unusable space). Use $5$
+through $8$ to copy physical 40 track discs only.
+
+<p>
+
+'SDCADI AN' (Add Disc ADFS Non-interlaced) is used to add ADFS type floppy or
+hard discs, with either a disc image file or a physical floppy or hard disc as
+the source. A floppy disc image may be any size, up to 1280 K (for a
+dual-drive, double-sided disc image), must contain &lt;drive 0&gt; &lt;drive
+1&gt;, in that order, and results in a disc of the same size as the disc image
+(but rounded up to a 512 byte multiple). To copy a physical floppy to the flash
+card, specify $1$, $2$ or $3$ as the &lt;file name&gt;, to copy, respectively,
+a single single-sided (320K), a single double-sided (640K), or double
+double-sided (1280K) floppy (i.e. two floppies in two drives !).
+
+<p>
+
+'SDCADI AN' also accepts $4$. This copies the entire ADFS disc in drive 0
+(floppy or hard disc). I.e. it allows straight-to-flash-card copying of a
+harddisc (a floppy may just as well be copied with $1$ or $2$).
+
+<p>
+
+'SDCADI DI' (Add Disc DFS Interlaced) is used to add DFS type discs, with an
+'interlaced' disc image file as the source. An 'interlaced' disc image is
+always double-sided, must contain &lt;track 0, drive 0&gt; &lt;track 0, drive
+2&gt; &lt;track 1, drive 0&gt; ... &lt;track 79, drive 2&gt;, in that order,
+and results in a 400K DFS type disc.
+
+<p>
+
+'SDCADI AI' (Add Disc ADFS Interlaced) is used to add ADFS type discs, with an
+'interlaced' disc image file as the source. An 'interlaced' disc image is
+always double-sided, must contain &lt;track 0, head 0&gt; &lt;track 0, head
+1&gt; &lt;track 1, head 0&gt; ... &lt;track 79, head 1&gt;, in that order, and
+results in a 640K ADFS type disc.
+
+<p>
+
+Note that adding a physical floppy or hard disc causes a switch to DFS or ADFS
+and drive 0.
+
+<p>
+
+<h2>Tools : SDCDEL</h2>
+
+<p>
+
+This tool allows you to delete an object (filing system, tool or medium (disc
+or tape)) on the flash card.
+
+<p>
+
+The object is removed from the catalogue, but it will still occupy the same
+storage space it did before. To reclaim the storage space (e.g. when your flash
+card is becoming full) do a backup and restore with GoSDCio.
+
+<p>
+
+Enter '*SDCTool SDCDEL F &lt;FS number&gt;' to delete a filing system (where
+&lt;FS number&gt; is the GoSDC 'internal' filing system number, refer to
+
+<a href="#SUPPORTEDFILINGSYSTEMS">'Supported filing systems'</a>
+
+for a list). Enter '*SDCTool SDCDEL T &lt;tool name&gt;' to delete a tool.
+Enter '*SDCTool SDCDEL M &lt;disc or tape name&gt;' to delete a disc or tape.
+
+<p>
+
+<h2>Tools : SDCFlop</h2>
+
+<p>
+
+This tool allows you to write discs on the flash card (back) to a physical
+floppy. Enter '*SDCTool SDCFlop' to run it.
+
+<p>
+
+Ensure that no patched filing systems are running (if necessary, use '*Unplug'
+on the BBC Master, or '*SDCConfig ROMx 1' on other machines).
+
+<p>
+
+When run, SDCFlop will present a simple menu (which will gain a few choices as
+you go along) :
+
+<p>
+
+<i>0. Exit</i>
+
+<br>
+
+<i>1. Switch to ADFS (now DFS)</i>
+
+<br>
+
+<i>2. Select target drive</i>
+
+<br>
+
+<i>3. Select source disc</i>
+
+<p>
+
+Press 0,1,2 or 3.
+
+<p>
+
+0 exits SDCFlop.
+
+<p>
+
+1 allows you to switch between DFS and ADFS. When you switch, your previous
+choices are assumed not to apply anymore, and you will revert to the basic
+startup menu.
+
+<p>
+
+2 allows selection of the drive to copy to (on your physical floppy).
+
+<p>
+
+3 allows selection of the disc to copy from (on the flash card). You may use
+wildcards.
+
+<p>
+
+4 ('Select source drive'), which appears once you made a selection via '3',
+allows selection of the drive to copy from (i.e. a drive contained by the disc
+selected via '3'). Beware of selecting 'shrunk' drives, since they will leave
+part of your floppy's capacity unused, and won't allow files to be added later
+on.
+
+<p>
+
+5 ('Copy source drive to target drive'), which appears once you made a
+selection via '2', '3' and '4', will start a drive copy.
+
+<p>
+
+Note that if you selected a DFS disc that contains more than one drive (e.g.
+two, originating from a 'double-sided' disc), you will want to copy both drive
+0 and 2 to your floppy (and/or 1 and 3 to a second floppy, if there are four
+drives).
+
+<p>
+
+<a name="TOOLSSDCMENU"></a>
+
+<p>
+
+<h2>Tools : SDCMenu</h2>
+
+<p>
+
+This tool allows interactive selection of a medium (disc or tape). It is meant
+to be used in conjunction with the BOOT configuration option (refer to its
+discussion for details). Enter '*SDCTool SDCMenu' to run it.
+
+<p>
+
+When it is run, you're prompted to enter (any part of) a disc or tape name to
+search for (you can make use of the left and right arrow keys and DELETE, and
+SPACE to reset to an empty name). Press RETURN to start the search. All matches
+that '*SDCList *xxxx*' would have brought up will be listed (where xxxx is what
+has been entered of the medium name). Choose any one of them by pressing the
+key indicated in front of the full medium name, or press RETURN to return to
+the medium name prompt and do another search. If there are more matches than
+will fit on screen, the list will end with a '...' line. Then either enter more
+of the medium name to reduce the number of matches, or choose a match anyway.
+
+<p>
+
+Choosing a match will execute an *SDCDisc or *SDCTape command, as appropriate,
+and exit SDCMenu. If you selected a disc, then, assuming a patched filing
+system is running, subsequently pressing CTRL-SHIFT-BREAK should boot the
+selected disc. If you selected a tape, enter '*Tape', then 'CHAIN""' or '*Run'
+as appropriate.
+
+<p>
+
+SDCMenu is ideally used in conjunction with the BOOT configuration option
+(refer to its discussion for details). E.g. if you configure BOOT to 3, every
+CTRL-BREAK will auto-run SDCMenu. You then select a disc, and press
+CTRL-SHIFT-BREAK to boot the selected disc (SDCMenu won't be run this time,
+because the BOOT setting is ignored when SHIFT is pressed).
+
+<p>
+
+<h2>Tools : SDCCXD</h2>
+
+<p>
+
+This tool displays some interesting information about your flash card. Enter
+'*SDCTool SDCCXD' to run it.
+
+<p>
+
+<a name="TOOLSGOSDCIO"></a>
+
+<p>
+
+<h2>Tools : GoSDCio</h2>
+
+<p>
+
+GoSDCio allows batch-wise addition, extraction, deletion and renaming of discs,
+tapes, tools and filing systems, including backup and restore of the entire
+contents of the flash card, on a PC with a flash card reader, running Windows
+XP, (x86) Linux or Mac OS X.
+
+<p>
+
+GoSDCio accepts any number of 'commands' (taken from script files, or specified
+directly on the commandline), and executes them in one go.
+
+<p>
+
+The basic syntax is : 'GoSDCio -d&lt;drive&gt; &lt;script&gt;', where
+&lt;script&gt; is the file name of a script, and &lt;drive&gt; is the drive
+letter under which the flash card appears (if you don't know which one it is,
+you may want to 'double-click' all the flash card reader drives, and find the
+one where this invokes a 'not formatted' type of error). Under Linux, instead
+of 'K', specify what your flash card appears as under /dev (e.g. use
+'-d/dev/sdc' instead of '-dK').
+
+<p>
+
+You may combine any number of scripts (specified by file name) and 'single'
+commands (specified by double-quoting, preceded by '-c'). They are executed in
+the order in which they are specified on the commandline. E.g.
+
+<p>
+
+<i>GoSDCio -dK -c "ADD DFS DISC N Hopper Hopper.ssd"</i>
+
+<p>
+
+will simply add one (single-sided) DFS disc to the flash card. Or e.g.
+
+<p>
+
+<i>GoSDCio -dK script.txt</i>
+
+<p>
+
+will execute all the commands contained within the file 'script.txt'. Or e.g.
+
+<p>
+
+<i>GoSDCio -dK -c "DO SHRINK" script.txt</i>
+
+<p>
+
+will first execute a 'DO SHRINK' command, and then all the commands contained
+within the file 'script.txt'.
+
+<p>
+
+You can optionally add a '-f' to the command-line. Use -f with extreme caution
+because it instructs GoSDCio to 'forget' the old contents of the flash card
+before doing anything. Note that the flash card must have been formatted with
+SDCFO, although it need not be empty.
+
+<p>
+
+You can optionally compact, shrink and/or 'blow up' all the drives contained
+within DFS or ADFS discs while adding them to the flash card. Compact moves all
+objects on a drive to the 'front' (exactly like the *Compact command). Shrink
+does that too, but also minimizes the drive's size (i.e. no free space will
+remain). Blowup will enlarge a drive to a specified size (or the nearest one
+possible). Simply add 'DO COMPACT', 'DO SHRINK' and/or 'DO BLOWUP &lt;size&gt;'
+(where &lt;size&gt; is e.g. '200K' or '16M') to your commands. They will affect
+all following commands. Use 'DO NOCOMPACT', 'DO NOSHRINK' and/or 'DO NOBLOWUP'
+(or 'DO NONE' as a shorthand for all of them) to 'undo' the previously
+specified option(s).
+
+<p>
+
+Add '-a&lt;number&gt;' (e.g. '-a2') to the command-line to target a specific
+'area' (the default is area 1). Refer to the discussion of *SDCArea for more
+details.
+
+<p>
+
+Add '-l' to the command-line to list the new flash card catalogue after the
+commands have been executed.
+
+<p>
+
+A script is a text file that looks like this :
+
+<p>
+
+<i># start</i>
+
+<br>
+
+<i>ADD DFS DISC N Elite C:\GoSDC\Discs\Elite.ssd</i>
+
+<br>
+
+<i>ADD DFS DISC N Hopper C:\GoSDC\Discs\Hopper.ssd</i>
+
+<br>
+
+<i>ADD DFS DISC N Snapper C:\GoSDC\Discs\Snapper.ssd</i>
+
+<br>
+
+<i># end</i>
+
+<p>
+
+There's one command per line. Empty lines are ignored. If a line starts with a
+'#' it is a comment, and is ignored as well.
+
+<p>
+
+A description of the available commands follows.
+
+<p>
+
+Note that &lt;object type&gt; is 'FS' for a filing system, 'TOOL' for a tool,
+'DFS DISC' for a DFS disc, 'ADFS DISC' for an ADFS disc, 'HADFS disc' for a
+HADFS disc, 'TAPE' for a tape, or 'MEDIUM' for either a disc or a tape (where
+allowed).
+
+<p>
+
+Also note that &lt;object name&gt; is the name that you want the object (tool,
+disc or tape) to have on the flash card. I.e. it is the name by which you
+select the tool, disc or tape with *SDCDisc, *SDCExtra, *SDCTape or *SDCTool.
+
+<p>
+
+You can use the following commands :
+
+<p>
+
+<b>ADD &lt;object type&gt; &lt;object name&gt; &lt;file name&gt;</b>
+
+<p>
+
+Where &lt;object type&gt; may not be 'FS' (this needs a different syntax, see
+below), or 'MEDIUM'.
+
+<p>
+
+For object types 'DFS DISC' and 'ADFS DISC', follow &lt;object type&gt; with
+'N' or 'I' depending on whether &lt;file name&gt; contains a non-interlaced or
+interlaced disc image respectively (refer to
+
+<a href="#TOOLSSDCADI">'Tools : SDCADI'</a>
+
+for details about interlaced disc images), e.g. 'ADD DFS DISC N Hopper
+Hopper.ssd'.
+
+<p>
+
+This command adds a tool, disc or tape to the flash card.
+
+<p>
+
+Note that 'TAPE' expects an 'ungzipped' UEF file (as available from Internet).
+GoSDCio puts a 'stripped' version of this UEF file on the flash card. 'TAPE'
+will recognize and accept this stripped version as well (e.g. when restoring a
+BACKUP, since this will have saved the stripped versions, not the original
+UEFs). Refer to
+
+<a href="#TAPES">'Tapes'</a>
+
+for more details.
+
+<p>
+
+<b>ADD FS &lt;FS number&gt; &lt;file name&gt;</b>
+
+<p>
+
+Where &lt;FS number&gt; is the GoSDC 'internal' filing system number (refer to
+
+<a href="#SUPPORTEDFILINGSYSTEMS">'Supported filing systems'</a>
+
+for details).
+
+<p>
+
+This command adds a filing system (original or patched) to the flash card. It
+is there for special purposes only, since the standard filing systems are
+always 'there' (stored in 'Area X').
+
+<p>
+
+It will automatically recognize both the original and patched version of all
+supported filing systems. Use FS number 0 to make GoSDCio determine the right
+filing system number (if the filing system is not recognized, this is an
+error). If the filing system is recognized, but you're specifying the wrong
+filing system number, this is an error as well.
+
+<p>
+
+Note that &lt;FS number&gt; is not limited to the documented filing system
+numbers, but may be anything between 1 and 250 inclusive. This is in order to
+support the use of slightly 'tweaked' filing system images (which GoSDCio will
+not recognize, so you must use a non-standard filing system number like 200).
+
+<p>
+
+<b>NEW &lt;object type&gt; &lt;object name&gt; &lt;disc size(s)&gt;</b>
+
+<p>
+
+Where &lt;object type&gt; may only be 'DFS DISC' or 'ADFS DISC', and &lt;disc
+size(s)&gt; specifies the size(s) of the disc(s) to be created.
+
+<p>
+
+This command adds an empty disc to the flash card.
+
+<p>
+
+'NEW DFS DISC' creates an empty DFS disc of anything between 16 KB and 800 KB
+in size (specify e.g. '16K' or '800K' as &lt;disc size(s)&gt;). A size above
+200, 400 or 600 KB results in 2, 3, 4 drive discs respectively.
+
+<p>
+
+'NEW ADFS DISC' creates an empty ADFS disc of anything between 16 KB and 512 MB
+in size (specify e.g. '16K' or '512M' as &lt;disc size(s)&gt;), or 16+16 KB and
+512+512 MB in size (specify e.g. '16K+1M' or '2M+512M' as &lt;disc
+size(s)&gt;). That is, the non-+ form creates single drive discs, the +-form
+double drive discs (note that the two sizes may be completely different).
+
+<p>
+
+<b>DELETE &lt;object type&gt; &lt;object name&gt;</b>
+
+<p>
+
+This command deletes the specified object on the flash card.
+
+<p>
+
+The object is removed from the catalogue, but it will still occupy the same
+storage space it did before. To reclaim the storage space (e.g. when your flash
+card is becoming full) do a backup and restore (refer to BACKUP for details).
+
+<p>
+
+<b>RENAME &lt;object type&gt; &lt;object name&gt; &lt;new object name&gt;</b>
+
+<p>
+
+Where &lt;object type&gt; may not be 'FS'.
+
+<p>
+
+This command renames the specified object on the flash card to &lt;new object
+name&gt;.
+
+<p>
+
+<b>EXTRACT &lt;object type&gt; &lt;object name&gt; &lt;file name&gt;</b>
+
+<p>
+
+Where &lt;object type&gt; may not be 'FS' (this needs a different syntax, see
+below).
+
+<p>
+
+For object types 'DFS DISC' and 'ADFS DISC', follow &lt;object type&gt; with
+'N' or 'I' depending on whether you want &lt;file name&gt; to contain a
+non-interlaced or interlaced disc image respectively (refer to
+
+<a href="#TOOLSSDCADI">'Tools : SDCADI'</a>
+
+for details about interlaced disc images), e.g. 'EXTRACT DFS DISC N Hopper
+hopper.ssd'.
+
+<p>
+
+This command extracts the specified tool, disc or tape from the flash card
+(copying it to a file).
+
+<p>
+
+<b>EXTRACT FS &lt;FS number&gt; &lt;file name&gt;</b>
+
+<p>
+
+Where &lt;FS number&gt; is the GoSDC 'internal' filing system number (refer to
+
+<a href="#SUPPORTEDFILINGSYSTEMS">'Supported filing systems'</a>
+
+for details).
+
+<p>
+
+This command extracts a filing system from the flash card (copying it to a
+file).
+
+<p>
+
+<b>BACKUP &lt;directory name&gt;</b>
+
+<p>
+
+This command copies everything that is stored on the flash card to the
+specified directory, in the form of separate files (each containing one object)
+and a matching script (with which the flash card contents can be restored).
+
+<p>
+
+Note that all objects that were 'deleted' (via the 'DELETE' command or the
+SDCDEL tool) are discarded, i.e. are not written to files and do not appear in
+the script. To restore a backup, simply 'cd' to the backup directory and run
+the script through GoSDCio, adding '-f' (e.g. 'GoSDCio -dJ -f script').
+
+<p>
+
+<a name="TAPES"></a>
+
+<p>
+
+<h2>Tapes</h2>
+
+<p>
+
+GoSDC's main 'thing' is discs, but it can handle tapes as well, via the
+standard Tape filing system. Although it can only 'play', not 'record'.
+
+<p>
+
+This works on BBC model Bs running OS 1.20, BBC Masters running MOS 3.20 or
+3.50, and Electrons running OS 1.00.
+
+<p>
+
+But the machine's OS ROM must be patched to achieve this. Which means you must
+program a patched OS ROM image into a suitable PROM, and replace your OS ROM
+with that PROM. The patches in the OS are needed to make the Tape filing system
+get input directly from GoSDC, instead of the tape interface hardware.
+
+<p>
+
+To obtain the patched OS ROM image, go to
+
+<a href="../../Software/all/ROMs/os">this directory</a>.
+
+It contains the following files :
+
+<p>
+
+POS120.BIN is the (16K) BBC OS 1.20 ROM
+
+<br>
+
+POS320.BIN is the (128K) BBC Master MOS 3.20 ROM
+
+<br>
+
+POS350.BIN is the (128K) BBC Master MOS 3.50 ROM
+
+<br>
+
+POS100.BIN is the (32K) Electron OS 1.00 ROM (i.e. this includes BASIC).
+
+<p>
+
+Replacing the OS ROM is not for the fainthearted (only on the BBC model B it is
+relatively easy to do), and requires some know-how. If you want to do it, but
+don't know how to proceed, feel free to contact me.
+
+<p>
+
+You can add tape images to the flash card using GoSDCio's 'ADD TAPE' command,
+using 'ungzipped' UEF files (as available from Internet) as source material.
+They can subsequently be selected by *SDCTape, and 'played' under the tape
+filing system (if it is not selected, enter '*Tape'). Simply issue the usual
+CHAIN"" or *RUN command to start loading the tape. Use *SDCRewind to 'rewind'
+the tape (note that *SDCTape implicitly rewinds as well).
+
+<p>
+
+Note that, when you download UEF files from Internet, you may have to 'unzip'
+the downloaded file (to obtain the actual .uef file) as well as 'ungzip' the
+.uef file (e.g. rename it to a .uef.gz, then 'gzip -d' it, after obtaining a
+copy of gzip).
+
+<p>
+
+Note also that you can 'slow down' tape loading with the SLOW configuration
+option (refer to its discussion for details).
+
+<p>
+
+<a name="GOSDCROMSTARCOMMANDS"></a>
+
+<p>
+
+<h2>GoSDC ROM : Star commands</h2>
+
+<p>
+
+The following *-commands are available from the GoSDC ROM software (enter
+'*Help GoSDC' to list them) :
+
+<p>
+
+<b>*SDCInfo</b>
+
+<p>
+
+Displays the GoSDC software version and date, which ROM slots GoSDC occupies,
+flash ROM and flash card details, and all area sizes.
+
+<p>
+
+<b>*SDCArea (&lt;selector&gt;)</b>
+
+<p>
+
+Selects area &lt;selector&gt; for subsequent access. If &lt;selector&gt; is not
+specified, no (new) area is selected.
+
+<p>
+
+In all cases the statistics of the (newly) selected area are displayed (i.e.
+the total, used and free bytes, and the number of objects).
+
+<p>
+
+Areas are 'virtual' flash cards, named 'X', and '1' through '8'. Their
+availability depends on the capacity of the actual, physical flash card. If it
+is under 4 GiB, only area '1' is available. If it is over 4 GiB, up to seven
+additional areas (starting with '2') are available, where all but the last one
+is 4 GiB in size. Area X is the 'mini flash card' located in GoSDC's flash ROM.
+It contains all the standard filing systems and tools. It can be accessed,
+listed, etc. just like any other area, but it cannot be written to.
+
+<p>
+
+ALWAYS press CTRL-BREAK after selecting an area with *SDCArea ! It is highly
+recommended to enter '*SDCDisc -' at this stage, as well.
+
+<p>
+
+<b>*SDCDisc (&lt;name&gt;)</b>
+
+<p>
+
+Selects disc &lt;name&gt; for subsequent access (by the currently running,
+patched filing system). The usual * and # wildcards may be used (the first
+matching disc is selected). If &lt;name&gt; is a single hyphen (-), the
+currently selected disc is deselected (this may occasionally be useful to
+confirm that the selected disc is no longer on the flash card, although
+normally you would simply select another disc). If &lt;name&gt; is not
+specified, no (new) disc is selected.
+
+<p>
+
+In all cases the (newly) selected media are displayed, as well as the drives
+found within the selected discs (note that 'Disc 1', 'Disc 2' and 'Tape' are
+selected by, respectively, *SDCDisc, *SDCExtra and *SDCTape). DFS and ADFS disc
+selections are remembered separately (i.e. there's a 'Disc 1' and 'Disc 2'
+setting for both of them).
+
+<p>
+
+ALWAYS press CTRL-BREAK after selecting a disc with *SDCDisc ! GoSDC does not
+need this, but the filing system might, to notice the disc change.
+
+<p>
+
+<b>*SDCExtra (&lt;name&gt;)</b>
+
+<p>
+
+Is like *SDCDisc, but selects a second, separate disc (the one selected with
+*SDCDisc being the 'first' and main one).
+
+<p>
+
+After every *SDCDisc or *SDCExtra, the first and second disc are scanned (in
+that order) for drives. A disc may contain up to four or two drives under DFS
+or ADFS respectively. The drives that are found are displayed (e.g. '02--'
+means that DFS drives 0 and 2 are now available).
+
+<p>
+
+<b>*SDCTape (&lt;name&gt;)</b>
+
+<p>
+
+Is like *SDCDisc, but selects a tape, for subsequent access by the (patched)
+Tape filing system.
+
+<p>
+
+Refer to
+
+<a href="#TAPES">'Tapes'</a>
+
+for details.
+
+<p>
+
+<b>*SDCList (&lt;name&gt;)</b>
+
+<p>
+
+Lists all discs and tapes matching &lt;name&gt; (other objects may be listed as
+well, refer to the discussion of configuration option LTYP for details). The
+usual * and # wildcards may be used. If &lt;name&gt; is not specified, '*' is
+implied.
+
+<p>
+
+<b>*SDCPrefix (&lt;name&gt;)</b>
+
+<p>
+
+The 'name prefix' may be set by this command. This affects *SDCDisc, *SDCExtra,
+*SDCTape, *SDCList and *SDCTool. The name prefix is what implicitly precedes
+the &lt;name&gt; specified in the affected commands. If &lt;name&gt; is a
+single hyphen (-), the name prefix is cleared (this is also the default
+setting). If &lt;name&gt; is not specified, no (new) name prefix is set.
+
+<p>
+
+In all cases the (newly) set name prefix is displayed.
+
+<p>
+
+E.g. suppose you have three discs, named 'Acornsoft.Hopper', 'Acornsoft.Elite'
+and 'Aardvark.Frak'. Setting the name prefix to 'Acornsoft.' (note the trailing
+dot !) would cause '*SDCDisc Hopper' to select the first disc, and '*SDCList *'
+to list the Acornsoft discs only (as if you had entered '*SDCDisc
+Acornsoft.Hopper', and '*SDCList Acornsoft.*').
+
+<p>
+
+Note that a leading '$' in the name specified to *SDCDisc, *SDCExtra, *SDCTape,
+*SDCList and *SDCTool will skip the matching of the name prefix (and the '$' is
+discarded). E.g. if the prefix is 'A.', then the name '$!Boot' matches '!Boot'
+only, not 'A.!Boot'.
+
+<p>
+
+<b>*SDCTool &lt;name&gt; ...</b>
+
+<p>
+
+Runs tool &lt;name&gt;, relaying whatever follows &lt;name&gt;. The usual * and
+# wildcards may be used (the first matching tool is run).
+
+<p>
+
+The standard tools, stored in 'Area X', will be found automatically. Otherwise,
+the tool must have been added to the flash card as &lt;name&gt; (e.g. using the
+SDCATO tool). For example, if you added a tool called 'Blah' to the flash card
+as 'Whatever', then instead of entering e.g. '*Blah one two three' you can now
+enter '*SDCTool Whatever one two three'.
+
+<p>
+
+Tools run with *SDCTool are always copied to memory address &amp;2000. Tools
+starting with an &amp;0D byte are considered to be BASIC programs, and are
+executed by inserting 'PAGE=&amp;2000&lt;CR&gt;OLD &lt;CR&gt;RUN&lt;CR&gt;'
+into the keyboard buffer. All other tools are considered to be machine code
+utilities, and are executed by calling &amp;2000 <i>after</i> poking a 2-byte
+pointer to the command line tail to ?&amp;2003 (low byte) and ?&amp;2004 (high
+byte) (so there better be, e.g., a JMP &amp;2005 at &amp;2000).
+
+<p>
+
+Note that you can auto-execute an *SDCTool command on every BREAK using the
+BOOT configuration option (refer to its discussion for details).
+
+<p>
+
+<b>*SDCConfig (&lt;name&gt; &lt;value&gt;)</b>
+
+<p>
+
+Allows configuration options to be set and listed. Refer to
+
+<a href="#GOSDCROMCONFIGURATION">'GoSDC ROM : Configuration'</a>
+
+for details.
+
+<p>
+
+<b>*SDCReset</b>
+
+<p>
+
+Performs a hard reset (useful after, for example, configuring FSNR/FSRM). Use
+this in preference to a power-cycle (switching power off, then on again).
+
+<p>
+
+<b>*SDCRewind</b>
+
+<p>
+
+This 'rewinds' the currently selected tape. See also '*SDCTape'.
+
+<p>
+
+<b>*SDCSLoad &lt;romnr&gt; &lt;fsp&gt;</b>
+
+<p>
+
+Copy file &lt;fsp&gt; to ROM slot &lt;romnr&gt;.
+
+<p>
+
+Note that this uses memory locations &amp;0A00 through &amp;0AFF as a temporary
+buffer. This means that you cannot use RS423 or cassette input while using this
+command.
+
+<p>
+
+<b>*SDCSSave &lt;romnr&gt; &lt;fsp&gt;</b>
+
+<p>
+
+Copy ROM slot &lt;romnr&gt; to file &lt;fsp&gt;.
+
+<p>
+
+Note that this uses memory locations &amp;0A00 through &amp;0AFF as a temporary
+buffer. This means that you cannot use RS423 or cassette input while using this
+command.
+
+<p>
+
+<a name="GOSDCROMCONFIGURATION"></a>
+
+<p>
+
+<h2>GoSDC ROM : Configuration</h2>
+
+<p>
+
+'*SDCConfig (&lt;name&gt; &lt;value&gt;)' configures the GoSDC ROM software.
+'*SDCConfig' without arguments displays a list of the currently configured
+values.
+
+<p>
+
+The &lt;value&gt; is always a decimal number from 0 to 255. The &lt;name&gt; is
+one of :
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">Name</th>
+<th class="boxed">Description</th>
+
+<tr>
+<td class="boxed">FSNR</td>
+<td class="boxed">sets the auto-loaded filing system number</td>
+
+<tr>
+<td class="boxed">FSRM</td>
+<td class="boxed">sets the auto-loaded filing system ROM number</td>
+
+<tr>
+<td class="boxed">F2NR</td>
+<td class="boxed">sets the (2nd) auto-loaded filing system number</td>
+
+<tr>
+<td class="boxed">F2RM</td>
+<td class="boxed">sets the (2nd) auto-loaded filing system ROM number</td>
+
+<tr>
+<td class="boxed">LOPT</td>
+<td class="boxed">selects the display format of *SDCList</td>
+
+<tr>
+<td class="boxed">LTYP</td>
+<td class="boxed">selects the object types shown by *SDCList</td>
+
+<tr>
+<td class="boxed">BOOT</td>
+<td class="boxed">selects the activity to perform on booting</td>
+
+<tr>
+<td class="boxed">SLOW</td>
+<td class="boxed">sets the artificial delay used in tape loading</td>
+
+<tr>
+<td class="boxed">WPRO</td>
+<td class="boxed">selects the flash card write protection level</td>
+
+<tr>
+<td class="boxed">TUBE</td>
+<td class="boxed">selects the speed of bulk Tube transfers</td>
+
+<tr>
+<td class="boxed">COPR</td>
+<td class="boxed">allows you to specify your co-processor type</td>
+
+<tr>
+<td class="boxed">HACK</td>
+<td class="boxed">should generally be left well alone (what's in a name ?)</td>
+
+<tr>
+<td class="boxed">ROM0</td>
+<td class="boxed">selects the 'plug' activity to perform for ROM number 0</td>
+
+<tr>
+<td class="boxed">ROM1</td>
+<td class="boxed">selects the 'plug' activity to perform for ROM number 1</td>
+
+<tr>
+<td class="boxed">....</td>
+<td class="boxed">....</td>
+
+<tr>
+<td class="boxed">ROME</td>
+<td class="boxed">selects the 'plug' activity to perform for ROM number 14</td>
+
+<tr>
+<td class="boxed">ROMF</td>
+<td class="boxed">selects the 'plug' activity to perform for ROM number 15</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+After a GoSDC ROM software upgrade (with SDCUP), all values default to 0.
+
+<p>
+
+<b>FSNR</b> and <b>FSRM</b> (<b>F2NR</b> and <b>F2RM</b> for a second filing
+system, if any)
+
+<p>
+
+These options configure the filing system auto-load function. With this, a
+filing system can be automatically loaded, into either a sideways RAM bank, or
+the free ROM bank on GoSDC. This will occur on every powerup or *SDCReset.
+
+<p>
+
+A sideways RAM bank must be writable simply by selecting it, which is true for
+most simple and some complex systems for the BBC B/B+, the BBC Master sideways
+RAM system, and the Electron (if an SRAM chip has been installed on the 'GoSDC
+to Electron' interface). Refer to
+
+<a href="#SIDEWAYSROMRAM">'Sideways ROM/RAM'</a>
+
+for more details specific to your machine.
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">FSNR</th>
+<th class="boxed">Auto-load what</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">nothing</td>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">filing system 1</td>
+
+<tr>
+<td class="boxed">2</td>
+<td class="boxed">filing system 2</td>
+
+<tr>
+<td class="boxed">...</td>
+<td class="boxed">...</td>
+
+<tr>
+<td class="boxed">255</td>
+<td class="boxed">filing system 255</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">FSRM</th>
+<th class="boxed">Auto-load into</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">ROM slot 0</td>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">ROM slot 1</td>
+
+<tr>
+<td class="boxed">...</td>
+<td class="boxed">...</td>
+
+<tr>
+<td class="boxed">15</td>
+<td class="boxed">ROM slot 15</td>
+
+<tr>
+<td class="boxed">others</td>
+<td class="boxed">reserved</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+E.g. set FSNR to 3 and FSRM to 4 to auto-load ADFS 1.30 into ROM/RAM slot 4.
+Refer to
+
+<a href="#SUPPORTEDFILINGSYSTEMS">'Supported filing systems'</a>
+
+for a list of filing system numbers.
+
+<p>
+
+Note that, if you configure a non-standard filing system (i.e. one that is not
+present in 'Area X'), it must be present on the flash card (put there by the
+SDCAFS tool, or GoSDCio's 'ADD FS' command, refer to their discussion for
+details).
+
+<p>
+
+<b>LOPT</b> and <b>LTYP</b>
+
+<p>
+
+These options 'tweak' the output of *SDCList.
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">LOPT</th>
+<th class="boxed">Listing mode</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">normal</td>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">extended</td>
+
+<tr>
+<td class="boxed">others</td>
+<td class="boxed">reserved</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">LTYP</th>
+<th class="boxed">List what</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">media</td>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">filing systems</td>
+
+<tr>
+<td class="boxed">2</td>
+<td class="boxed">tools</td>
+
+<tr>
+<td class="boxed">3</td>
+<td class="boxed">tools, filing systems</td>
+
+<tr>
+<td class="boxed">4</td>
+<td class="boxed">media</td>
+
+<tr>
+<td class="boxed">5</td>
+<td class="boxed">media, filing systems</td>
+
+<tr>
+<td class="boxed">6</td>
+<td class="boxed">media, tools</td>
+
+<tr>
+<td class="boxed">7</td>
+<td class="boxed">media, tools, filing systems</td>
+
+<tr>
+<td class="boxed">others</td>
+<td class="boxed">reserved</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+In 'normal' mode, *SDCList shows just the object name. In 'extended' mode, it
+shows 'tt ss aaaaaaaa + ssssssss name', all values hexadecimal, where tt is the
+object type, ss the object subtype, aaaaaaaa the start address on the flash
+card, ssssssss the size in bytes.
+
+<p>
+
+The underlying rule for LTYP is : set bit x in the value to show object type
+x+1 in listings. Object types are 1, 2 and 3 for filing systems, tools and
+media (discs and tapes) respectively.
+
+<p>
+
+<b>BOOT</b>
+
+<p>
+
+This option selects a boot activity, which is performed on every powerup or
+BREAK.
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">BOOT</th>
+<th class="boxed">Activity</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">none</td>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">execute '*SDCTool $!Boot' <i>(1)</i></td>
+
+<tr>
+<td class="boxed">2</td>
+<td class="boxed">execute '*SDCDisc $!Boot' <i>(2)</i></td>
+
+<tr>
+<td class="boxed">3</td>
+<td class="boxed">execute '*SDCTool $SDCMenu'</td>
+
+<tr>
+<td class="boxed">33</td>
+<td class="boxed">execute '*SDCTool $!Boot!' <i>(3)</i></td>
+
+<tr>
+<td class="boxed">34</td>
+<td class="boxed">execute '*SDCTool $!Boot"' <i>(3)</i></td>
+
+<tr>
+<td class="boxed">...</td>
+<td class="boxed">...</td>
+
+<tr>
+<td class="boxed">126</td>
+<td class="boxed">execute '*SDCTool $!Boot~' <i>(3)</i></td>
+
+<tr>
+<td class="boxed">others</td>
+<td class="boxed">reserved</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<i>(1)</i> This is similar to using '*OPT 4 2' on disc filing systems.
+
+<p>
+
+<i>(2)</i> This may be useful, for example, if you want to run an alternative
+'menu' program. E.g. put it as 'MyMenu' on a disc named '!Boot', put 'CHAIN
+"MyMenu"' in the disc's !Boot file, issue '*OPT 4 3', and go : CTRL-BREAK (the
+'!Boot' disc is now selected), SHIFT-BREAK ('MyMenu' now runs), and, when
+you've selected a disc, CTRL-SHIFT-BREAK (the selected disc now boots).
+
+<p>
+
+<i>(3)</i> These execute '*SDCTool $!Bootx', where x is the ASCII character
+corresponding to the BOOT value (e.g. 65 would result in the execution of
+'*SDCTool $!BootA').
+
+<p>
+
+Note that the '$' causes the *SDCPrefix setting to be ignored, so it cannot
+affect the boot activity (refer to the discussion of *SDCPrefix for details).
+
+<p>
+
+Press SHIFT during powerup or BREAK to suppress the boot activity (e.g. in case
+your !Boot malfunctions).
+
+<p>
+
+<b>SLOW</b>
+
+<p>
+
+This option selects the length of the artificial delay in returning 'tape
+bytes' to the Tape filing system (refer to
+
+<a href="#TAPES">'Tapes'</a>
+
+for details).
+
+<p>
+
+0 is the minimum delay, 255 is the maximum delay. You may want to use a
+non-zero value if the tape loading speed is to appear more 'realistic'.
+
+<p>
+
+Values that approximate the speed of the standard 1200 baud tape system are
+around 128 (this includes the roughly 1 second gap between blocks) or 94
+(excluding the gap). Note that gaps are not emulated. There is only a delay per
+byte. I.e. 94 is more accurate in terms of the signalling rate, while 128
+results in a more accurate block rate.
+
+<p>
+
+<b>WPRO</b>
+
+<p>
+
+This option configures flash card write-protection.
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">WPRO</th>
+<th class="boxed">Writing is</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">passed</td>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">silently ignored</td>
+
+<tr>
+<td class="boxed">2</td>
+<td class="boxed">faulted with an error</td>
+
+<tr>
+<td class="boxed">3</td>
+<td class="boxed">silently ignored <i>(1)</i></td>
+
+<tr>
+<td class="boxed">4</td>
+<td class="boxed">faulted with an error <i>(1)</i></td>
+
+<tr>
+<td class="boxed">others</td>
+<td class="boxed">reserved</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<i>(1)</i> Only if the SD or SDHC card is physically 'write protected', via the
+'Lock' switch.
+
+<p>
+
+<b>TUBE</b>
+
+<p>
+
+This option selects the speed of bulk transfers across the Tube (i.e. when data
+is transferred between a file and your second processor's memory). 2-byte
+transfers are almost twice as fast (75 KB/sec) as 1-byte transfers (40 KB/sec),
+and should (theoretically) be supported by all second processors.
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">TUBE</th>
+<th class="boxed">Transfer speed</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">1-byte</td>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">1-byte</td>
+
+<tr>
+<td class="boxed">2</td>
+<td class="boxed">2-byte</td>
+
+<tr>
+<td class="boxed">255</td>
+<td class="boxed">warp <i>(1)</i></td>
+
+<tr>
+<td class="boxed">others</td>
+<td class="boxed">reserved</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<i>(1)</i> This is an experimental (and possibly unreliable) setting that
+reaches dizzying transfer speeds of well over 200 KB/sec. It seems to work OK
+on ARM7TDMI coprocessors, and ReCo6502 second processors running at 14 MHz. But
+do not trust this setting while working with valuable data.
+
+<p>
+
+<b>COPR</b>
+
+<p>
+
+You should generally leave this at 0.
+
+<p>
+
+It allows you to specify which type of co-processor you are using.
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">COPR</th>
+<th class="boxed">Coprocessor type</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">Unspecified</td>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">6502 Second Processor</td>
+
+<tr>
+<td class="boxed">2</td>
+<td class="boxed">65C102 Co-processor</td>
+
+<tr>
+<td class="boxed">3</td>
+<td class="boxed">Z80 Second Processor</td>
+
+<tr>
+<td class="boxed">4</td>
+<td class="boxed">80186 Co-processor</td>
+
+<tr>
+<td class="boxed">5</td>
+<td class="boxed">32016 Second Processor</td>
+
+<tr>
+<td class="boxed">6</td>
+<td class="boxed">ARM Evaluation System</td>
+
+<tr>
+<td class="boxed">7</td>
+<td class="boxed">ReCo6502</td>
+
+<tr>
+<td class="boxed">8</td>
+<td class="boxed">ARM7TDMI Co-processor</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Normally, GoSDC doesn't need to know. However, if it's a 32016 Second
+Processor, it does need to know. The 32016 Second Processor cannot handle the
+maximum transfer speeds that Acorn documented for the Tube. GoSDC operates at
+those maximum speeds, so it needs to be 'throttled down'. I.e., if you're using
+GoSDC and a 32016 Second Processor at the same time, you <b>must</b> set COPR
+to 5. You may want to set TUBE to 2 as well.
+
+<p>
+
+<b>HACK</b>
+
+<p>
+
+You should generally leave this at 0.
+
+<p>
+
+It contains eight 'hack bits', which, when set, enable certain drastic changes
+in the behaviour of the GoSDC ROM. To set bit 0, 1, 2, 3, 4, 5, 6 or 7 in the
+value, add 1, 2, 4, 8, 16, 32, 64 or 128 to it, respectively.
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">Bit</th>
+<th class="boxed">Effect when set</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">MMC only mode <i>(1)</i></td>
+
+<tr>
+<td class="boxed">others</td>
+<td class="boxed">reserved</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<i>(1)</i> Bypasses the SD/SDHC initialisation/detection code, which may
+confuse some very old MMCs.
+
+<p>
+
+<b>ROM0</b> through <b>ROMF</b>
+
+<p>
+
+ROM0 through ROM9 and ROMA through ROMF configure a 'plug' activity for ROM
+number 0 through 15 respectively.
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">ROMx</th>
+<th class="boxed">Plug activity</th>
+
+<tr>
+<td class="boxed">0</td>
+<td class="boxed">none</td>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">unplug ROM</td>
+
+<tr>
+<td class="boxed">2</td>
+<td class="boxed">re-insert ROM <i>(1)</i></td>
+
+<tr>
+<td class="boxed">others</td>
+<td class="boxed">reserved</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+<i>(1)</i> Use this if the OS automatically 'unplugs' the ROM because it looks
+like an alias of another ROM (refer to
+
+<a href="#FILINGSYSTEMS">'Filing systems'</a>
+
+for details).
+
+<p>
+
+Always press CTRL-BREAK after changing one of these options. Note that the
+GoSDC ROM should have the highest possible ROM number in the machine, since it
+can only reliably affect the 'plug' state of ROMs with lower ROM numbers. Note
+that on the BBC Master, *Unplug and *Insert can be used instead of the 1 and 0
+settings, respectively.
+
+<p>
+
+<b>EIRD</b>
+
+<p>
+
+You should generally leave this at 0. It is only available on the Electron, and
+only effective when the newer type of Electron-to-GoSDC interface is used.
+
+<p>
+
+It contains eight 'disable bits', which, when set, disable the corresponding
+RAM banks on the Electron-to-GoSDC interface, so the sideways ROM slots they
+use won't interfere with those used by other hardware expansions (e.g. ROM/RAM
+boxes). Only bit pairs can be set. To set bit 0+1, 2+3, 4+5, or 6+7 in the
+value, add 3, 12, 48, or 192 to it, respectively. This disables the RAM banks
+mapped to sideways ROM slots 0+1, 2+3, 6+7, or 12+13 respectively.
+
+<p>
+
+<a name="SIDEWAYSROMRAM"></a>
+
+<p>
+
+<h2>Sideways ROM/RAM</h2>
+
+<p>
+
+Different machines have different sideways ROM/RAM systems :
+
+<p>
+
+<b>The BBC model B</b>
+
+<p>
+
+The standard machine has four sideways ROM sockets (all 16 KB), and no sideways
+RAM.
+
+<p>
+
+Starting at the ROM socket that is closest to the side of the machine, going
+'west', the ROM numbers represented by the sockets are : 15, 14, 13, 12.
+
+<p>
+
+Only if you installed GoSDC 'with adapter' (refer to the
+
+<a href="../Installation/installation.html">Installation</a>
+
+section of this manual for details) you can use the free ROM bank on GoSDC.
+This can be considered to be a sideways ROM bank, whose number may nevertheless
+be specified to '*SDCConfig FSRM'. To find out its number, enter '*SDCInfo',
+and note the number of the 'free' ROM slot.
+
+<p>
+
+<b>The BBC Master</b>
+
+<p>
+
+The standard machine has three sideways ROM sockets (two 32 KB, one 16 KB), and
+four sideways RAM banks. Although not all at the same time, see below.
+
+<p>
+
+Starting at the ROM socket that is closest to the cartridge connector(s), going
+'north', the ROM numbers represented by the sockets are : 4+5, 8, 6+7. I.e. the
+sockets for ROM numbers 4+5 and 6+7 are the 32 KB sockets. Whether ROM numbers
+4+5 or 6+7 are sideways ROM banks (i.e. reflect what is in the ROM socket) or
+sideways RAM banks (what is in the ROM socket is irrelevant) is determined by
+links. If LK18 is set 'west', 4+5 is sideways RAM (or if 'east', ROM). If LK19
+is set 'west', 6+7 is sideways RAM (or if 'east', ROM).
+
+<p>
+
+Usually, GoSDC is in the socket for ROM numbers 6+7, which means that the GoSDC
+ROM is ROM number 7, and ROM number 6 is the free ROM bank on GoSDC. This can
+be considered to be a sideways ROM bank, whose number may nevertheless be
+specified to '*SDCConfig FSRM'.
+
+<p>
+
+<b>The BBC B+</b>
+
+<p>
+
+The standard machine has five sideways ROM sockets (all either 16 or 32 KB,
+selectable via links), and no sideways RAM.
+
+<p>
+
+ROM sockets IC35, IC44, IC57, IC62 and IC68 represent ROM numbers 2+3, 4+5,
+6+7, 8+9 and 10+11 respectively, and links 9, 11, 12, 15 and 18 respectively
+determine whether they are 32 KB sockets (link set 'east') or 16 KB sockets
+(link set 'west').
+
+<p>
+
+If GoSDC is in the socket for ROM numbers x+y, then the GoSDC ROM is ROM number
+y, and ROM number x is the free ROM bank on GoSDC. This can be considered to be
+a sideways ROM bank, whose number may nevertheless be specified to '*SDCConfig
+FSRM'.
+
+<p>
+
+<b>The Electron</b>
+
+<p>
+
+You are using the 'GoSDC to Electron' interface. There are two types. The new
+type offers 8 sideways RAM banks (see option <b>e</b>). The old type offers one
+of :
+
+<p>
+
+<b>a)</b> No banks (no chip is installed in the utility socket)
+
+<br>
+
+<b>b)</b> Up to 2 sideways ROM banks (28-pin ROM installed in the utility
+socket, e.g. a 27C256)
+
+<br>
+
+<b>c)</b> Up to 2 sideways RAM banks (28-pin SRAM installed in the utility
+socket, e.g. a 62256)
+
+<br>
+
+<b>d)</b> Up to 8 sideways ROM banks (32-pin ROM installed in the utility
+socket, e.g. a 27C1001)
+
+<br>
+
+<b>e)</b> Up to 8 sideways RAM banks (32-pin SRAM installed in the utility
+socket, e.g. a 628128)
+
+<p>
+
+Refer to the
+
+<a href="../Installation/installation.html">Installation</a>
+
+section of this manual for further details, including how to install the chip.
+
+<p>
+
+The ROM numbers are a little odd. For options b, c and f, the lower bank is 3
+(and mirror images appear in 2, 1 and 0), and the higher bank is 13 (and mirror
+images appear in 12, 7 and 6). For options d and e, going from lower to higher
+addresses within the chip, the banks are 1, 13, 3, 7, 0, 12, 2, 6 (this is, of
+course, only relevant if you use a ROM, and need to know where to put the ROM
+images within the chip's address space).
+
+<p>
+
+GoSDC is in the socket for ROM numbers 15+14, which means that the GoSDC ROM is
+ROM number 15, and ROM number 14 is the free ROM bank on GoSDC. This can be
+considered to be a sideways ROM bank, whose number may nevertheless be
+specified to '*SDCConfig FSRM'.
+
+<p>
+
+<a name="SUPPORTEDFILINGSYSTEMS"></a>
+
+<p>
+
+<h2>Supported filing systems</h2>
+
+<p>
+
+GoSDC supports (and provides patches for) the following filing systems :
+
+<p>
+
+<table class="boxed">
+
+<tbody>
+
+<tr>
+<th class="boxed">Nr</th>
+<th class="boxed">Name</th>
+
+<tr>
+<td class="boxed">1</td>
+<td class="boxed">(BBC B) Acorn DNFS 1.20</td>
+
+<tr>
+<td class="boxed">2</td>
+<td class="boxed">(BBC B) Acorn DFS 2.26</td>
+
+<tr>
+<td class="boxed">3</td>
+<td class="boxed">(BBC B) Acorn ADFS 1.30</td>
+
+<tr>
+<td class="boxed">4</td>
+<td class="boxed">(BBC Master) Acorn DFS 2.24</td>
+
+<tr>
+<td class="boxed">5</td>
+<td class="boxed">(BBC Master) Acorn ADFS 1.50</td>
+
+<tr>
+<td class="boxed">6</td>
+<td class="boxed">(BBC Master) Acorn DFS 2.45 <i>(1)</i></td>
+
+<tr>
+<td class="boxed">7</td>
+<td class="boxed">(BBC Master) Acorn ADFS 2.03 <i>(1)</i></td>
+
+<tr>
+<td class="boxed">8</td>
+<td class="boxed">(BBC B) Watford DFS 1.44</td>
+
+<tr>
+<td class="boxed">9</td>
+<td class="boxed">(BBC B) ACP DFS 1.00 <i>(2)</i></td>
+
+<tr>
+<td class="boxed">10</td>
+<td class="boxed">(Electron) ACP DFS 2.20 <i>(2)</i></td>
+
+<tr>
+<td class="boxed">11</td>
+<td class="boxed">(Electron) Acorn ADFS 1.00</td>
+
+<tr>
+<td class="boxed">12</td>
+<td class="boxed">(All BBCs) HADFS X.YZ <i>(3)</i></td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+The number is the GoSDC 'internal' filing system number, i.e. as specified to
+'*SDCConfig FSNR' and listed as the subtype of filing system objects in
+'extended' *SDCLists.
+
+<p>
+
+Note that numbers 81 and higher may be used as well. These are the original,
+unpatched versions of the patched filing systems whose number is 80 less (also
+refer to the discussion of SDCAFS).
+
+<p>
+
+<i>(1)</i> Note that DFS 2.45 and ADFS 2.03 are co-dependent (they share
+routines) and need to be in the machine at the same time, one as an even
+numbered ROM x, the other as ROM number x + 1. Use FSNR/FSRM to auto-load one,
+and F2NR/F2RM to auto-load the other. On the BBC Master, you would normally use
+sideways RAM banks 4 and 5.
+
+<p>
+
+<i>(2)</i> Note that these are 'E00' filing systems (they leave the default
+PAGE in an unexpanded machine at &amp;0E00), and have to run in a sideways RAM
+bank (note that the free ROM bank on GoSDC is not suitable, since it cannot be
+written to directly).
+
+<p>
+
+<i>(3)</i> Note that this allocation is versionless (all versions of HADFS are
+detected as, and considered to be, the same filing system), and that HADFS
+contains its own GoSDC driver code (i.e. no 'original' version of the filing
+system, whose number would be 92, is considered to exist).
+
+<p>
+
+<a name="GOSDCROMCRCCHECK"></a>
+
+<p>
+
+<h2>GoSDC ROM : CRC check</h2>
+
+<p>
+
+The GoSDC ROM software checks itself for corruption on every powerup (including
+after *SDCReset) using a 16-bit CRC (Cyclic Redundancy Check).
+
+<p>
+
+If this check fails, 'GoSDC : ROM corrupted !' will be displayed at the top of
+the screen, and you're advised to follow the instructions under
+
+<a href="#RECOVERY">'Recovery'</a>.
+
+<p>
+
+Thanks to Greg Cook for providing an especially fast implementation of the CRC
+algorithm.
+
+<p>
+
+<h2>GoSDC ROM : Error messages</h2>
+
+<p>
+
+The following is an exhaustive list of error messages issued by the GoSDC ROM
+software :
+
+<p>
+
+'<i>Please switch off Tube</i>' (code 147) : *SDCTool will not run code on your
+second processor, so please switch it off.
+
+<p>
+
+'<i>Drive not available</i>' (code 183) : No currently selected disc contains
+the drive being accessed.
+
+<p>
+
+'<i>Access outside drive</i>' (code 183) : An attempt was made to access data
+'outside' the current drive space.
+
+<p>
+
+'<i>Flash card is write-protected</i>' (code 201) : An attempt was made to
+write to the flash card while it was write-protected.
+
+<p>
+
+'<i>Cannot write to the fixed area</i>' (code 201) : An attempt was made to
+write to 'Area X'. It cannot be written to.
+
+<p>
+
+'<i>Syntax error: &lt;correct syntax&gt;</i>' (code 220) : A syntax error has
+been found in a *-command.
+
+<p>
+
+'<i>Unknown option name</i>' (code 220) : The name specified to *SDCConfig is
+not recognized.
+
+<p>
+
+'<i>Prefix too long</i>' (code 220) : The name specified to *SDCPrefix is
+longer than 31 characters.
+
+<p>
+
+'<i>Bad GoSDC FS</i>' (code 0) : The patch used in the patched filing system
+you are attempting to run has become obsolete. Update the patch.
+
+<p>
+
+'<i>ROM corrupted</i>' (code 0) : Your *-command will not be executed, because
+the GoSDC ROM has been corrupted. See also '<i>GoSDC : ROM corrupted !</i>'.
+
+<p>
+
+'<i>Escape</i>' (code 17) : Escape was pressed during *SDCList.
+
+<p>
+
+In addition, these non-BRK warnings/errors are issued on a (hard) reset :
+
+<p>
+
+'<i>GoSDC : No flash card inserted</i>' : The flash card socket indicates that
+no flash card is inserted.
+
+<p>
+
+'<i>GoSDC : Flash card doesn't respond</i>' : The flash card doesn't seem to be
+present (although it is detected physically).
+
+<p>
+
+'<i>GoSDC : Flash ROM doesn't respond</i>' : The flash ROM doesn't seem to be
+present (which should never, ever happen).
+
+<p>
+
+'<i>GoSDC : ROM corrupted !</i>' : The GoSDC ROM software has been corrupted.
+Refer to
+
+<a href="#GOSDCROMCRCCHECK">'GoSDC ROM : CRC check'</a>
+
+for details.
+
+<p>
+
+'<i>GoSDC : Cannot find auto-load FS</i>' : You are trying to auto-load a
+filing system that cannot be found (i.e. is not present on the flash card).
+
+<p>
+
+'<i>GoSDC : Bad slot for auto-load FS</i>' : You are trying to auto-load a
+filing system into an unsuitable ROM slot (i.e. occupied by the GoSDC ROM, or
+&gt; 15).
+
+<p>
+
+'<i>GoSDC : Press CTRL-BREAK now ...</i>' : You are running BBC Master MOS
+3.50, and have auto-loaded a filing system into ROM slot 4, 5, 6 or 7. If the
+usual powerup reset would be generated now, it would cause the slot to be wiped
+again by the MOS. Since CTRL-BREAK is the next best thing, but can't be
+generated, you are asked to do it yourself.
+
+<p>
+
+'<i>GoSDC : Configuration reset !</i>' : Means exactly what it says. Refer to
+
+<a href="#WHATISREMEMBERED">'What is remembered on power down'</a>
+
+for details.
+
+<p>
+
+<a name="RECOVERY"></a>
+
+<p>
+
+<h2>Recovery</h2>
+
+<p>
+
+If the contents of the GoSDC flash ROM have become corrupted, your machine may
+hang on powerup, and no recovery may seem possible.
+
+<p>
+
+Fear not. This problem has been foreseen. GoSDC can be switched to 'write only'
+mode, so the corrupted flash ROM contents can no longer hang the machine, but
+can still be overwritten. SDCUP is the tool to use.
+
+<p>
+
+Follow the following recipe :
+
+<p>
+
+<b>1)</b> Power down.
+
+<p>
+
+<b>2)</b> Move the 'enable/disable' jumper on GoSDC's configuration header
+(refer to the
+
+<a href="../Installation/installation.html">Installation</a>
+
+section for details) to pins 2+4.
+
+<p>
+
+<b>3)</b> Power up. Your machine should no longer hang, but GoSDC has 'gone' as
+well.
+
+<p>
+
+<b>4)</b> Run SDCUP. Refer to
+
+<a href="#TOOLSSDCUP">'Tools : SDCUP'</a>
+
+for details. Note, however, that you will have to CHAIN the 'file' version of
+SDCUP, since you can no longer use '*SDCTool SDCUp'.
+
+<p>
+
+<b>5)</b> Power down.
+
+<p>
+
+<b>6)</b> Move the 'enable/disable' jumper on GoSDC's configuration header back
+to pins 4+6.
+
+<p>
+
+<b>7)</b> Power up. Your machine should no longer hang, and GoSDC is back in
+action.
+
+<p>
+
+<a name="WHATISREMEMBERED"></a>
+
+<p>
+
+<h2>What is remembered on power down</h2>
+
+<p>
+
+GoSDC makes use of writable but nevertheless non-volatile memory called flash
+ROM. This allows GoSDC to 'remember' some user settings, even on power down
+(although storing them on the flash card would have been a second possibility).
+
+<p>
+
+The remembered settings are :
+
+<p>
+
+<ul>
+
+<li>All settings done via *SDCConfig
+
+<li>The currently selected discs and tape
+
+<li>The *SDCPrefix setting
+
+</li>
+
+</ul>
+
+<p>
+
+You can reset all the remembered settings to their default values by pressing
+the 'G' and 'W' keys simultaneously while switching on the machine. The message
+'GoSDC : Configuration reset !' will be displayed to confirm the reset.
+
+<p>
+
+<hr>
+
+</body>
+
+</html>
+
