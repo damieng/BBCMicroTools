@@ -1,0 +1,181 @@
+
+GoXXCio history
+
+0.10
+----
+
+- First (beta) release.
+
+0.11
+----
+
+- Numerous changes and additions. Still 'beta'.
+
+0.12
+----
+
+- Added MMCATO command.
+- Added '-f' option.
+- First public release.
+
+0.20
+----
+
+- Line handling changed :
+  - Empty script lines are now ignored.
+  - Should now handle all CR/LF combinations.
+  - Last script line now read even if not terminated.
+- Added 'extract' versions of MMCADxx.
+- Added BACKUP and RESTORE commands.
+
+0.25
+----
+
+- Added 'delete' and 'rename' type commands.
+- Added '-l' option.
+
+0.30
+----
+
+- Added NEWDFS and NEWADFS commands.
+- Removed RESTORE command, since BACKUP now saves script + objects to a
+  directory. This may also be used to discard deleted objects : backup and run
+  the script with option '-f'.
+- Added MMCAFS command for restoring a backupped (already patched !) filing
+  system.
+- Bugfix : single objects larger than the cache (was 2MB) now handled
+  correctly.
+- Bugfix : existence check of tools checked for similar named disc instead.
+- Forgot to update MMCATO to not blow up tools to 16K fixed. Now sector-aligns.
+
+0.31
+----
+
+- MMCAFS now also knows about FS numbers 81 though 85 (unpatched versions).
+
+0.32
+----
+
+- Added '-x' option.
+
+0.33
+----
+
+- NEWADFS can now be given two disc sizes e.g. '4M+8M' to create both drives 0
+  and 1.
+
+0.34
+----
+
+- Added MMCATAP and MMCEXTA commands.
+
+0.35
+----
+
+- Added '-s' and '-b' options.
+
+0.40
+----
+
+- Removed cause of GCC 4.01 warnings.
+- Slight tweaks for Unix compatibility.
+- More 'standard, proper, safe, wholesome C++' changes.
+- No script is now acceptable (acts like empty script).
+- Added '-c' (single command instead of script) option.
+
+0.41
+----
+
+- Could not DELFS filing systems other than 1-5 (e.g. 81-85).
+
+0.42
+----
+
+- MMCAFS should have known about FS numbers 6,7,86 and 87, does now.
+- MMCAFS and DELFS now also know about FS numbers 8 and 88 (GoMMC ROM 1.00).
+
+0.50
+----
+
+- Bugfix : argh (!!), objects > 4MB could still become corrupted when added.
+  Bad, bad.
+- 'Shrink' and 'Blowup' now also work on single-drive ADFS discs (via MMCADAG
+  only).
+
+0.51
+----
+
+- New filing systems 9 through 11.
+
+0.60
+----
+
+- Huge overhaul of the code.
+- Bugfix : shrinking an ADFS drive corrupted the root directory's 'parent'
+  directory (which is normally the root directory itself, but would become a
+  different or invalid directory due to the bug).
+- Redesigned commands (see Guide). Summary : 6 main commands left (ADD, NEW,
+  DELETE, RENAME, BACKUP, EXTRACT), mostly followed by object type (FS, TOOL,
+  MEDIUM (any disc or tape), DFS DISC, ADFS DISC, TAPE), then object name (or
+  number for FS), then input/output (file name or disc size(s)). Exceptions :
+  no 'ADD MEDIUM', 'NEW' is disc only, no 'RENAME FS'.
+- Now compatible with big endian machines (little endian only previously).
+- Changed directory creation flags from W to R/W/X for Unix (BACKUP command).
+- Support added for HADFS : new filing system number 12 (any version of HADFS)
+  and new disc type ('HADFS DISC', all commands except NEW, medium subtype 4).
+- Bugfix : CR+LF terminated lines in scripts were counted as two lines (so line
+  numbers quoted by errors were wrong).
+- 'ADD FS' now recognizes the standard original and patched filing systems, and
+  the FS number may now be between 0 and 250. New features : 'ADD FS 0' means
+  'auto-detect' (if the filing system is not recognized an error is issued),
+  and other FS numbers are faulted if the FS is recognized but is being given
+  the wrong number.
+
+0.61
+----
+
+- Extracting interlaced floppies was rather slow. Now much faster.
+
+0.70
+----
+
+- The size of objects on the MMC, as registered in the catalogue, is now the
+  actual, original size (instead of the allocated size).
+- Support added for multiple scripts and '-c' commands. They are executed in
+  commandline order, and are referred to by number in relevant messages (e.g.
+  '2.1' means the first line of the second script or command).
+- Support added for setting options inside the script. E.g. 'DO SHRINK' will
+  act as the old '-s' commandline option, but can be 'undone' further on in the
+  script by e.g. 'DO NOSHRINK'. The '-s' and -b' commandline options have been
+  removed. 'DO COMPACT' is a new option, and has the same effect as SHRINK, but
+  does not minimize the drive's size (i.e. it is /exactly/ like *Compact).
+- All disc processing (deinterlacing, compacting, shrinking, and blowing up)
+  can now be combined. If enabled, they are performed in that order.
+- Support added for processing multi-drive discs. The disc is split into
+  separate drives, which are processed, and is then reconstructed.
+
+0.71
+----
+
+- Source now serves GoMMC as well as GoSDC. Whether GoMMCio or GoSDCio is built
+  is decided by the makefile (there are now six of them).
+- Flash card read/write now uses the 'large file' library calls, to support
+  access beyond 4 GiB. Standard compilation for Windows is now via CygWin,
+  since DJGPP (being DOS based) does not support 64-bit file addressing.
+- For GoSDCio, added command line option '-a' (to select the 'area', see GoSDC
+  docs) and removed '-x'.
+
+0.72
+----
+
+- The new patched filing systems (for GoMMC 1.16 and GoSDC 1.01) are now
+  recognized. The tie that is enforced between them and their standard filing
+  system number now works both ways (i.e. just as the recognition implied the
+  number, the reverse is now also true).
+
+0.73
+----
+
+- Increased maximum number of flash card areas from 4 to 8.
+
+

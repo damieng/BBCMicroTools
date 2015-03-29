@@ -1,0 +1,25 @@
+
+#
+# Makefile for GoSDCio (Unix)
+#
+
+LIB_DIR		= ./lib
+
+GCC		= g++
+GCC_CFLAGS	= -Wall -I$(LIB_DIR) -O2 -DUNIX -DGOSDC -D_FILE_OFFSET_BITS=64
+GCC_LFLAGS	=
+
+all:		gosdcio
+		strip gosdcio
+
+clean:
+		rm gosdcio
+		rm goxxcio.o
+		rm lib/*.o
+
+gosdcio:	goxxcio.o $(LIB_DIR)/lib_make_string.o $(LIB_DIR)/lib_neat_message.o $(LIB_DIR)/lib_data_block.o $(LIB_DIR)/lib_acorn_drive.o
+		$(GCC) $(GCC_LFLAGS) -o gosdcio goxxcio.o $(LIB_DIR)/lib_make_string.o $(LIB_DIR)/lib_neat_message.o $(LIB_DIR)/lib_data_block.o $(LIB_DIR)/lib_acorn_drive.o
+
+.cpp.o:		$<
+		$(GCC) $(GCC_CFLAGS) -c $< -o $@
+
