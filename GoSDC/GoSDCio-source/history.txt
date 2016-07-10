@@ -178,4 +178,17 @@ GoXXCio history
 
 - Increased maximum number of flash card areas from 4 to 8.
 
+0.74
+----
+
+- Bugfix : object name sorting should have been case insensitive. Now it is.
+
+0.75
+----
+
+- GoXXCio.exe (compiled under CygWin) was unable to write to the flash card on
+  some Windows versions. To fix this, the drive letter is now translated to a
+  Unix device path instead of a Windows device path.
+- Bugfix : recognizing ROMs failed due to type size mixup.
+
 

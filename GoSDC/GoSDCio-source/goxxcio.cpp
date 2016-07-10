@@ -5,9 +5,9 @@ GoXXCio.cpp
 
 IO utils for GoMMC and GoSDC
 
-Version : 0.73
-Date    : 8 April 2012
-Author  : John Kortink, (c) Zeridajh 2004..2012
+Version : 0.75
+Date    : 11 July 2015
+Author  : John Kortink, (c) Zeridajh 2004..2015
 
 */
 
@@ -59,8 +59,8 @@ using namespace zeridajh;
 
 #endif
 
-#define CODE_VERSION	"0.73 (8 April 2012)"
-#define CODE_COPYRIGHT	"Copyright (c) Zeridajh 2004..2012"
+#define CODE_VERSION	"0.75 (11 July 2015)"
+#define CODE_COPYRIGHT	"Copyright (c) Zeridajh 2004..2015"
 
 #undef VERBOSE
 
@@ -80,7 +80,7 @@ using namespace zeridajh;
 #ifdef WINDOWS
 
 #define SYS_SLASH	"\\"
-#define SYS_DEVFMT	"\\\\.\\%s:"
+#define SYS_DEVFMT	"%s"
 #define SYS_DOPTSYN	"<drive>"
 #define SYS_DOPTUSE	"<drive>   : flash card is drive <drive>"
 #define SYS_FINISH	{}
@@ -313,7 +313,7 @@ struct Catalogue_Entry
 				return false;
 		}
 		else
-			return name < rhs.name;
+			return strcasecmp(name.c_str(), rhs.name.c_str()) < 0;
 
 		return false;
 	}
@@ -1552,7 +1552,7 @@ CCommand::argument_sizes CCommand::Arg_Sizes(int number, const char* what)
 	argument_sizes	info;
 	char		dummy;
 	char		multy[2];
-	nval32*		sizes = info.sizes;
+	unsigned long	sizes[2];
 	const string&	arg = Arg(what);
 
 	if (number == 1)
@@ -1560,23 +1560,23 @@ CCommand::argument_sizes CCommand::Arg_Sizes(int number, const char* what)
 		multy[1] = '\0';
 		sizes[1] = 0;
 
-		if (sscanf(arg.c_str(), "%ld%c%c", &sizes[0], &multy[0], &dummy) != 2 || strchr("KM", multy[0]) == NULL)
+		if (sscanf(arg.c_str(), "%lu%c%c", &sizes[0], &multy[0], &dummy) != 2 || strchr("KM", multy[0]) == NULL)
 			Issue_Fatal_Error(script_line, MAKE_STRING("badly formed " << what << ", use e.g. '123K' or '45M'"));
 	}
 	else
 	{
-		if (sscanf(arg.c_str(), "%ld%c+%ld%c%c", &sizes[0], &multy[0], &sizes[1], &multy[1], &dummy) != 4 || strchr("KM", multy[0]) == NULL || strchr("KM", multy[1]) == NULL)
+		if (sscanf(arg.c_str(), "%lu%c+%lu%c%c", &sizes[0], &multy[0], &sizes[1], &multy[1], &dummy) != 4 || strchr("KM", multy[0]) == NULL || strchr("KM", multy[1]) == NULL)
 		{
 			multy[1] = '\0';
 			sizes[1] = 0;
 
-			if (sscanf(arg.c_str(), "%ld%c%c", &sizes[0], &multy[0], &dummy) != 2 || strchr("KM", multy[0]) == NULL)
+			if (sscanf(arg.c_str(), "%lu%c%c", &sizes[0], &multy[0], &dummy) != 2 || strchr("KM", multy[0]) == NULL)
 				Issue_Fatal_Error(script_line, MAKE_STRING("badly formed " << what << ", use e.g. '123K', '45M' or '123K+45M'"));
 		}
 	}
 
 	for (int index = 0; index < 2; index++)
-		sizes[index] *= (multy[index] == 'M') ? 1024 * 1024 : 1024;
+		info.sizes[index] = sizes[index] * ((multy[index] == 'M') ? 1024 * 1024 : 1024);
 
 	return info;
 }
@@ -2235,7 +2235,7 @@ void CCommand_New::Execute(void)
 					nval8*		part_data;
 					nval32		part_size;
 					nval32		drive_total = 0;
-					nval32		drive_todo = min(disc_left, 0x32000ul);
+					nval32		drive_todo = min(disc_left, (nval32) 0x32000ul);
 					CDFS_Drive	drive(drive_todo / 256, "", 0);
 
 					for (int part = 1;; part++)
@@ -2882,8 +2882,40 @@ CCard_Memory::CCard_Memory(const string& card_spec, nval32 a_cache_size)
 	//
 	//
 
+#ifdef WINDOWS
+
+	// On newer CygWins, \\.\<drive> is no longer writable
+	// We now have to use the equivalent device file (eek)
+
+	string used_spec = card_spec;
+
+	{
+		fstream		file;
+		string		word;
+		string		last;
+		const string	find = card_spec + ":\\";
+
+		Open_FStream(file, "/proc/partitions", ios_base::in);
+
+		while (file.good())
+		{
+			last = word;
+
+			file >> word;
+
+			if (word == find)
+				used_spec = "/dev/" + last;
+		}
+	}
+
+#else
+
+	const string& used_spec = card_spec;
+
+#endif
+
 	card_device = SYS_DEVFMT;
-	card_device.replace(card_device.find("%s"), 2, card_spec);
+	card_device.replace(card_device.find("%s"), 2, used_spec);
 
 	if (a_cache_size == 0)
 	{

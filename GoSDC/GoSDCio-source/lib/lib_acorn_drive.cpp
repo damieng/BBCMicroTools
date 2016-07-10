@@ -13,8 +13,9 @@ Author  : John Kortink, (c) Zeridajh 2011
 #include <map>
 #include <string>
 #include <limits>
+#include <stdlib.h>
+#include <string.h>
 #include <algorithm>
-#include "string.h"
 #include "lib_types.h"
 #include "lib_data_block.h"
 #include "lib_acorn_drive.h"

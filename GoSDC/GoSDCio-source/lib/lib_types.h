@@ -11,16 +11,18 @@ Standard typedefs
 
 #define LIB_TYPES_H
 
-typedef unsigned long long	nval64;
-typedef unsigned long		nval32;
-typedef unsigned long		nval24;
-typedef unsigned short		nval16;
-typedef unsigned char		nval8;
-typedef signed long long	zval64;
-typedef signed long		zval32;
-typedef signed long		zval24;
-typedef signed short		zval16;
-typedef signed char		zval8;
+#include <stdint.h>
+
+typedef uint64_t	nval64;
+typedef uint32_t	nval32;
+typedef uint32_t	nval24;
+typedef uint16_t	nval16;
+typedef uint8_t		nval8;
+typedef int64_t		zval64;
+typedef int32_t		zval32;
+typedef int32_t		zval24;
+typedef int16_t		zval16;
+typedef int8_t		zval8;
 
 #endif
 

@@ -1,7 +1,7 @@
 
 Welcome.
 
-This is the third release of the source code for GoSDCio.exe.
+This is the fourth release of the source code for GoSDCio.exe.
 
 Immediate caveat : the source code is not streamlined or finely tuned for a
 public release, although structurally it's pretty clean and solid. It is
@@ -23,7 +23,7 @@ development environment.
 Have fun !
 
 
-John Kortink (kortink@inter.nl.net), 8 April 2012
+John Kortink (kortink@inter.nl.net), 11 July 2015
 
 
 P.S. if you don't know what on earth you got hold of here, visit :
