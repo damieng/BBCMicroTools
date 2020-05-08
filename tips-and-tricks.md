@@ -87,7 +87,7 @@ Dir. :0.$           Lib. :0.$
   $.!BOOT        
 ```
 
-Now all LOAD/SAVE commands etc. will load the files that previously started with "B.". You can change back to the default using `*DIR %`.
+Now all LOAD/SAVE commands etc. will load the files that previously started with "B.". You can change back to the default using `*DIR $`.
 
 ## Short commands
 
