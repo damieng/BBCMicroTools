@@ -1,5 +1,19 @@
 # Tips and Tricks for the BBC Micro
 
+## Loading a new font
+
+New fonts do not work in MODE 7 as that uses the onboard [Mullard SAA5050](https://en.wikipedia.org/wiki/Mullard_SAA5050) chip. However in other modes you can use the [VDU 23](http://beebwiki.mdfs.net/VDU_23#VDU_23.2C32-255_-_Define_character) command. By default however it only allows a few characters to be defined at a time on the BBC Model B. (Tube enhanced and BBC Master default to allowing all characters).
+
+To change this behavior you must issue `*FX 200,6` however doing so will allocate more memory which by default will overwrite the BASIC program in memory. The recommended solution is to (before loading a program)
+
+```
+*FX 200,6
+*BASIC
+```
+To allow BASIC to recognize the new location to place new BASIC programs. This sets the `PAGE` variable to `1F00` so you can also instead just do `PAGE=&1F00` in your `!BOOT` file before loading your program instead.
+
+[John Elliot's PSF tools](https://www.seasip.info/Unix/PSF/) allows you to convert PSF/BDF/ZX Spectrum fonts to BBC Format as well using the `psf2bbc` command. The files it generates should be placed on a disk then `*EXEC`ed to take affect.
+
 ## Keyboard shortcuts
 
 | Shortcut | Description |
