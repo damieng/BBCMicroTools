@@ -61,6 +61,33 @@ These are basic Acorn DFS commands, other implementations and ADFS may vary.
 | ``*DELETE file``  | Delete file        |
 | ``*BUILD file``   | Create text file   |
 | ``*DRIVE number`` | Switch drive       |
+| ``*DIR name``     | Switch "directory" |
+
+Directories on DFS are shown with a letter then a prefix e.g.
+
+```
+Format 2.23  (13)
+Drive 0             Option 3 (EXEC)
+Dir. :0.$           Lib. :0.$
+
+    !BOOT
+        
+  B.ME        
+```
+
+You can change the current directory with `*DIR B` for example and then a `*.` gives you:
+
+```
+Format 2.23  (13)
+Drive 0             Option 3 (EXEC)
+Dir. :0.$           Lib. :0.$
+
+    ME
+        
+  $.!BOOT        
+```
+
+Now all LOAD/SAVE commands etc. will load the files that previously started with "B.". You can change back to the default using `*DIR %`.
 
 ## Short commands
 
