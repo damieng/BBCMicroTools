@@ -61,10 +61,9 @@ GoSDC is a storage system for the Acorn BBC model B, BBC Master and Electron.
 
 It allows storage of practically any number of floppy discs, harddiscs and
 tapes, all on one flash card (MMC, SD or SDHC). Once stored, any one of them
-may be selected by name (with a simple *-command), and used just like before
-(only much faster and quieter). GoSDC is completely self-contained, and can
-make do with a 'bare' machine (without any floppy or harddisc hardware or
-software).
+may be selected by name (with a *-command), and used just like before (only
+much faster and quieter). GoSDC is completely self-contained, and can make do
+with a 'bare' machine (without any floppy or harddisc hardware or software).
 
 <p>
 
@@ -78,8 +77,8 @@ The
 <a href="#BASICUSE">'Basic use'</a>
 
 section attempts to describe basic use of GoSDC only, and hold back on details.
-If you're a first time user of GoSDC, or an advanced user looking for only
-basic information, read this section.
+If you're a first time user of GoSDC, or only looking for basic information,
+read this section.
 
 <p>
 
@@ -100,7 +99,7 @@ GoSDC's 'home base' is on the Internet, at :
 
 <p>
 
-<a href="http://web.inter.nl.net/users/J.Kortink/home/hardware/gosdc/index.htm">http://web.inter.nl.net/users/J.Kortink/home/hardware/gosdc/index.htm</a>
+<a href="http://www.zeridajh.org/hardware/gosdc/index.htm">http://www.zeridajh.org/hardware/gosdc/index.htm</a>
 
 <p>
 
@@ -115,18 +114,16 @@ section).
 
 <p>
 
-There is also a mailing list, called the 'GoMMC mailing list' (named after
-GoSDC's predecessor), at :
+There is also a forum, at :
 
 <p>
 
-<a href="http://groups.yahoo.com/group/gommc">http://groups.yahoo.com/group/gommc</a>
+<a href="http://www.zeridajh.org/forums/">http://www.zeridajh.org/forums/</a>
 
 <p>
 
 This is the place where new developments are announced, and various GoSDC
-related topics can be discussed in a user group context. Refer to the 'Useful
-things' section of the home base if you cannot locate the mailing list.
+related topics can be discussed in a user group context.
 
 <p>
 
@@ -146,7 +143,7 @@ things' section of the home base if you cannot locate the mailing list.
 
 <p>
 
-Basic use of GoSDC requires these main ingredients :
+Basic use of GoSDC involves :
 
 <p>
 
@@ -154,15 +151,15 @@ Basic use of GoSDC requires these main ingredients :
 
 <br>
 
-<b>2)</b> Getting discs onto the flash card
+<b>2)</b> Putting a disc on the flash card
 
 <br>
 
-<b>3)</b> Running patched filing systems
+<b>3)</b> Running a patched filing system
 
 <br>
 
-<b>4)</b> Select and use discs
+<b>4)</b> Use the disc via the filing system
 
 <p>
 
@@ -248,10 +245,10 @@ free and used space, and the number of objects.
 
 <p>
 
-Note that the flash card is divided into one or more 'areas', numbered 1
-through 8. Refer to the discussion of '*SDCArea' in the Advanced section of
-this manual for details. In the Basic section, we will only deal with 'Area 1'
-(the ubiquitous and therefore default area).
+Note that high capacity flash cards are divided into one or more 'areas',
+numbered 1 through 8. Refer to the discussion of '*SDCArea' for details. In the
+Basic section, we will only deal with 'Area 1' (the ubiquitous and therefore
+default area).
 
 <p>
 
@@ -272,7 +269,37 @@ section of this manual.
 
 <p>
 
-<b>Step 3 : Format your flash card</b>
+<b>Step 3 : Get to know the GoSDC tools</b>
+
+<p>
+
+The GoSDC tools are an integral part of using GoSDC. You don't need all the
+details yet, but you do need to know how to run them.
+
+<p>
+
+The 'native' GoSDC tools (refer to
+
+<a href="#TOOLS8BIT">'Tools : 8-bit environment'</a>
+
+for details) run on your BBC or Electron and are stored on GoSDC itself. To run
+them, simply prefix their names with '*SDCTool' (e.g. enter '*SDCTool
+SDCHelp'). Note the presence of SDCHelp, which can help you formulate command
+lines for a number of other GoSDC tools, and explore their capabilities.
+
+<p>
+
+The only 'foreign' GoSDC tool (refer to
+
+<a href="#TOOLSGOSDCIO">'Tools : GoSDCio'</a>
+
+for details) runs on PCs, as a command-line executable. It accepts commands
+that act mostly like the corresponding 'native' tools, but has many more
+options.
+
+<p>
+
+<b>Step 4 : Format your flash card</b>
 
 <p>
 
@@ -291,7 +318,7 @@ You should see something similar to :
 
 <p>
 
-<i>Formatting area ... done</i>
+<i>Formatting flash card ... done</i>
 
 <br>
 
@@ -307,7 +334,7 @@ Do so, e.g. press CTRL-BREAK.
 
 <p>
 
-<b>Step 4 : Verify that your flash card works ok</b>
+<b>Step 5 : Verify that your flash card works ok</b>
 
 <p>
 
@@ -318,183 +345,48 @@ Enter '*SDCArea' and verify the logic of what it displays (8704 bytes will be
 
 If it says 'Selected area not formatted', you have not (successfully) formatted
 your flash card, and your flash card <i>may</i> be incompatible with GoSDC (but
-this is exceedingly rare, so do try step 3 again first, then if it keeps
+this is exceedingly rare, so do try step 4 again first, then if it keeps
 failing, contact me).
 
 <p>
 
-<h2>Getting discs onto the flash card</h2>
+<h2>Putting a disc on the flash card</h2>
 
 <p>
 
-Note : if you want to add tapes to the flash card, refer to
-
-<a href="#TAPES">'Tapes'</a>
-
-in the Advanced section of this manual.
-
-<p>
-
-Discs (floppies, harddiscs) can be put on the flash card in two main ways (skip
-to the one you want to use) :
+Discs (floppies, harddiscs) can be put on the flash card by creating new discs
+or adding existing ones. Creating is introduced here. Adding is accomplished by
+using either SDCADI or GoSDCio's 'ADD DISC' command. Both real floppies and
+harddiscs, or images thereof (in files) can be added.
 
 <p>
 
-<b>1) Via the machine with GoSDC</b>
+In the following, feel free to replace 'my_disc' with any other name you
+choose.
 
 <p>
 
-This must have an actual, physical floppy and/or hard drive installed, or it
-must run something like 65Link (which is highly recommended as companion for
-GoSDC).
+To create a generic, double sided, double density DFS disc, enter, e.g. :
 
 <p>
 
-You will be running GoSDC tool SDCADI to add DFS or ADFS discs.
+*SDCTool SDCNEW D 400K my_disc
 
 <p>
 
-To add a physical floppy disc to the flash card, insert it into your floppy
-drive, and ensure that it can be accessed (e.g. enter '*Cat'). Then run SDCADI,
-giving it the right parameters. For example (note : replace &lt;your disc
-name&gt; with the name you want to give to the disc on the flash card) :
+To create a generic, double sided, double density ADFS disc, enter, e.g. :
 
 <p>
 
-*SDCTool SDCADI DN $1$ &lt;your disc name&gt;
+*SDCTool SDCNEW A 640K my_disc
 
 <p>
 
-if it is a single-sided, 200 KB, DFS disc, or
+Or, if you want to go 'big', create an ADFS harddisc, and enter, e.g. :
 
 <p>
 
-*SDCTool SDCADI AN $1$ &lt;your disc name&gt;
-
-<p>
-
-if it is a single-sided, 320 KB, ADFS disc, or
-
-<p>
-
-*SDCTool SDCADI DN $2$ &lt;your disc name&gt;
-
-<p>
-
-if it is a double-sided, 400 KB, DFS disc, or
-
-<p>
-
-*SDCTool SDCADI AN $2$ &lt;your disc name&gt;
-
-<p>
-
-if it is a double-sided, 640 KB, ADFS disc.
-
-<p>
-
-To add a hard disc to the flash card, use :
-
-<p>
-
-*SDCTool SDCADI AN $4$ &lt;your disc name&gt;
-
-<p>
-
-If you happen to have floppy or hard disc images in files (e.g. if you're
-running 65Link and they're on your host machine's harddisc), you can use :
-
-<p>
-
-*SDCTool SDCADI DN &lt;disc image file name&gt; &lt;your disc name&gt;
-
-<p>
-
-for DFS disc images, or (for ADFS disc images)
-
-<p>
-
-*SDCTool SDCADI AN &lt;disc image file name&gt; &lt;your disc name&gt;
-
-<p>
-
-if they are not 'track interleaved' (otherwise, use 'DI' instead of 'DN', or
-'AI' instead of 'AN' ; you may need to do this for e.g. '.dsd' disc images).
-
-<p>
-
-<b>2) Via a PC with a flash card reader</b>
-
-<p>
-
-You will be running GoSDCio. Refer to
-
-<a href="#RUNNINGGOSDCIO">'Running GoSDCio'</a>
-
-for details.
-
-<p>
-
-Your floppy or hard discs will have to be available as disc image files (e.g.
-'.ssd' or '.adf' files, as downloadable from Internet).
-
-<p>
-
-To add a disc to the flash card, use (note : refer to
-
-<a href="#RUNNINGGOSDCIO">'Running GoSDCio'</a>
-
-for what letter to use instead of 'Q') :
-
-<p>
-
-GoSDCio -dQ -c "ADD DFS DISC N &lt;your disc name&gt; &lt;disc image file
-name&gt;"
-
-<p>
-
-for DFS disc images, or (for ADFS disc images)
-
-<p>
-
-GoSDCio -dQ -c "ADD ADFS DISC N &lt;your disc name&gt; &lt;disc image file
-name&gt;"
-
-<p>
-
-if they are not 'track interleaved' (otherwise, use 'I' instead of 'N' ; you
-may need to do this for e.g. '.dsd' disc images).
-
-<p>
-
-Note that if you want to add more than one disc in one go, you can put the
-commands you would have put between the double quotes in a plain text file (as
-separate lines), call it (e.g.) 'script', and use :
-
-<p>
-
-GoSDCio -dQ script
-
-<p>
-
-instead.
-
-<p>
-
-Note that you can add 'empty' DFS or ADFS discs of practically any size as
-well, by using GoSDCio's 'NEW' command (for details, refer to
-
-<a href="#TOOLSGOSDCIO">'Tools : GoSDCio'</a>
-
-in the Advanced section of this manual). E.g. use :
-
-<p>
-
-GoSDCio -dQ -c "NEW DFS DISC &lt;your disc name&gt; 400K"
-
-<p>
-
-to add an empty, double-sided DFS disc.
+*SDCTool SDCNEW A 100M my_disc
 
 <p>
 
@@ -502,13 +394,14 @@ to add an empty, double-sided DFS disc.
 
 <p>
 
-<h2>Running patched filing systems</h2>
+<h2>Running a patched filing system</h2>
 
 <p>
 
 A patched filing system (an original filing system patched for GoSDC) is needed
 to access the discs on the flash card. Accessing DFS discs requires a DFS type
-filing system, accessing ADFS discs requires an ADFS type filing system.
+filing system, accessing ADFS discs requires an ADFS type filing system. DFS
+and ADFS can be used at the same time.
 
 <p>
 
@@ -576,15 +469,15 @@ selected filing system.
 
 <p>
 
-<h2>Select and use discs</h2>
+<h2>Use the disc via the filing system</h2>
 
 <p>
 
 With the patched filing system of choice up and running, now simply select a
-DFS or ADFS disc (as appropriate for the filing system) with *SDCDisc. E.g.
+DFS and/or ADFS disc (as appropriate for the filing system) with *SDCDisc. E.g.
 enter '*SDCDisc Work' if you have put a disc called 'Work' on the flash card.
 Then press CTRL-BREAK, and start using the disc as if it were a regular floppy
-or harddisc.
+or harddisc (e.g. enter '*Cat', or SAVE and LOAD a BASIC program).
 
 <p>
 
@@ -604,72 +497,6 @@ commands that you can now start using.
 <p>
 
 Have fun !
-
-<p>
-
-<a name="RUNNINGGOSDCIO"></a>
-
-<p>
-
-<h2>Running GoSDCio</h2>
-
-<p>
-
-Running GoSDCio requires a PC, with a flash card reader, running Windows XP,
-(x86) Linux, Mac OS X, or something compatible. GoSDCio is an important tool,
-so if you don't have such a machine, it is highly recommended to get (access
-to) one.
-
-<p>
-
-You will find GoSDCio among the GoSDC software :
-
-<p>
-
-<ul>
-
-<li>GoSDCio.exe is for PCs running Microsoft Windows XP
-
-<li>GoSDCio.unx (rename it to gosdcio and ensure it has 'execute' access) is
-for PCs running (x86) Linux
-
-<li>GoSDCio.mac (rename it to gosdcio and ensure it has 'execute' access) is
-for Apple Macs running Mac OS X.
-
-</li>
-
-</ul>
-
-<p>
-
-Remove all flash cards from your flash card reader. Connect your flash card
-reader to your PC. Insert your flash card. If you run Windows XP, new 'drives'
-will pop up in your 'My Computer' window, usually 4 or more, each representing
-a slot on your flash card reader. Find the flash card by double-clicking on
-every new drive icon, and picking the one <b>not</b> complaining 'Please insert
-a disk ...', but something like '... not formatted' instead. Take note of the
-drive letter, and use it instead of 'Q' (see below). If you run Linux or Mac OS
-X, you will have to find out which device in /dev/ represents the flash card
-(e.g. '/dev/sdc'), and use that instead of 'Q'.
-
-<p>
-
-Open a command window (e.g., under Windows XP, by clicking 'Start', then 'Run
-...', and entering 'Command', or, under Linux or Mac OS X, by opening a
-terminal window). Go ('cd') to the directory containing GoSDCio (e.g. 'cd
-\gosdc').
-
-<p>
-
-You are now ready to run GoSDCio. Test it, e.g. by entering :
-
-<p>
-
-GoSDCio -dQ -c "" -l
-
-<p>
-
-which will list the contents of your flash card.
 
 <p>
 
@@ -757,17 +584,27 @@ The 8-bit tools provide for :
 
 <li>Formatting the flash card (SDCFO)
 
+<li>Copying between existing areas (SDCA2A)
+
 <li>Adding floppy or hard discs to the flash card (SDCADI)
 
 <li>Adding filing systems (original or patched) to the flash card (SDCAFS)
 
 <li>Adding tools to the flash card (SDCATO)
 
+<li>Creating new discs on the flash card (SDCNEW)
+
 <li>Deleting objects from the flash card (SDCDEL)
+
+<li>Copying between existing discs (SDCCPY)
+
+<li>Modifying items on the flash card (SDCMOD)
 
 <li>Writing discs on the flash card back to physical floppy (SDCFlop)
 
 <li>Quick interactive selection of a disc or tape (SDCMenu)
+
+<li>Interactive tool command line building (SDCHelp)
 
 <li>Displaying some interesting flash card info (SDCCXD)
 
@@ -927,21 +764,28 @@ same time, and, e.g., copy files between them.
 
 <p>
 
+<a name="TOOLS8BIT"></a>
+
+<p>
+
 <h2>Tools : 8-bit environment</h2>
 
 <p>
 
-The tools called SDCUP, SDCFO, SDCAFS, SDCATO, SDCADI and SDCDEL run on your
-BBC or Electron only. They are all command-line utilities, some taking
-arguments, some not.
+The tools called SDCUP, SDCFO, SDCADI, SDCAFS, SDCATO, SDCNEW, SDCDEL, SDCCPY,
+SDCMOD run on your BBC or Electron only. They are all command-line utilities,
+some taking arguments, some not. If you run them via a filing system (instead
+of *SDCTool), they all need to have their load and execution address set to
+(hex) &amp;2000 (check that with *Info before you *Run them !).
 
 <p>
 
 In addition, there is a tool called 'SDCFlop' (which allows you to write discs
 on the flash card back to a physical floppy), a tool called 'SDCMenu' (which is
-an interactive disc or tape selection program), and a tool called 'SDCCXD'
-(which displays some interesting information about your flash card). All three
-are BASIC programs.
+an interactive disc or tape selection program), a tool called 'SDCHelp' (which
+allows you to build a tool command line by question / answer) and a tool called
+'SDCCXD' (which displays some interesting information about your flash card).
+All these are BASIC programs. Simply CHAIN them.
 
 <p>
 
@@ -1014,6 +858,24 @@ After running SDCFO, always press CTRL-BREAK.
 
 <p>
 
+<h2>Tools : SDCA2A</h2>
+
+<p>
+
+This tool copies one area to another, relocating objects as required. It is the
+only way to write to 'Area U', which is a user definable version of 'Area X'
+(i.e. it is read only, but always there, because it is located in GoSDC's flash
+ROM).
+
+<p>
+
+Numbered areas (i.e. on a flash card) can be written to as well, but if the
+source area contains large amounts of data (e.g. more than a few MB), this is
+not recommended. For large amounts of data, use GoSDCio instead : BACKUP one
+area, restore to another (with the generated script).
+
+<p>
+
 <h2>Tools : SDCAFS</h2>
 
 <p>
@@ -1025,17 +887,21 @@ different numbers than the standard ones stored in 'Area X'.
 
 <p>
 
-Enter '*SDCTool SDCAFS &lt;file name&gt;' where &lt;file name&gt; is the file
-name of the filing system ROM image (it must be exactly 16 KB in size). If the
-image is recognized, it is added to the flash card. Refer to
+Enter '*SDCTool SDCAFS &lt;file name&gt; (&lt;fs nr&gt;)' where &lt;file
+name&gt; is the file name of the filing system ROM image and (&lt;fs nr&gt;) is
+an optional filing system number. To add a filing system that GoSDC recognizes
+(refer to
 
 <a href="#SUPPORTEDFILINGSYSTEMS">'Supported filing systems'</a>
 
-for details (and to
+for a list of recognized filing systems, and to
 
 <a href="#RUNNINGPATCHEDFILINGSYSTEMS">'Running patched filing systems'</a>
 
-for details on where to obtain the filing system ROM images).
+for details on where to obtain the filing system ROM images), specify no filing
+system number, or 0. To add a 'custom' filing system, specify an unused filing
+system number (200 or higher is recommended). The file you specify should be
+exactly 16 KB in size.
 
 <p>
 
@@ -1091,9 +957,9 @@ when you run SDCADI.
 <p>
 
 Enter e.g. '*SDCTool SDCADI DN &lt;file name&gt; &lt;disc name&gt;' to add a
-disc image in file &lt;file name&gt; to the flash card under name &lt;disc
-name&gt; (the latter is what you thereafter specify to *SDCDisc, *SDCExtra and
-*SDCList to find the disc).
+DFS disc image in file &lt;file name&gt; to the flash card under name &lt;disc
+name&gt; (the latter is what you thereafter specify to *SDCDisc and *SDCList to
+find the disc).
 
 <p>
 
@@ -1104,62 +970,69 @@ can use a simple kind of 'directory' structure (refer to the discussion of
 <p>
 
 'SDCADI DN' (Add Disc DFS Non-interlaced) is used to add DFS type floppy discs,
-with either a disc image file or a physical floppy as the source. A floppy disc
-image may be any size, up to 800 K (for a dual-drive, double-sided disc image),
-must contain &lt;drive 0&gt; &lt;drive 2&gt; &lt;drive 1&gt; &lt;drive 3&gt;,
-in that order, and results in a disc of the same size as the disc image (but
-rounded up to a 512 byte multiple). To copy a physical floppy to the flash
-card, specify $1$, $2$ or $3$ as the &lt;file name&gt;, to copy, respectively,
-a single single-sided (200K), a single double-sided (400K), or double
-double-sided (800K) floppy (i.e. two floppies in two drives !).
+with a disc image file as the source. The file may be any size, up to 400 KB,
+must contain &lt;drive 0&gt; &lt;drive 2&gt;, in that order, and results in a
+disc of the same size as the disc image (but rounded up to a 512 byte
+multiple).
 
 <p>
 
-'SDCADI DN' also accepts $4$. This is like $1$ but copies from drive 2 instead
-of drive 0. 'SDCADI DN' also accepts $5$ through $8$, which are exactly like
-$1$ through $4$, resulting in the same total disc size on the flash card, but
-copy only the first 40 tracks of every physical drive (the last 100K of every
-drive on the flash card therefore becomes unused and unusable space). Use $5$
-through $8$ to copy physical 40 track discs only.
+'SDCADI DI' (Add Disc DFS Interlaced) is like 'SDCADI DN', but the image file
+contents are 'track-interleaved', must contain &lt;track 0, drive 0&gt;
+&lt;track 0, drive 2&gt; &lt;track 1, drive 0&gt; ... &lt;track 79, drive
+2&gt;, in that order, and always results in a 400 KB size disc.
+
+<p>
+
+'SDCADI DR' (Add Disc DFS Real) is used to add DFS type discs, with a real
+floppy disc as the source. Replace &lt;file name&gt; with the drive number(s)
+to copy (e.g. '0' for drive 0 only, or '0+2' for drive 0 and 2).
 
 <p>
 
 'SDCADI AN' (Add Disc ADFS Non-interlaced) is used to add ADFS type floppy or
-hard discs, with either a disc image file or a physical floppy or hard disc as
-the source. A floppy disc image may be any size, up to 1280 K (for a
-dual-drive, double-sided disc image), must contain &lt;drive 0&gt; &lt;drive
-1&gt;, in that order, and results in a disc of the same size as the disc image
-(but rounded up to a 512 byte multiple). To copy a physical floppy to the flash
-card, specify $1$, $2$ or $3$ as the &lt;file name&gt;, to copy, respectively,
-a single single-sided (320K), a single double-sided (640K), or double
-double-sided (1280K) floppy (i.e. two floppies in two drives !).
+hard discs, with a disc image file as the source. The file may be any size, up
+to 512 MB, and results in a disc of the same size as the disc image (but
+rounded up to a 512 byte multiple).
 
 <p>
 
-'SDCADI AN' also accepts $4$. This copies the entire ADFS disc in drive 0
-(floppy or hard disc). I.e. it allows straight-to-flash-card copying of a
-harddisc (a floppy may just as well be copied with $1$ or $2$).
+'SDCADI AI' (Add Disc ADFS Interlaced) is like 'SDCADI AN', but the image file
+contents are 'track-interleaved', must contain &lt;track 0, head 0&gt;
+&lt;track 0, head 1&gt; &lt;track 1, head 0&gt; ... &lt;track 79, head 1&gt;,
+in that order, and always results in a 640 KB size disc.
 
 <p>
 
-'SDCADI DI' (Add Disc DFS Interlaced) is used to add DFS type discs, with an
-'interlaced' disc image file as the source. An 'interlaced' disc image is
-always double-sided, must contain &lt;track 0, drive 0&gt; &lt;track 0, drive
-2&gt; &lt;track 1, drive 0&gt; ... &lt;track 79, drive 2&gt;, in that order,
-and results in a 400K DFS type disc.
+'SDCADI AR' (Add Disc ADFS Real) is used to add ADFS type discs, with a real
+floppy or hard disc as the source. Replace &lt;file name&gt; with the drive
+number to copy (e.g. '0' for drive 0, or '4' for drive 4).
 
 <p>
 
-'SDCADI AI' (Add Disc ADFS Interlaced) is used to add ADFS type discs, with an
-'interlaced' disc image file as the source. An 'interlaced' disc image is
-always double-sided, must contain &lt;track 0, head 0&gt; &lt;track 0, head
-1&gt; &lt;track 1, head 0&gt; ... &lt;track 79, head 1&gt;, in that order, and
-results in a 640K ADFS type disc.
+Note that adding real discs will cause a temporary switch from the currently
+selected filing system to (A)DFS. If errors occur, the switch back may fail.
 
 <p>
 
-Note that adding a physical floppy or hard disc causes a switch to DFS or ADFS
-and drive 0.
+<h2>Tools : SDCNEW</h2>
+
+<p>
+
+This tool allows you to create a new, empty DFS or ADFS disc.
+
+<p>
+
+Enter '*SDCTool SDCNEW D &lt;size&gt; &lt;disc name&gt;' to create a DFS disc
+(size may be 1 KB - 400 KB) or '*SDCTool SDCNEW A &lt;size&gt; &lt;disc
+name&gt;' to create an ADFS disc (size may be 2 KB - 512 MB). Post-fix your
+size with 'K' or 'M' (for KB or MB respectively), e.g. '400K' or '100M'.
+
+<p>
+
+The free space on new discs that are 'floppy sized' (640 KB or under) will be
+explicitly wiped. The free space on larger discs is left 'as is' (because
+explicitly wiping e.g. a 512 MB ADFS harddisc would take way too much time).
 
 <p>
 
@@ -1185,6 +1058,38 @@ Enter '*SDCTool SDCDEL F &lt;FS number&gt;' to delete a filing system (where
 
 for a list). Enter '*SDCTool SDCDEL T &lt;tool name&gt;' to delete a tool.
 Enter '*SDCTool SDCDEL M &lt;disc or tape name&gt;' to delete a disc or tape.
+
+<p>
+
+<h2>Tools : SDCCPY</h2>
+
+<p>
+
+This tool allows you to copy the entire contents of one disc to another. The
+discs must be the same filing system and size.
+
+<p>
+
+Enter '*SDCTool SDCCPY &lt;disc name 1&gt; &lt;disc name 2&gt;' to copy 'disc
+1' to 'disc 2'.
+
+<p>
+
+One scenario that makes SDCCPY useful is one where you have a 'work disc' that
+you regularly reset to the state of a 'reference disc'.
+
+<p>
+
+<h2>Tools : SDCMOD</h2>
+
+<p>
+
+This tool allows you to 'name' areas.
+
+<p>
+
+Enter '*SDCTool SDCMOD AN &lt;area name&gt;' to give the currently selected
+area the specified name. The name will appear in '*SDCInfo'.
 
 <p>
 
@@ -1259,6 +1164,11 @@ selection via '2', '3' and '4', will start a drive copy.
 
 <p>
 
+6 ('Verify target drive via source drive'), which appears once you made a
+selection via '2', '3' and '4', will start a drive verify.
+
+<p>
+
 Note that if you selected a DFS disc that contains more than one drive (e.g.
 two, originating from a 'double-sided' disc), you will want to copy both drive
 0 and 2 to your floppy (and/or 1 and 3 to a second floppy, if there are four
@@ -1308,6 +1218,15 @@ because the BOOT setting is ignored when SHIFT is pressed).
 
 <p>
 
+<h2>Tools : SDCHelp</h2>
+
+<p>
+
+This tool allows you to interactively build a tool command line. Simply run it
+(enter '*SDCTool SDCHelp') and answer the questions.
+
+<p>
+
 <h2>Tools : SDCCXD</h2>
 
 <p>
@@ -1325,10 +1244,31 @@ This tool displays some interesting information about your flash card. Enter
 
 <p>
 
-GoSDCio allows batch-wise addition, extraction, deletion and renaming of discs,
-tapes, tools and filing systems, including backup and restore of the entire
-contents of the flash card, on a PC with a flash card reader, running Windows
-XP, (x86) Linux or Mac OS X.
+GoSDCio runs on a PC with a flash card reader and allows batch-wise addition,
+extraction, deletion and renaming of discs, tapes, tools and filing systems,
+including backup and restore of the entire contents of the flash card.
+
+<p>
+
+<ul>
+
+<li>GoSDCio.exe is for PCs running Microsoft Windows 7 or later. Run it from a
+command window. Note that the drive that is 'not formatted' (as a popup will
+say once your flash card is 'seen') is probably your flash card.
+
+<li>GoSDCio.unx (rename it to gosdcio and ensure it has 'execute' access) is
+for PCs running (x86) Linux. Run it from a terminal. Note that your flash card
+will appear somewhere in the '/dev/' directory (where exactly differs per
+setup).
+
+<li>GoSDCio.mac (rename it to gosdcio and ensure it has 'execute' access) is
+for Apple Macs running Mac OS X. Run it from a terminal. Note that you may need
+to use 'sudo gosdcio' to run it succesfully, and that your flash card will
+appear somewhere in the '/dev/' directory (where exactly differs per setup).
+
+</li>
+
+</ul>
 
 <p>
 
@@ -1451,7 +1391,7 @@ allowed).
 
 Also note that &lt;object name&gt; is the name that you want the object (tool,
 disc or tape) to have on the flash card. I.e. it is the name by which you
-select the tool, disc or tape with *SDCDisc, *SDCExtra, *SDCTape or *SDCTool.
+select the tool, disc or tape with *SDCDisc, *SDCTape or *SDCTool.
 
 <p>
 
@@ -1528,7 +1468,7 @@ not recognize, so you must use a non-standard filing system number like 200).
 
 <p>
 
-<b>NEW &lt;object type&gt; &lt;object name&gt; &lt;disc size(s)&gt;</b>
+<b>NEW &lt;object type&gt; &lt;object name&gt; &lt;disc size&gt;</b>
 
 <p>
 
@@ -1541,17 +1481,14 @@ This command adds an empty disc to the flash card.
 
 <p>
 
-'NEW DFS DISC' creates an empty DFS disc of anything between 16 KB and 800 KB
-in size (specify e.g. '16K' or '800K' as &lt;disc size(s)&gt;). A size above
-200, 400 or 600 KB results in 2, 3, 4 drive discs respectively.
+'NEW DFS DISC' creates an empty DFS disc of anything between 1 KB and 400 KB in
+size (specify e.g. '1K' or '400K' as &lt;disc size(s)&gt;). A size above 200 KB
+results in a 'two drive' disc.
 
 <p>
 
-'NEW ADFS DISC' creates an empty ADFS disc of anything between 16 KB and 512 MB
-in size (specify e.g. '16K' or '512M' as &lt;disc size(s)&gt;), or 16+16 KB and
-512+512 MB in size (specify e.g. '16K+1M' or '2M+512M' as &lt;disc
-size(s)&gt;). That is, the non-+ form creates single drive discs, the +-form
-double drive discs (note that the two sizes may be completely different).
+'NEW ADFS DISC' creates an empty ADFS disc of anything between 2 KB and 512 MB
+in size (specify e.g. '2K' or '512M' as &lt;disc size(s)&gt;).
 
 <p>
 
@@ -1654,8 +1591,8 @@ standard Tape filing system. Although it can only 'play', not 'record'.
 
 <p>
 
-This works on BBC model Bs running OS 1.20, BBC Masters running MOS 3.20 or
-3.50, and Electrons running OS 1.00.
+This works on any BBC model B running OS 1.20, BBC Master running MOS 3.20 or
+3.50, BBC B+ running OS 2.00, or Electron running OS 1.00.
 
 <p>
 
@@ -1674,7 +1611,7 @@ It contains the following files :
 
 <p>
 
-POS120.BIN is the (16K) BBC OS 1.20 ROM
+POS120.BIN is the (16K) BBC model B OS 1.20 ROM
 
 <br>
 
@@ -1688,11 +1625,15 @@ POS350.BIN is the (128K) BBC Master MOS 3.50 ROM
 
 POS100.BIN is the (32K) Electron OS 1.00 ROM (i.e. this includes BASIC).
 
+<br>
+
+POS200.BIN is the (32K) BBC B+ OS 2.00 ROM (i.e. this includes BASIC).
+
 <p>
 
-Replacing the OS ROM is not for the fainthearted (only on the BBC model B it is
-relatively easy to do), and requires some know-how. If you want to do it, but
-don't know how to proceed, feel free to contact me.
+Replacing the OS ROM is not for the fainthearted (only on the BBC model B and
+B+ it is relatively easy to do), and requires some know-how. If you want to do
+it, but don't know how to proceed, feel free to contact me.
 
 <p>
 
@@ -1735,7 +1676,7 @@ The following *-commands are available from the GoSDC ROM software (enter
 <p>
 
 Displays the GoSDC software version and date, which ROM slots GoSDC occupies,
-flash ROM and flash card details, and all area sizes.
+flash ROM and flash card details, and all area sizes and names.
 
 <p>
 
@@ -1753,13 +1694,15 @@ the total, used and free bytes, and the number of objects).
 
 <p>
 
-Areas are 'virtual' flash cards, named 'X', and '1' through '8'. Their
-availability depends on the capacity of the actual, physical flash card. If it
-is under 4 GiB, only area '1' is available. If it is over 4 GiB, up to seven
-additional areas (starting with '2') are available, where all but the last one
-is 4 GiB in size. Area X is the 'mini flash card' located in GoSDC's flash ROM.
-It contains all the standard filing systems and tools. It can be accessed,
-listed, etc. just like any other area, but it cannot be written to.
+Areas are 'virtual' flash cards, named 'X', 'U' and '1' through '8'. The
+availability of the numbered areas depends on the capacity of the actual,
+physical flash card. If it is under 4 GiB, only area '1' is available. If it is
+over 4 GiB, up to seven additional areas (starting with '2') are available,
+where all but the last one is 4 GiB in size. Area X and U are 'mini flash
+cards' located in GoSDC's flash ROM. Area X contains all the standard filing
+systems and tools. It can be accessed, listed, etc. just like any other area,
+but it cannot be written to. Area U is like Area X, but its contents are user
+definable (refer to the discussion of SDCA2A).
 
 <p>
 
@@ -1768,46 +1711,36 @@ recommended to enter '*SDCDisc -' at this stage, as well.
 
 <p>
 
-<b>*SDCDisc (&lt;name&gt;)</b>
+<b>*SDCDisc (&lt;name&gt;) (A|B|C|D)</b>
 
 <p>
 
 Selects disc &lt;name&gt; for subsequent access (by the currently running,
 patched filing system). The usual * and # wildcards may be used (the first
-matching disc is selected). If &lt;name&gt; is a single hyphen (-), the
-currently selected disc is deselected (this may occasionally be useful to
-confirm that the selected disc is no longer on the flash card, although
-normally you would simply select another disc). If &lt;name&gt; is not
-specified, no (new) disc is selected.
+matching disc is selected). If &lt;name&gt; is a single hyphen (-), all disc
+selections are forgotten (this may occasionally be useful to confirm that what
+was selected is no longer on the flash card, although normally you would simply
+make new selections). If &lt;name&gt; is not specified, no (new) disc is
+selected.
+
+<p>
+
+The second argument is optional, and defaults to 'A'. It identifies the 'slot'
+(roughly equivalent to a real floppy or hard drive) that the disc is 'put
+into'. For DFS, slot A represents drives 0 and 2, slot B represents drives 1
+and 3, and slots C and D represent an override for drive 2 and 3 respectively.
+For ADFS, slots A, B, C and D represent drive 0, 1, 4 and 5 respectively.
 
 <p>
 
 In all cases the (newly) selected media are displayed, as well as the drives
-found within the selected discs (note that 'Disc 1', 'Disc 2' and 'Tape' are
-selected by, respectively, *SDCDisc, *SDCExtra and *SDCTape). DFS and ADFS disc
-selections are remembered separately (i.e. there's a 'Disc 1' and 'Disc 2'
-setting for both of them).
+found within the selected discs. DFS and ADFS disc selections are remembered
+separately.
 
 <p>
 
 ALWAYS press CTRL-BREAK after selecting a disc with *SDCDisc ! GoSDC does not
 need this, but the filing system might, to notice the disc change.
-
-<p>
-
-<b>*SDCExtra (&lt;name&gt;)</b>
-
-<p>
-
-Is like *SDCDisc, but selects a second, separate disc (the one selected with
-*SDCDisc being the 'first' and main one).
-
-<p>
-
-After every *SDCDisc or *SDCExtra, the first and second disc are scanned (in
-that order) for drives. A disc may contain up to four or two drives under DFS
-or ADFS respectively. The drives that are found are displayed (e.g. '02--'
-means that DFS drives 0 and 2 are now available).
 
 <p>
 
@@ -1828,14 +1761,26 @@ for details.
 
 <p>
 
-<b>*SDCList (&lt;name&gt;)</b>
+<b>*SDCList (&lt;name&gt;) (M)(F)(T) (X)</b>
 
 <p>
 
-Lists all discs and tapes matching &lt;name&gt; (other objects may be listed as
-well, refer to the discussion of configuration option LTYP for details). The
-usual * and # wildcards may be used. If &lt;name&gt; is not specified, '*' is
-implied.
+Lists all objects matching &lt;name&gt; (default '*'). The usual * and #
+wildwards may be used.
+
+<p>
+
+The second argument (default 'M') allows object type specification : any
+sequence of the characters M, F and T (standing for media, filing systems and
+tools respectively) lists those object types.
+
+<p>
+
+The third argument (default '') selects special listing styles : X selects
+'extended' listing (showing '<i>tt ss aaaaaaaa + ssssssss</i> name', all values
+hexadecimal, where <i>tt</i> is the object type, <i>ss</i> the object subtype,
+<i>aaaaaaaa</i> the start address on the flash card and <i>ssssssss</i> the
+size in bytes).
 
 <p>
 
@@ -1843,11 +1788,11 @@ implied.
 
 <p>
 
-The 'name prefix' may be set by this command. This affects *SDCDisc, *SDCExtra,
-*SDCTape, *SDCList and *SDCTool. The name prefix is what implicitly precedes
-the &lt;name&gt; specified in the affected commands. If &lt;name&gt; is a
-single hyphen (-), the name prefix is cleared (this is also the default
-setting). If &lt;name&gt; is not specified, no (new) name prefix is set.
+The 'name prefix' may be set by this command. This affects *SDCDisc, *SDCTape,
+*SDCList and *SDCTool. The name prefix is what implicitly precedes the
+&lt;name&gt; specified in the affected commands. If &lt;name&gt; is a single
+hyphen (-), the name prefix is cleared (this is also the default setting). If
+&lt;name&gt; is not specified, no (new) name prefix is set.
 
 <p>
 
@@ -1863,8 +1808,8 @@ Acornsoft.Hopper', and '*SDCList Acornsoft.*').
 
 <p>
 
-Note that a leading '$' in the name specified to *SDCDisc, *SDCExtra, *SDCTape,
-*SDCList and *SDCTool will skip the matching of the name prefix (and the '$' is
+Note that a leading '$' in the name specified to *SDCDisc, *SDCTape, *SDCList
+and *SDCTool will skip the matching of the name prefix (and the '$' is
 discarded). E.g. if the prefix is 'A.', then the name '$!Boot' matches '!Boot'
 only, not 'A.!Boot'.
 
@@ -1879,11 +1824,12 @@ Runs tool &lt;name&gt;, relaying whatever follows &lt;name&gt;. The usual * and
 
 <p>
 
-The standard tools, stored in 'Area X', will be found automatically. Otherwise,
-the tool must have been added to the flash card as &lt;name&gt; (e.g. using the
-SDCATO tool). For example, if you added a tool called 'Blah' to the flash card
-as 'Whatever', then instead of entering e.g. '*Blah one two three' you can now
-enter '*SDCTool Whatever one two three'.
+The standard tools, stored in 'Area X', or your own custom tools, stored in
+'Area U', will be found automatically. Otherwise, the tool must have been added
+to the flash card as &lt;name&gt; (e.g. using the SDCATO tool). For example, if
+you added a tool called 'Blah' to the flash card as 'Whatever', then instead of
+entering e.g. '*Blah one two three' you can now enter '*SDCTool Whatever one
+two three'.
 
 <p>
 
@@ -2001,14 +1947,6 @@ one of :
 <tr>
 <td class="boxed">F2RM</td>
 <td class="boxed">sets the (2nd) auto-loaded filing system ROM number</td>
-
-<tr>
-<td class="boxed">LOPT</td>
-<td class="boxed">selects the display format of *SDCList</td>
-
-<tr>
-<td class="boxed">LTYP</td>
-<td class="boxed">selects the object types shown by *SDCList</td>
 
 <tr>
 <td class="boxed">BOOT</td>
@@ -2170,110 +2108,9 @@ for a list of filing system numbers.
 <p>
 
 Note that, if you configure a non-standard filing system (i.e. one that is not
-present in 'Area X'), it must be present on the flash card (put there by the
-SDCAFS tool, or GoSDCio's 'ADD FS' command, refer to their discussion for
-details).
-
-<p>
-
-<b>LOPT</b> and <b>LTYP</b>
-
-<p>
-
-These options 'tweak' the output of *SDCList.
-
-<p>
-
-<table class="boxed">
-
-<tbody>
-
-<tr>
-<th class="boxed">LOPT</th>
-<th class="boxed">Listing mode</th>
-
-<tr>
-<td class="boxed">0</td>
-<td class="boxed">normal</td>
-
-<tr>
-<td class="boxed">1</td>
-<td class="boxed">extended</td>
-
-<tr>
-<td class="boxed">others</td>
-<td class="boxed">reserved</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-<p>
-
-<table class="boxed">
-
-<tbody>
-
-<tr>
-<th class="boxed">LTYP</th>
-<th class="boxed">List what</th>
-
-<tr>
-<td class="boxed">0</td>
-<td class="boxed">media</td>
-
-<tr>
-<td class="boxed">1</td>
-<td class="boxed">filing systems</td>
-
-<tr>
-<td class="boxed">2</td>
-<td class="boxed">tools</td>
-
-<tr>
-<td class="boxed">3</td>
-<td class="boxed">tools, filing systems</td>
-
-<tr>
-<td class="boxed">4</td>
-<td class="boxed">media</td>
-
-<tr>
-<td class="boxed">5</td>
-<td class="boxed">media, filing systems</td>
-
-<tr>
-<td class="boxed">6</td>
-<td class="boxed">media, tools</td>
-
-<tr>
-<td class="boxed">7</td>
-<td class="boxed">media, tools, filing systems</td>
-
-<tr>
-<td class="boxed">others</td>
-<td class="boxed">reserved</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-<p>
-
-In 'normal' mode, *SDCList shows just the object name. In 'extended' mode, it
-shows 'tt ss aaaaaaaa + ssssssss name', all values hexadecimal, where tt is the
-object type, ss the object subtype, aaaaaaaa the start address on the flash
-card, ssssssss the size in bytes.
-
-<p>
-
-The underlying rule for LTYP is : set bit x in the value to show object type
-x+1 in listings. Object types are 1, 2 and 3 for filing systems, tools and
-media (discs and tapes) respectively.
+present in 'Area X'), it must be present in 'Area U', or on the flash card (put
+there by the SDCAFS tool, or GoSDCio's 'ADD FS' command, refer to their
+discussion for details).
 
 <p>
 
@@ -2311,22 +2148,6 @@ BREAK.
 <td class="boxed">execute '*SDCTool $SDCMenu'</td>
 
 <tr>
-<td class="boxed">33</td>
-<td class="boxed">execute '*SDCTool $!Boot!' <i>(3)</i></td>
-
-<tr>
-<td class="boxed">34</td>
-<td class="boxed">execute '*SDCTool $!Boot"' <i>(3)</i></td>
-
-<tr>
-<td class="boxed">...</td>
-<td class="boxed">...</td>
-
-<tr>
-<td class="boxed">126</td>
-<td class="boxed">execute '*SDCTool $!Boot~' <i>(3)</i></td>
-
-<tr>
 <td class="boxed">others</td>
 <td class="boxed">reserved</td>
 
@@ -2347,12 +2168,6 @@ BREAK.
 "MyMenu"' in the disc's !Boot file, issue '*OPT 4 3', and go : CTRL-BREAK (the
 '!Boot' disc is now selected), SHIFT-BREAK ('MyMenu' now runs), and, when
 you've selected a disc, CTRL-SHIFT-BREAK (the selected disc now boots).
-
-<p>
-
-<i>(3)</i> These execute '*SDCTool $!Bootx', where x is the ASCII character
-corresponding to the BOOT value (e.g. 65 would result in the execution of
-'*SDCTool $!BootA').
 
 <p>
 
@@ -2999,8 +2814,9 @@ write to the flash card while it was write-protected.
 
 <p>
 
-'<i>Cannot write to the fixed area</i>' (code 201) : An attempt was made to
-write to 'Area X'. It cannot be written to.
+'<i>Cannot write to a ROM area</i>' (code 201) : An attempt was made to write
+to 'Area X' or 'Area U'. They cannot be written to at all (X) or not directly
+(U).
 
 <p>
 
