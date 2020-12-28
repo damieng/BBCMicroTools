@@ -191,4 +191,19 @@ GoXXCio history
   Unix device path instead of a Windows device path.
 - Bugfix : recognizing ROMs failed due to type size mixup.
 
+0.76
+----
+
+- Eliminated 'using namespace's (from source code).
+- Compilation define WINDOWS is now WINDOWS_CW (Windows, CygWin).
+- Added compilation define WINDOWS_VS (Windows, Visual Studio), and adapted
+  source to match (predefine that, and either GOSDC or GOMMC to compile).
+
+0.77
+----
+
+- Deprecated multi-disc images (i.e. images with the contents of more than one
+  physical floppy or hard disc). Here, that means no more '+' syntax for the
+  NEW command.
+
 

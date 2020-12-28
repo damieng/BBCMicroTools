@@ -1,7 +1,7 @@
 
 Welcome.
 
-This is the fourth release of the source code for GoSDCio.exe.
+This is the sixth release of the source code for GoSDCio.exe.
 
 Immediate caveat : the source code is not streamlined or finely tuned for a
 public release, although structurally it's pretty clean and solid. It is
@@ -23,10 +23,10 @@ development environment.
 Have fun !
 
 
-John Kortink (kortink@inter.nl.net), 11 July 2015
+John Kortink (kortink@inter.nl.net), 11 May 2019
 
 
 P.S. if you don't know what on earth you got hold of here, visit :
 
-http://web.inter.nl.net/users/J.Kortink/home/hardware/gosdc/
+http://www.zeridajh.org/hardware/gosdc/
 

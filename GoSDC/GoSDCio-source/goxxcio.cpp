@@ -5,31 +5,29 @@ GoXXCio.cpp
 
 IO utils for GoMMC and GoSDC
 
-Version : 0.75
-Date    : 11 July 2015
-Author  : John Kortink, (c) Zeridajh 2004..2015
+Version : 0.77
+Date    : 11 May 2019
+Author  : John Kortink, (c) Zeridajh 2004..2019
 
 */
 
 #include <list>
-#include <vector>
 #include <string>
-#include <sstream>
-#include <fstream>
-#include <iostream>
-#include <algorithm>
 #include <time.h>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <string.h>
+#include <algorithm>
 #include <sys/stat.h>
 #include "lib_types.h"
 #include "lib_data_block.h"
 #include "lib_make_string.h"
 #include "lib_acorn_drive.h"
 #include "lib_neat_message.h"
-
-using namespace std;
-using namespace zeridajh;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -59,8 +57,8 @@ using namespace zeridajh;
 
 #endif
 
-#define CODE_VERSION	"0.75 (11 July 2015)"
-#define CODE_COPYRIGHT	"Copyright (c) Zeridajh 2004..2015"
+#define CODE_VERSION	"0.77 (11 May 2019)"
+#define CODE_COPYRIGHT	"Copyright (c) Zeridajh 2004..2019"
 
 #undef VERBOSE
 
@@ -70,14 +68,17 @@ using namespace zeridajh;
 #define SYS_DEVFMT	"%s"
 #define SYS_DOPTSYN	"<device>"
 #define SYS_DOPTUSE	"<device>  : flash card is device <device>"
-#define SYS_FINISH	{ cout << endl; }
+#define SYS_FINISH	{ std::cout << std::endl; }
 
+#define OFFT_64		off_t
+#define MKDIR(a, b)	mkdir(a, b)
 #define FOPEN_64	fopen
 #define FSEEK_64	fseeko
+#define STRCASECMP	strcasecmp
 
 #endif
 
-#ifdef WINDOWS
+#ifdef WINDOWS_CW
 
 #define SYS_SLASH	"\\"
 #define SYS_DEVFMT	"%s"
@@ -85,8 +86,29 @@ using namespace zeridajh;
 #define SYS_DOPTUSE	"<drive>   : flash card is drive <drive>"
 #define SYS_FINISH	{}
 
+#define OFFT_64		off_t
+#define MKDIR(a, b)	mkdir(a, b)
 #define FOPEN_64	fopen
 #define FSEEK_64	fseeko
+#define STRCASECMP	strcasecmp
+
+#endif
+
+#ifdef WINDOWS_VS
+
+#define SYS_SLASH	"\\"
+#define SYS_DEVFMT	"\\\\.\\%s:"
+#define SYS_DOPTSYN	"<drive>"
+#define SYS_DOPTUSE	"<drive>   : flash card is drive <drive>"
+#define SYS_FINISH	{}
+
+#define OFFT_64		__int64
+#define MKDIR(a, b)	_mkdir(a)
+#define FOPEN_64	fopen
+#define FSEEK_64	_fseeki64
+#define STRCASECMP	_stricmp
+
+#include <direct.h>
 
 #endif
 
@@ -136,7 +158,7 @@ using namespace zeridajh;
 
 #define VALID_FS_NUMBER(n)	((n >= 1 && n <= FILING_SYSTEMS) || (n >= 81 && n <= 80 + FILING_SYSTEMS))
 
-#define FILING_SYSTEM_NAME(n)	(!VALID_FS_NUMBER(n) ? string("<unknown FS>") : FS_Info[(n < 80) ? n - 1 : n - 81].name + ((n < 80) ? " (" HW_NAME ")" : ""))
+#define FILING_SYSTEM_NAME(n)	(!VALID_FS_NUMBER(n) ? std::string("<unknown FS>") : FS_Info[(n < 80) ? n - 1 : n - 81].name + ((n < 80) ? " (" HW_NAME ")" : ""))
 
 enum command_enum
 {
@@ -187,11 +209,11 @@ struct copy_map_entry
 
 struct Script_Line
 {
-	const int	source;
-	const int	number;
-	const string	text;
+	const int		source;
+	const int		number;
+	const std::string	text;
 
-	Script_Line(int a_source, int a_number, const string& a_text) : source(a_source), number(a_number), text(a_text) {};
+	Script_Line(int a_source, int a_number, const std::string& a_text) : source(a_source), number(a_number), text(a_text) {};
 };
 
 struct Option_List
@@ -217,18 +239,18 @@ struct Object_Part
 {
 	const objectpart_enum	type;
 	const nval32		size;
-	const string		name;
+	const std::string	name;
 	nval8* const		data;
 	const nval8		byte;
 
-	Object_Part(const string& a_name, nval32 a_size) : type(objectpart_is_file), size(a_size), name(a_name), data(NULL), byte(0) {};
+	Object_Part(const std::string& a_name, nval32 a_size) : type(objectpart_is_file), size(a_size), name(a_name), data(NULL), byte(0) {};
 	Object_Part(nval8* a_data, nval32 a_size) : type(objectpart_is_data), size(a_size), name(""), data(a_data), byte(0) {};
 	Object_Part(nval8 a_byte, nval32 a_size) : type(objectpart_is_made), size(a_size), name(""), data(NULL), byte(a_byte) {};
 };
 
 struct Object_Plan
 {
-	list<Object_Part>	parts;
+	std::list<Object_Part>	parts;
 
 	void Add_Part(const Object_Part& part)
 	{
@@ -238,13 +260,13 @@ struct Object_Plan
 
 struct Global_Header
 {
-	string	signature;
-	nval32	cat_free_ptr;
-	nval32	dat_free_ptr;
+	std::string	signature;
+	nval32		cat_free_ptr;
+	nval32		dat_free_ptr;
 
 	void Import(const nval8* raw)
 	{
-		CData_Block data_block(raw);
+		zeridajh::CData_Block data_block(raw);
 
 		signature = data_block.String(0)(8);
 		cat_free_ptr = data_block.NVal32(16);
@@ -253,7 +275,7 @@ struct Global_Header
 
 	void Export(nval8* raw) const
 	{
-		CData_Block data_block(raw);
+		zeridajh::CData_Block data_block(raw);
 
 		data_block.Bytes(SZ_GLB_HEADER, 0) = (nval8) 0x00;
 
@@ -265,15 +287,15 @@ struct Global_Header
 
 struct Catalogue_Entry
 {
-	string	name;
-	nval8	type;
-	nval8	subtype;
-	nval32	card_address;
-	nval32	size_in_bytes;
+	std::string	name;
+	nval8		type;
+	nval8		subtype;
+	nval32		card_address;
+	nval32		size_in_bytes;
 
 	void Import(const nval8* raw)
 	{
-		CData_Block data_block(raw);
+		zeridajh::CData_Block data_block(raw);
 
 		type = data_block.NVal8(0);
 		subtype = data_block.NVal8(1);
@@ -285,7 +307,7 @@ struct Catalogue_Entry
 
 	void Export(nval8* raw) const
 	{
-		CData_Block data_block(raw);
+		zeridajh::CData_Block data_block(raw);
 
 		data_block.Bytes(SZ_CAT_ENTRY, 0) = (nval8) 0x00;
 
@@ -313,7 +335,7 @@ struct Catalogue_Entry
 				return false;
 		}
 		else
-			return strcasecmp(name.c_str(), rhs.name.c_str()) < 0;
+			return STRCASECMP(name.c_str(), rhs.name.c_str()) < 0;
 
 		return false;
 	}
@@ -321,12 +343,12 @@ struct Catalogue_Entry
 
 struct Object_Header
 {
-	string			signature;
+	std::string		signature;
 	const Catalogue_Entry*	catalogue_entry;
 
 	void Export(nval8* raw) const
 	{
-		CData_Block data_block(raw);
+		zeridajh::CData_Block data_block(raw);
 
 		data_block.Bytes(SZ_OBJ_HEADER, 0) = (nval8) 0x00;
 
@@ -353,13 +375,13 @@ protected:
 
 	struct argument_file
 	{
-		string	name;
-		nval32	size;
+		std::string	name;
+		nval32		size;
 	};
 
-	struct argument_sizes
+	struct argument_size
 	{
-		nval32 sizes[2];
+		nval32 size;
 	};
 
 //
@@ -368,9 +390,9 @@ protected:
 
 private:
 
-	int	arg_counted;
-	int	arg_current;
-	string	arguments[1 + MAX_COMMAND_ARGS];
+	int		arg_counted;
+	int		arg_current;
+	std::string	arguments[1 + MAX_COMMAND_ARGS];
 
 protected:
 
@@ -387,14 +409,14 @@ protected:
 	virtual ~CCommand() {};
 	CCommand(command_enum, const Script_Line&);
 
-	const string&	Arg(const char*);
-	void		Arg_Finish(void);
-	argument_type	Arg_Type(void);
-	string		Arg_Name(void);
-	int		Arg_List(const char*, const char**);
-	argument_file	Arg_File(bool);
-	int		Arg_FS_Id(void);
-	argument_sizes	Arg_Sizes(int, const char*);
+	const std::string&	Arg(const char*);
+	void			Arg_Finish(void);
+	argument_type		Arg_Type(void);
+	std::string		Arg_Name(void);
+	int			Arg_List(const char*, const char**);
+	argument_file		Arg_File(bool);
+	int			Arg_FS_Id(void);
+	argument_size		Arg_Size(const char*);
 
 public:
 
@@ -429,11 +451,11 @@ class CCommand_Add : public CCommand
 
 private:
 
-	string			cat_name;
+	std::string		cat_name;
 	nval8			cat_type;
 	nval8			cat_subtype;
 	const Catalogue_Entry*	cat_entry;
-	string			file_name;
+	std::string		file_name;
 	process_enum		process_type;
 	nval32			size_in_bytes;
 
@@ -443,12 +465,12 @@ private:
 
 private:
 
-	void	Process_Disc(const string&, bool, Option_List&, nval32&, nval32&, nval8*&, bool);
-	void	Process_Disc(const string&, bool, Option_List&, nval32&);
-	void	Process_Disc(const string&, bool, Option_List&, nval32&, nval32&, nval8*&);
-	void	Process_Tape(const string&, nval32&, nval8*&, bool);
-	void	Process_Tape(const string&, nval32&);
-	void	Process_Tape(const string&, nval32&, nval8*&);
+	void	Process_Disc(const std::string&, bool, Option_List&, nval32&, nval32&, nval8*&, bool);
+	void	Process_Disc(const std::string&, bool, Option_List&, nval32&);
+	void	Process_Disc(const std::string&, bool, Option_List&, nval32&, nval32&, nval8*&);
+	void	Process_Tape(const std::string&, nval32&, nval8*&, bool);
+	void	Process_Tape(const std::string&, nval32&);
+	void	Process_Tape(const std::string&, nval32&, nval8*&);
 
 public:
 
@@ -469,11 +491,11 @@ class CCommand_New : public CCommand
 
 private:
 
-	string			cat_name;
+	std::string		cat_name;
 	nval8			cat_type;
 	nval8			cat_subtype;
 	const Catalogue_Entry*	cat_entry;
-	nval32			new_sizes[2];
+	nval32			new_size;
 	process_enum		process_type;
 	nval32			size_in_bytes;
 
@@ -500,7 +522,7 @@ class CCommand_Delete : public CCommand
 
 private:
 
-	string			cat_name;
+	std::string		cat_name;
 	nval8			cat_type;
 	nval8			cat_subtype;
 	const Catalogue_Entry*	cat_entry;
@@ -530,8 +552,8 @@ private:
 	nval8			cat_type;
 	nval8			cat_subtype;
 	const Catalogue_Entry*	cat_entry;
-	string			old_cat_name;
-	string			new_cat_name;
+	std::string		old_cat_name;
+	std::string		new_cat_name;
 
 //
 // Functions
@@ -555,7 +577,7 @@ class CCommand_Backup : public CCommand
 
 private:
 
-	string	directory_name;
+	std::string	directory_name;
 
 //
 // Functions
@@ -579,11 +601,11 @@ class CCommand_Extract : public CCommand
 
 private:
 
-	string			cat_name;
+	std::string		cat_name;
 	nval8			cat_type;
 	nval8			cat_subtype;
 	const Catalogue_Entry*	cat_entry;
-	string			file_name;
+	std::string		file_name;
 	process_enum		process_type;
 
 //
@@ -608,7 +630,7 @@ class CInput
 
 private:
 
-	list<CCommand*>		command_list;
+	std::list<CCommand*>	command_list;
 	bool			nothing_to_do;
 	nval32			nr_deletes;
 	nval32			nr_renames;
@@ -622,7 +644,7 @@ private:
 
 private:
 
-	command_enum	Decode_Command(const string&);
+	command_enum	Decode_Command(const std::string&);
 	void		One_Command(const Script_Line&);
 
 public:
@@ -647,12 +669,12 @@ class CCard_Memory
 
 private:
 
-	string	card_device;
-	nval32	cache_size;
-	nval8*	cache_buffer;
-	nval32	cache_fill_lo;
-	nval32	cache_fill_hi;
-	nval32	cache_card_address;
+	std::string	card_device;
+	nval32		cache_size;
+	nval8*		cache_buffer;
+	nval32		cache_fill_lo;
+	nval32		cache_fill_hi;
+	nval32		cache_card_address;
 
 //
 // Functions
@@ -668,7 +690,7 @@ private:
 
 public:
 
-	CCard_Memory(const string&, nval32);
+	CCard_Memory(const std::string&, nval32);
 
 	void	Flush(void);
 	nval8*	Write_Cached(nval32, const nval8*, nval32);
@@ -722,7 +744,7 @@ private:
 
 	nval8*				raw;
 	bool				dirty;
-	vector<Catalogue_Entry>		contents;
+	std::vector<Catalogue_Entry>	contents;
 	const nval32			card_address;
 	nval32				objects_base;
 	nval32				objects_size;
@@ -737,7 +759,7 @@ private:
 
 private:
 
-	const Catalogue_Entry*	Entry_Exists(nval8, nval8, const string&);
+	const Catalogue_Entry*	Entry_Exists(nval8, nval8, const std::string&);
 
 public:
 
@@ -754,10 +776,10 @@ public:
 	nval32			Objects_Size_In_Bytes(void);
 	const Catalogue_Entry*	Entry(nval32);
 	void			List(void);
-	const Catalogue_Entry*	Checkup_Entry(nval8, nval8, const string&, char, const Script_Line&);
-	const Catalogue_Entry*	Add_Entry(nval8, nval8, const string&, nval32);
+	const Catalogue_Entry*	Checkup_Entry(nval8, nval8, const std::string&, char, const Script_Line&);
+	const Catalogue_Entry*	Add_Entry(nval8, nval8, const std::string&, nval32);
 	void			Delete_Entry(const Catalogue_Entry*);
-	void			Rename_Entry(const Catalogue_Entry*, const string&);
+	void			Rename_Entry(const Catalogue_Entry*, const std::string&);
 
 };
 
@@ -804,7 +826,7 @@ public:
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-off_t			The_Area;
+OFFT_64			The_Area;
 CInput			The_Input;
 Option_List		The_Options;
 CCard_Memory*		The_Memory = NULL;
@@ -814,15 +836,15 @@ CCard_Global_Header*	The_Global_Header = NULL;
 CCard_Catalogue*	The_Old_Catalogue = NULL;
 CCard_Catalogue*	The_New_Catalogue = NULL;
 
-Make_String	make_string;
+zeridajh::Make_String	make_string;
 
 struct fs_info
 {
-	const string	name;
-	const nval32	crc_o;
-	const nval32	crc_p;
-	const nval16	skip;
-	const nval16	note;
+	const std::string	name;
+	const nval32		crc_o;
+	const nval32		crc_p;
+	const nval16		skip;
+	const nval16		note;
 }
 FS_Info[] =
 {
@@ -855,26 +877,26 @@ FS_Info[] =
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Emit_Message(string type, string text)
+void Emit_Message(std::string type, std::string text)
 {
-	cerr << "\n" << Neat_Message(CODE_NAME ": ", type + ": " + text);
+	std::cerr << "\n" << zeridajh::Neat_Message(CODE_NAME ": ", type + ": " + text);
 }
 
-string Line_Message(Script_Line line, string text)
+std::string Line_Message(Script_Line line, std::string text)
 {
-	stringstream message;
+	std::ostringstream message;
 
 	message << "line " << line.source << "." << line.number << ": " << text;
 
 	return message.str();
 }
 
-void Issue_Warning(string text)
+void Issue_Warning(std::string text)
 {
 	Emit_Message("warning", text);
 }
 
-void Issue_Fatal_Error(string text)
+void Issue_Fatal_Error(std::string text)
 {
 	Emit_Message("fatal error", text);
 
@@ -883,21 +905,21 @@ void Issue_Fatal_Error(string text)
 	exit(1);
 }
 
-void Issue_Warning(Script_Line line, string text)
+void Issue_Warning(Script_Line line, std::string text)
 {
 	Issue_Warning(Line_Message(line, text));
 }
 
-void Issue_Fatal_Error(Script_Line line, string text)
+void Issue_Fatal_Error(Script_Line line, std::string text)
 {
 	Issue_Fatal_Error(Line_Message(line, text));
 }
 
-void Issue_Usage_Error(string text)
+void Issue_Usage_Error(std::string text)
 {
-	cerr << "\n" << Neat_Message(CODE_NAME ": ", "usage error: " + text);
+	std::cerr << "\n" << zeridajh::Neat_Message(CODE_NAME ": ", "usage error: " + text);
 
-	cerr <<
+	std::cerr <<
 
 	"\n"
 	"Usage: " CODE_NAME " [option...] [script file...]\n"
@@ -964,7 +986,7 @@ nval32 Crc_32(const nval8* data, nval32 bytes)
 	return crc;
 }
 
-void Open_File(FILE*& handle, const string& name, const char* mode)
+void Open_File(FILE*& handle, const std::string& name, const char* mode)
 //
 //
 // Open a file, failure is fatal
@@ -975,7 +997,7 @@ void Open_File(FILE*& handle, const string& name, const char* mode)
 		Issue_Fatal_Error(MAKE_STRING("cannot open file '" << name << "'"));
 }
 
-void Open_FStream(fstream& stream, const string& name, ios_base::openmode mode)
+void Open_FStream(std::fstream& stream, const std::string& name, std::ios_base::openmode mode)
 //
 //
 // Open a file, failure is fatal
@@ -988,7 +1010,7 @@ void Open_FStream(fstream& stream, const string& name, ios_base::openmode mode)
 		Issue_Fatal_Error(MAKE_STRING("cannot open file '" << name << "'"));
 }
 
-void Open_Card(FILE*& handle, const string& name, const char* mode)
+void Open_Card(FILE*& handle, const std::string& name, const char* mode)
 //
 //
 // Open the flash card, failure is fatal
@@ -999,7 +1021,7 @@ void Open_Card(FILE*& handle, const string& name, const char* mode)
 		Issue_Fatal_Error(MAKE_STRING("cannot access flash card at '" << name << "'"));
 }
 
-bool Size_Of_File(const string& file_name, nval32& file_size)
+bool Size_Of_File(const std::string& file_name, nval32& file_size)
 //
 //
 // Determine size of a file (file may exist)
@@ -1018,7 +1040,7 @@ bool Size_Of_File(const string& file_name, nval32& file_size)
 	return true;
 }
 
-nval32 Size_Of_File(const string& file_name)
+nval32 Size_Of_File(const std::string& file_name)
 //
 //
 // Determine size of a file (file must exist)
@@ -1033,7 +1055,7 @@ nval32 Size_Of_File(const string& file_name)
 	return file_size;
 }
 
-void Load_File(const string& file_name, nval8* file_buffer)
+void Load_File(const std::string& file_name, nval8* file_buffer)
 //
 //
 // Load an entire file
@@ -1052,7 +1074,7 @@ void Load_File(const string& file_name, nval8* file_buffer)
 	fclose(input_file);
 }
 
-void Save_File(const string& file_name, const nval8* file_buffer, nval32 file_size)
+void Save_File(const std::string& file_name, const nval8* file_buffer, nval32 file_size)
 //
 //
 // Save an entire file
@@ -1068,7 +1090,7 @@ void Save_File(const string& file_name, const nval8* file_buffer, nval32 file_si
 	fclose(output_file);
 }
 
-void Add_Script_Line(list<Script_Line>& script_lines, bool first_line, const string& line_text)
+void Add_Script_Line(std::list<Script_Line>& script_lines, bool first_line, const std::string& line_text)
 {
 	static int	line_number = 0;
 	static int	source_number = 0;
@@ -1084,13 +1106,13 @@ void Add_Script_Line(list<Script_Line>& script_lines, bool first_line, const str
 	script_lines.push_back(Script_Line(source_number, line_number, line_text));
 }
 
-void Add_Script_File(list<Script_Line>& script_lines, const string& file_name)
+void Add_Script_File(std::list<Script_Line>& script_lines, const std::string& file_name)
 {
-	char	ch;
-	bool	first;
-	char	terminator;
-	string	input_line;
-	FILE*	input_file;
+	char		ch;
+	bool		first;
+	char		terminator;
+	std::string	input_line;
+	FILE*		input_file;
 
 	Open_File(input_file, file_name, "rb");
 
@@ -1159,15 +1181,15 @@ object_enum Object_Type_Id(nval8 type, nval8 subtype)
 	return object_is_unknown;
 }
 
-string Object_Type_Description(nval8 type, nval8 subtype, const string& name = "", bool verbose = false)
+std::string Object_Type_Description(nval8 type, nval8 subtype, const std::string& name = "", bool verbose = false)
 //
 //
 // Return 'description' of object type
 //
 //
 {
-	stringstream	description;
-	object_enum	id = Object_Type_Id(type, subtype);
+	std::ostringstream	description;
+	object_enum		id = Object_Type_Id(type, subtype);
 
 	if (verbose)
 	{
@@ -1233,7 +1255,7 @@ string Object_Type_Description(nval8 type, nval8 subtype, const string& name = "
 	return description.str();
 }
 
-int Recognize_FS(const string& file_name)
+int Recognize_FS(const std::string& file_name)
 //
 //
 // Attempt to recognize a filing system
@@ -1297,7 +1319,7 @@ void Toggle_Disc_Interlacing(bool interlace, bool adfs, nval8* old_disc_data, nv
 		conti_bytes = (conti_offset > conti_maxi) ? 0 : conti_maxi - conti_offset;
 		disco_bytes = (disco_offset > disco_maxi) ? 0 : disco_maxi - disco_offset;
 
-		bytes_todo = min(map_walker->size, min(conti_bytes, disco_bytes));
+		bytes_todo = std::min(map_walker->size, std::min(conti_bytes, disco_bytes));
 
 		if (interlace)
 			memcpy(conti_data + conti_offset, disco_data + disco_offset, bytes_todo);
@@ -1334,7 +1356,7 @@ void Reinterlace_Disc(bool adfs, nval8* old_disc_data, nval32 old_disc_size, nva
 	Toggle_Disc_Interlacing(true, adfs, old_disc_data, old_disc_size, new_disc_data, new_disc_size);
 }
 
-string Verbalise_Drive_Error(as_error error)
+std::string Verbalise_Drive_Error(zeridajh::as_error error)
 //
 //
 // 'Verbalise' drive error
@@ -1343,13 +1365,13 @@ string Verbalise_Drive_Error(as_error error)
 {
 	switch (error)
 	{
-	case as_error_drive_too_big :
+	case zeridajh::as_error_drive_too_big :
 		return "drive is bigger than maximum";
-	case as_error_drive_too_small :
+	case zeridajh::as_error_drive_too_small :
 		return "drive is smaller than minimum";
-	case as_error_drive_inconsistent :
+	case zeridajh::as_error_drive_inconsistent :
 		return "drive contents are inconsistent";
-	case as_error_drive_data_missing :
+	case zeridajh::as_error_drive_data_missing :
 		return "some drive data is missing";
 	default :
 		break;
@@ -1374,7 +1396,7 @@ string Verbalise_Drive_Error(as_error error)
 
 CCommand::CCommand(command_enum a_command_code, const Script_Line& a_script_line) : script_line(a_script_line), command_code(a_command_code)
 {
-	stringstream line_input(a_script_line.text);
+	std::istringstream line_input(a_script_line.text);
 
 	arg_counted = -1;
 
@@ -1387,7 +1409,7 @@ CCommand::CCommand(command_enum a_command_code, const Script_Line& a_script_line
 	options = The_Options;
 }
 
-const string& CCommand::Arg(const char* what)
+const std::string& CCommand::Arg(const char* what)
 //
 //
 // Expect next argument
@@ -1418,8 +1440,8 @@ CCommand::argument_type CCommand::Arg_Type(void)
 //
 //
 {
-	argument_type	info;
-	const string&	arg = Arg("object type");
+	argument_type		info;
+	const std::string&	arg = Arg("object type");
 
 	info.type = CAT_TYPE_NONE;
 	info.subtype = CAT_SUBTYPE_NONE;
@@ -1465,14 +1487,14 @@ CCommand::argument_type CCommand::Arg_Type(void)
 	return info;
 }
 
-string CCommand::Arg_Name(void)
+std::string CCommand::Arg_Name(void)
 //
 //
 // Return next argument (object name)
 //
 //
 {
-	const string& arg = Arg("object name");
+	const std::string& arg = Arg("object name");
 
 	if (arg.size() > CAT_NAME_SIZE)
 		Issue_Fatal_Error(script_line, MAKE_STRING("object name is longer than " << CAT_NAME_SIZE << " characters"));
@@ -1491,12 +1513,12 @@ int CCommand::Arg_List(const char* what, const char** list)
 //
 //
 {
-	string		choices;
-	const string&	arg = Arg(what);
+	std::string		choices;
+	const std::string&	arg = Arg(what);
 
 	for (int index = 1; *list != NULL; index++, list++)
 	{
-		choices += string((index == 1) ? "" : (list[1] == NULL) ? " or " : ", ") + *list;
+		choices += std::string((index == 1) ? "" : (list[1] == NULL) ? " or " : ", ") + *list;
 
 		if (arg == *list)
 			return index;
@@ -1514,8 +1536,8 @@ CCommand::argument_file CCommand::Arg_File(bool check)
 //
 //
 {
-	argument_file	info;
-	const string&	arg = Arg("file name");
+	argument_file		info;
+	const std::string&	arg = Arg("file name");
 
 	info.name = arg;
 
@@ -1532,9 +1554,9 @@ int CCommand::Arg_FS_Id(void)
 //
 //
 {
-	int		fs_nr;
-	char		dummy;
-	const string&	arg = Arg("FS identifier");
+	int			fs_nr;
+	char			dummy;
+	const std::string&	arg = Arg("FS identifier");
 
 	if (sscanf(arg.c_str(), "%d%c", &fs_nr, &dummy) != 1 || !(fs_nr >= 0 && fs_nr <= 250))
 		Issue_Fatal_Error(script_line, MAKE_STRING("FS number should be between 0 and 250"));
@@ -1542,41 +1564,26 @@ int CCommand::Arg_FS_Id(void)
 	return fs_nr;
 }
 
-CCommand::argument_sizes CCommand::Arg_Sizes(int number, const char* what)
+CCommand::argument_size CCommand::Arg_Size(const char* what)
 //
 //
 // Return next argument (one or two sizes)
 //
 //
 {
-	argument_sizes	info;
-	char		dummy;
-	char		multy[2];
-	unsigned long	sizes[2];
-	const string&	arg = Arg(what);
+	argument_size		info;
+	unsigned long		size;
+	char			dummy;
+	char			multy;
+	const std::string&	arg = Arg(what);
 
-	if (number == 1)
-	{
-		multy[1] = '\0';
-		sizes[1] = 0;
+	size = 0;
+	multy = '\0';
 
-		if (sscanf(arg.c_str(), "%lu%c%c", &sizes[0], &multy[0], &dummy) != 2 || strchr("KM", multy[0]) == NULL)
-			Issue_Fatal_Error(script_line, MAKE_STRING("badly formed " << what << ", use e.g. '123K' or '45M'"));
-	}
-	else
-	{
-		if (sscanf(arg.c_str(), "%lu%c+%lu%c%c", &sizes[0], &multy[0], &sizes[1], &multy[1], &dummy) != 4 || strchr("KM", multy[0]) == NULL || strchr("KM", multy[1]) == NULL)
-		{
-			multy[1] = '\0';
-			sizes[1] = 0;
+	if (sscanf(arg.c_str(), "%lu%c%c", &size, &multy, &dummy) != 2 || strchr("KM", multy) == NULL)
+		Issue_Fatal_Error(script_line, MAKE_STRING("badly formed " << what << ", use e.g. '123K' or '45M'"));
 
-			if (sscanf(arg.c_str(), "%lu%c%c", &sizes[0], &multy[0], &dummy) != 2 || strchr("KM", multy[0]) == NULL)
-				Issue_Fatal_Error(script_line, MAKE_STRING("badly formed " << what << ", use e.g. '123K', '45M' or '123K+45M'"));
-		}
-	}
-
-	for (int index = 0; index < 2; index++)
-		info.sizes[index] = sizes[index] * ((multy[index] == 'M') ? 1024 * 1024 : 1024);
+	info.size = size * ((multy == 'M') ? 1024 * 1024 : 1024);
 
 	return info;
 }
@@ -1620,11 +1627,11 @@ CCommand_Do::CCommand_Do(command_enum command_code, const Script_Line& script_li
 		break;
 	case 2 : // BLOWUP
 		{
-			const argument_sizes arg_target_size = Arg_Sizes(1, "target size");
+			const argument_size arg_target_size = Arg_Size("target size");
 
 			The_Options.blowup = true;
 
-			The_Options.blowup_size = arg_target_size.sizes[0];
+			The_Options.blowup_size = arg_target_size.size;
 		}
 		break;
 	case 3 : // COMPACT
@@ -1722,7 +1729,7 @@ CCommand_Add::CCommand_Add(command_enum command_code, const Script_Line& script_
 	case object_is_tool :
 	case object_is_hadfs_disc :
 		{
-			const string		arg_object_name = Arg_Name();
+			const std::string	arg_object_name = Arg_Name();
 			const argument_file	arg_file_name = Arg_File(true);
 
 			cat_name = arg_object_name;
@@ -1738,7 +1745,7 @@ CCommand_Add::CCommand_Add(command_enum command_code, const Script_Line& script_
 			nval32			new_disc_size;
 			const char*		lacing_indicator_list[] = { "N", "I", NULL };
 			const int		arg_lacing_indicator = Arg_List("lacing indicator", lacing_indicator_list);
-			const string		arg_object_name = Arg_Name();
+			const std::string	arg_object_name = Arg_Name();
 			const argument_file	arg_file_name = Arg_File(true);
 
 			adfs = (cat_subtype == CAT_SUBTYPE_MEDIUM_ADFS);
@@ -1759,7 +1766,7 @@ CCommand_Add::CCommand_Add(command_enum command_code, const Script_Line& script_
 		{
 			nval8*			tape_data;
 			nval32			new_tape_size;
-			const string		arg_object_name = Arg_Name();
+			const std::string	arg_object_name = Arg_Name();
 			const argument_file	arg_file_name = Arg_File(true);
 
 			tape_data = new nval8[arg_file_name.size];
@@ -1814,7 +1821,7 @@ void CCommand_Add::Execute(void)
 {
 	Object_Plan object_plan;
 
-	cout << "Adding " << Object_Type_Description(cat_type, cat_subtype) << " '" << cat_name << "'" << endl;
+	std::cout << "Adding " << Object_Type_Description(cat_type, cat_subtype) << " '" << cat_name << "'" << std::endl;
 
 	switch (process_type)
 	{
@@ -1837,9 +1844,9 @@ void CCommand_Add::Execute(void)
 			Process_Disc(file_name, adfs, options, old_disc_size, new_disc_size, new_disc_data);
 
 			if (new_disc_size < old_disc_size)
-				cout << "<shrunk from " << old_disc_size << " to " << new_disc_size << " bytes, " << (old_disc_size - new_disc_size) << " less>" << endl;
+				std::cout << "<shrunk from " << old_disc_size << " to " << new_disc_size << " bytes, " << (old_disc_size - new_disc_size) << " less>" << std::endl;
 			else if (new_disc_size > old_disc_size)
-				cout << "<blown up from " << old_disc_size << " to " << new_disc_size << " bytes, " << (new_disc_size - old_disc_size) << " more>" << endl;
+				std::cout << "<blown up from " << old_disc_size << " to " << new_disc_size << " bytes, " << (new_disc_size - old_disc_size) << " more>" << std::endl;
 
 			if (new_disc_data == NULL)
 			{
@@ -1875,7 +1882,7 @@ nval32 CCommand_Add::Size_On_Card(void)
 	return SIZE_ON_CARD(size_in_bytes);
 }
 
-void CCommand_Add::Process_Disc(const string& file_name, bool adfs, Option_List& options, nval32& old_disc_size, nval32& new_disc_size, nval8*& new_disc_data, bool test)
+void CCommand_Add::Process_Disc(const std::string& file_name, bool adfs, Option_List& options, nval32& old_disc_size, nval32& new_disc_size, nval8*& new_disc_data, bool test)
 //
 //
 // Attempt to 'process' a disc file
@@ -1918,38 +1925,38 @@ void CCommand_Add::Process_Disc(const string& file_name, bool adfs, Option_List&
 
 	if (options.compact || options.shrink || options.blowup)
 	{
-		CFS_Drive*	drive;
-		CFS_Drive*	drives[4];
-		nval32		drive_size;
-		nval32		drive_sizes[4];
-		nval32		input_done = 0;
-		int		drive_count = 0;
-		nval32		input_size = disc_size;
-		as_error	drive_error = as_error_none;
-		nval32		drive_limit = adfs ? 512 * 1024 * 1024 : 200 * 1024;
+		zeridajh::CFS_Drive*	drive;
+		zeridajh::CFS_Drive*	drives[4];
+		nval32			drive_size;
+		nval32			drive_sizes[4];
+		nval32			input_done = 0;
+		int			drive_count = 0;
+		nval32			input_size = disc_size;
+		zeridajh::as_error	drive_error = zeridajh::as_error_none;
+		nval32			drive_limit = adfs ? 512 * 1024 * 1024 : 200 * 1024;
 
-		while (input_done < input_size && drive_count < 4 && drive_error == as_error_none)
+		while (input_done < input_size && drive_count < 4 && drive_error == zeridajh::as_error_none)
 		{
 			if (adfs)
 			{
 				if (disc_data == NULL)
-					drive = new CADFS_Drive(file_name, input_done, !test);
+					drive = new zeridajh::CADFS_Drive(file_name, input_done, !test);
 				else
-					drive = new CADFS_Drive(disc_data, disc_size, input_done, !test);
+					drive = new zeridajh::CADFS_Drive(disc_data, disc_size, input_done, !test);
 			}
 			else
 			{
 				if (disc_data == NULL)
-					drive = new CDFS_Drive(file_name, input_done, !test);
+					drive = new zeridajh::CDFS_Drive(file_name, input_done, !test);
 				else
-					drive = new CDFS_Drive(disc_data, disc_size, input_done, !test);
+					drive = new zeridajh::CDFS_Drive(disc_data, disc_size, input_done, !test);
 			}
 
 			drive_error = drive->Ok();
 
 			drives[drive_count] = drive;
 
-			if (drive_error == as_error_none)
+			if (drive_error == zeridajh::as_error_none)
 			{
 				drive_size = drive->Size_In_Sectors() * 256;
 
@@ -1961,7 +1968,7 @@ void CCommand_Add::Process_Disc(const string& file_name, bool adfs, Option_List&
 			drive_count++;
 		}
 
-		if (drive_error == as_error_none)
+		if (drive_error == zeridajh::as_error_none)
 		{
 			disc_size = 0;
 
@@ -2033,7 +2040,7 @@ void CCommand_Add::Process_Disc(const string& file_name, bool adfs, Option_List&
 	new_disc_size = disc_size;
 }
 
-void CCommand_Add::Process_Disc(const string& file_name, bool adfs, Option_List& options, nval32& new_disc_size)
+void CCommand_Add::Process_Disc(const std::string& file_name, bool adfs, Option_List& options, nval32& new_disc_size)
 //
 //
 // Attempt to 'process' a disc file (size phase)
@@ -2048,7 +2055,7 @@ void CCommand_Add::Process_Disc(const string& file_name, bool adfs, Option_List&
 	Process_Disc(file_name, adfs, options, dummy_nval32, new_disc_size, dummy_nval8p, true);
 }
 
-void CCommand_Add::Process_Disc(const string& file_name, bool adfs, Option_List& options, nval32& old_disc_size, nval32& new_disc_size, nval8*& new_disc_data)
+void CCommand_Add::Process_Disc(const std::string& file_name, bool adfs, Option_List& options, nval32& old_disc_size, nval32& new_disc_size, nval8*& new_disc_data)
 //
 //
 // Attempt to 'process' a disc file (data phase)
@@ -2060,7 +2067,7 @@ void CCommand_Add::Process_Disc(const string& file_name, bool adfs, Option_List&
 	Process_Disc(file_name, adfs, options, old_disc_size, new_disc_size, new_disc_data, false);
 }
 
-void CCommand_Add::Process_Tape(const string& file_name, nval32& new_tape_size, nval8*& new_tape_data, bool test)
+void CCommand_Add::Process_Tape(const std::string& file_name, nval32& new_tape_size, nval8*& new_tape_data, bool test)
 //
 //
 // Attempt to 'process' a tape file
@@ -2069,12 +2076,12 @@ void CCommand_Add::Process_Tape(const string& file_name, nval32& new_tape_size, 
 //
 //
 {
-	nval16		blk_code;
-	nval32		blk_size;
-	const nval8*	blk_data;
-	CData_Block	data_block_r;
-	CData_Block	data_block_w;
-	nval32		old_tape_size;
+	nval16			blk_code;
+	nval32			blk_size;
+	const nval8*		blk_data;
+	zeridajh::CData_Block	data_block_r;
+	zeridajh::CData_Block	data_block_w;
+	nval32			old_tape_size;
 
 	old_tape_size = Size_Of_File(file_name);
 
@@ -2112,7 +2119,7 @@ void CCommand_Add::Process_Tape(const string& file_name, nval32& new_tape_size, 
 	new_tape_size++;
 }
 
-void CCommand_Add::Process_Tape(const string& file_name, nval32& new_tape_size)
+void CCommand_Add::Process_Tape(const std::string& file_name, nval32& new_tape_size)
 //
 //
 // Attempt to 'process' a tape file (size phase)
@@ -2126,7 +2133,7 @@ void CCommand_Add::Process_Tape(const string& file_name, nval32& new_tape_size)
 	Process_Tape(file_name, new_tape_size, dummy_nval8p, true);
 }
 
-void CCommand_Add::Process_Tape(const string& file_name, nval32& new_tape_size, nval8*& new_tape_data)
+void CCommand_Add::Process_Tape(const std::string& file_name, nval32& new_tape_size, nval8*& new_tape_data)
 //
 //
 // Attempt to 'process' a tape file (data phase)
@@ -2165,8 +2172,8 @@ CCommand_New::CCommand_New(command_enum command_code, const Script_Line& script_
 	case object_is_adfs_disc :
 		{
 			bool			is_dfs;
-			const string		arg_object_name = Arg_Name();
-			const argument_sizes	arg_disc_sizes = Arg_Sizes(2, "disc size(s)");
+			const std::string	arg_object_name = Arg_Name();
+			const argument_size	arg_disc_size = Arg_Size("disc size");
 
 			is_dfs = (cat_subtype == CAT_SUBTYPE_MEDIUM_DFS);
 
@@ -2174,26 +2181,18 @@ CCommand_New::CCommand_New(command_enum command_code, const Script_Line& script_
 
 			if (is_dfs)
 			{
-				if (arg_disc_sizes.sizes[1] != 0)
-					Issue_Fatal_Error(script_line, MAKE_STRING("new DFS disc cannot be dual-sized, not useful"));
-
-				if (arg_disc_sizes.sizes[0] < 16 * 1024 || arg_disc_sizes.sizes[0] > 800 * 1024)
-					Issue_Fatal_Error(script_line, MAKE_STRING("new DFS disc size is limited to 16K - 800K"));
+				if (arg_disc_size.size < 1 * 1024 || arg_disc_size.size > 400 * 1024)
+					Issue_Fatal_Error(script_line, MAKE_STRING("new DFS disc size is limited to 1K - 400K"));
 			}
 			else
 			{
-				for (int index = 0; index < 2; index++)
-					if (arg_disc_sizes.sizes[index] != 0)
-						if (arg_disc_sizes.sizes[index] < 16 * 1024 || arg_disc_sizes.sizes[index] > 512 * 1024 * 1024)
-							Issue_Fatal_Error(script_line, MAKE_STRING("new ADFS disc size is limited to 16K - 512M"));
+				if (arg_disc_size.size < 2 * 1024 || arg_disc_size.size > 512 * 1024 * 1024)
+					Issue_Fatal_Error(script_line, MAKE_STRING("new ADFS disc size is limited to 2K - 512M"));
 			}
 
 			process_type = is_dfs ? process_is_dfs_disc : process_is_adfs_disc;
 
-			size_in_bytes = 0;
-
-			for (int index = 0; index < 2; index++)
-				size_in_bytes += (new_sizes[index] = arg_disc_sizes.sizes[index]);
+			size_in_bytes = new_size = arg_disc_size.size;
 		}
 		break;
 	default :
@@ -2215,53 +2214,21 @@ void CCommand_New::Execute(void)
 {
 	Object_Plan object_plan;
 
-	cout << "Adding empty " << Object_Type_Description(cat_type, cat_subtype) << " '" << cat_name << "'" << endl;
+	std::cout << "Adding empty " << Object_Type_Description(cat_type, cat_subtype) << " '" << cat_name << "'" << std::endl;
 
-	for (int disc_number = 0; disc_number < 2; disc_number++)
+	switch (process_type)
 	{
-		nval32 disc_size = new_sizes[disc_number];
-
-		if (disc_size == 0)
-			break;
-
-		switch (process_type)
+	case process_is_dfs_disc :
 		{
-		case process_is_dfs_disc :
+			nval32 disc_left = new_size;
+
+			while (disc_left > 0)
 			{
-				nval32 disc_left = disc_size;
-
-				while (disc_left > 0)
-				{
-					nval8*		part_data;
-					nval32		part_size;
-					nval32		drive_total = 0;
-					nval32		drive_todo = min(disc_left, (nval32) 0x32000ul);
-					CDFS_Drive	drive(drive_todo / 256, "", 0);
-
-					for (int part = 1;; part++)
-					{
-						if ((part_data = drive.Read_Part(part, NULL, NULL, &part_size, NULL)) == NULL)
-							break;
-
-						object_plan.Add_Part(Object_Part(part_data, part_size));
-
-						drive_total += part_size;
-					}
-
-					object_plan.Add_Part(Object_Part(FILLER_BYTE_DISC, drive_todo - drive_total));
-
-					disc_left -= drive_todo;
-				}
-			}
-			break;
-		case process_is_adfs_disc :
-			{
-				nval8*		part_data;
-				nval32		part_size;
-				nval32		drive_total = 0;
-				nval32		drive_todo = disc_size;
-				nval16		disc_identifier = (srand(time(0)), rand());
-				CADFS_Drive	drive(drive_todo / 256, disc_identifier, 0);
+				nval8*			part_data;
+				nval32			part_size;
+				nval32			drive_total = 0;
+				nval32			drive_todo = std::min(disc_left, (nval32) 0x32000ul);
+				zeridajh::CDFS_Drive	drive(drive_todo / 256, "", 0);
 
 				for (int part = 1;; part++)
 				{
@@ -2274,11 +2241,35 @@ void CCommand_New::Execute(void)
 				}
 
 				object_plan.Add_Part(Object_Part(FILLER_BYTE_DISC, drive_todo - drive_total));
+
+				disc_left -= drive_todo;
 			}
-			break;
-		default :
-			return;
 		}
+		break;
+	case process_is_adfs_disc :
+		{
+			nval8*			part_data;
+			nval32			part_size;
+			nval32			drive_total = 0;
+			nval32			drive_todo = new_size;
+			nval16			disc_identifier = (srand(time(0)), rand());
+			zeridajh::CADFS_Drive	drive(drive_todo / 256, disc_identifier, 0);
+
+			for (int part = 1;; part++)
+			{
+				if ((part_data = drive.Read_Part(part, NULL, NULL, &part_size, NULL)) == NULL)
+					break;
+
+				object_plan.Add_Part(Object_Part(part_data, part_size));
+
+				drive_total += part_size;
+			}
+
+			object_plan.Add_Part(Object_Part(FILLER_BYTE_DISC, drive_todo - drive_total));
+		}
+		break;
+	default :
+		return;
 	}
 
 	The_New_Objects->Object_To_Card(*cat_entry, object_plan);
@@ -2344,7 +2335,7 @@ void CCommand_Delete::Update(void)
 
 void CCommand_Delete::Execute(void)
 {
-	cout << "Deleting " << Object_Type_Description(cat_type, cat_subtype) << " '" << cat_name << "'" << endl;
+	std::cout << "Deleting " << Object_Type_Description(cat_type, cat_subtype) << " '" << cat_name << "'" << std::endl;
 
 	The_New_Catalogue->Delete_Entry(cat_entry);
 }
@@ -2400,7 +2391,7 @@ void CCommand_Rename::Execute(void)
 {
 	The_New_Catalogue->Checkup_Entry(cat_type, cat_subtype, new_cat_name, 'X', script_line);
 
-	cout << "Renaming " << Object_Type_Description(cat_type, cat_subtype) << " '" << old_cat_name << "' to '" << new_cat_name << "'" << endl;
+	std::cout << "Renaming " << Object_Type_Description(cat_type, cat_subtype) << " '" << old_cat_name << "' to '" << new_cat_name << "'" << std::endl;
 
 	The_New_Catalogue->Rename_Entry(cat_entry, new_cat_name);
 }
@@ -2435,21 +2426,21 @@ void CCommand_Backup::Execute(void)
 {
 	bool			discard;
 	const Catalogue_Entry*	cat_entry;
-	string			file_leaf;
-	fstream			script_file;
-	string			script_name;
+	std::string		file_leaf;
+	std::fstream		script_file;
+	std::string		script_name;
 
-	mkdir(directory_name.c_str(), S_IRWXU);
+	MKDIR(directory_name.c_str(), S_IRWXU);
 
 	script_name = directory_name + SYS_SLASH + "script";
 
-	Open_FStream(script_file, script_name, ios_base::out);
+	Open_FStream(script_file, script_name, std::ios_base::out);
 
 	for (nval32 index = 0; (cat_entry = The_Old_Catalogue->Entry(index)) != NULL; index++)
 	{
 		discard = false;
 
-		file_leaf = MAKE_STRING(setfill('0') << setw(8) << index);
+		file_leaf = MAKE_STRING(std::setfill('0') << std::setw(8) << index);
 
 		switch (Object_Type_Id(cat_entry->type, cat_entry->subtype))
 		{
@@ -2480,14 +2471,14 @@ void CCommand_Backup::Execute(void)
 		{
 			Object_Plan object_plan;
 
-			cout << "Backing up " << Object_Type_Description(cat_entry->type, cat_entry->subtype) << " '" << cat_entry->name << "'" << endl;
+			std::cout << "Backing up " << Object_Type_Description(cat_entry->type, cat_entry->subtype) << " '" << cat_entry->name << "'" << std::endl;
 
 			object_plan.Add_Part(Object_Part(directory_name + SYS_SLASH + file_leaf, cat_entry->size_in_bytes));
 
 			The_Memory->Read_Object(cat_entry->card_address, cat_entry->size_in_bytes, object_plan);
 		}
 		else
-			cout << "Ignoring " << ((cat_entry->type == CAT_TYPE_NONE) ? "deleted" : "unknown") << " object '" << cat_entry->name << "'" << endl;
+			std::cout << "Ignoring " << ((cat_entry->type == CAT_TYPE_NONE) ? "deleted" : "unknown") << " object '" << cat_entry->name << "'" << std::endl;
 	}
 
 	script_file.close();
@@ -2537,10 +2528,10 @@ CCommand_Extract::CCommand_Extract(command_enum command_code, const Script_Line&
 	case object_is_dfs_disc :
 	case object_is_adfs_disc :
 		{
-			bool		adfs;
-			const char*	lacing_indicator_list[] = { "N", "I", NULL };
-			const int	arg_lacing_indicator = Arg_List("lacing indicator", lacing_indicator_list);
-			const string	arg_object_name = Arg_Name();
+			bool			adfs;
+			const char*		lacing_indicator_list[] = { "N", "I", NULL };
+			const int		arg_lacing_indicator = Arg_List("lacing indicator", lacing_indicator_list);
+			const std::string	arg_object_name = Arg_Name();
 
 			adfs = (cat_subtype == CAT_SUBTYPE_MEDIUM_ADFS);
 
@@ -2571,7 +2562,7 @@ void CCommand_Extract::Execute(void)
 {
 	Object_Plan object_plan;
 
-	cout << "Extracting " << Object_Type_Description(cat_type, cat_subtype) << " '" << cat_name << "'" << endl;
+	std::cout << "Extracting " << Object_Type_Description(cat_type, cat_subtype) << " '" << cat_name << "'" << std::endl;
 
 	switch (process_type)
 	{
@@ -2655,7 +2646,7 @@ CInput::CInput()
 	new_objects_bytes = 0;
 }
 
-command_enum CInput::Decode_Command(const string& input_line)
+command_enum CInput::Decode_Command(const std::string& input_line)
 //
 //
 // Decode command name
@@ -2687,9 +2678,9 @@ void CInput::One_Command(const Script_Line& script_line)
 //
 //
 {
-	CCommand*	new_command;
-	command_enum	command_code;
-	const string&	input_line = script_line.text;
+	CCommand*		new_command;
+	command_enum		command_code;
+	const std::string&	input_line = script_line.text;
 
 	if (input_line.size() == 0 || input_line[0] == '#')
 		return;
@@ -2806,17 +2797,17 @@ void CInput::Script_Update(void)
 //
 //
 {
-	list<CCommand*>::const_iterator current_command;
+	std::list<CCommand*>::const_iterator current_command;
 
 	if (nothing_to_do)
 		return;
 
-	cout << "\n- Resolving commands" << endl;
+	std::cout << "\n- Resolving commands" << std::endl;
 
 	for (current_command = command_list.begin(); current_command != command_list.end(); current_command++)
 		(*current_command)->Update();
 
-	cout << "- Resolving done" << endl;
+	std::cout << "- Resolving done" << std::endl;
 }
 
 void CInput::Script_Execute(void)
@@ -2827,17 +2818,17 @@ void CInput::Script_Execute(void)
 //
 //
 {
-	list<CCommand*>::const_iterator current_command;
+	std::list<CCommand*>::const_iterator current_command;
 
 	if (nothing_to_do)
 		return;
 
-	cout << "\n- Executing commands" << endl;
+	std::cout << "\n- Executing commands" << std::endl;
 
 	for (current_command = command_list.begin(); current_command != command_list.end(); current_command++)
 		(*current_command)->Execute();
 
-	cout << "- Executing done" << endl;
+	std::cout << "- Executing done" << std::endl;
 }
 
 nval32 CInput::Delta_Catalogue(void)
@@ -2874,7 +2865,7 @@ nval32 CInput::Delta_Objects(void)
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCard_Memory::CCard_Memory(const string& card_spec, nval32 a_cache_size)
+CCard_Memory::CCard_Memory(const std::string& card_spec, nval32 a_cache_size)
 {
 	//
 	//
@@ -2882,20 +2873,20 @@ CCard_Memory::CCard_Memory(const string& card_spec, nval32 a_cache_size)
 	//
 	//
 
-#ifdef WINDOWS
+#ifdef WINDOWS_CW
 
 	// On newer CygWins, \\.\<drive> is no longer writable
 	// We now have to use the equivalent device file (eek)
 
-	string used_spec = card_spec;
+	std::string used_spec = card_spec;
 
 	{
-		fstream		file;
-		string		word;
-		string		last;
-		const string	find = card_spec + ":\\";
+		std::fstream		file;
+		std::string		word;
+		std::string		last;
+		const std::string	find = card_spec + ":\\";
 
-		Open_FStream(file, "/proc/partitions", ios_base::in);
+		Open_FStream(file, "/proc/partitions", std::ios_base::in);
 
 		while (file.good())
 		{
@@ -2910,7 +2901,7 @@ CCard_Memory::CCard_Memory(const string& card_spec, nval32 a_cache_size)
 
 #else
 
-	const string& used_spec = card_spec;
+	const std::string& used_spec = card_spec;
 
 #endif
 
@@ -2947,7 +2938,7 @@ nval32 CCard_Memory::Read(FILE* io_file, nval32& card_address, nval8*& data_buff
 	nval8	sector_buffer[CARD_SECTOR_SIZE];
 
 #ifdef VERBOSE
-	cout << "   sub-read " << hex << setw(8) << card_address << " + " << setw(8) << bytes_to_transfer << dec << endl;
+	std::cout << "   sub-read " << std::hex << std::setw(8) << card_address << " + " << std::setw(8) << bytes_to_transfer << std::dec << std::endl;
 #endif
 
 	address_skew = card_address % CARD_SECTOR_SIZE;
@@ -2967,7 +2958,7 @@ nval32 CCard_Memory::Read(FILE* io_file, nval32& card_address, nval8*& data_buff
 		bytes_todo = bytes_to_transfer;
 
 		if (address_skew != 0)
-			Issue_Fatal_Error(MAKE_STRING("unaligned read from flash card @ " << hex << setw(8) << card_address << " + " << setw(8) << bytes_todo));
+			Issue_Fatal_Error(MAKE_STRING("unaligned read from flash card @ " << std::hex << std::setw(8) << card_address << " + " << std::setw(8) << bytes_todo));
 
 		bytes_done = fread(data_buffer, 1, bytes_todo, io_file);
 
@@ -2976,7 +2967,7 @@ nval32 CCard_Memory::Read(FILE* io_file, nval32& card_address, nval8*& data_buff
 
 	if (bytes_done < bytes_todo)
 		if (bytes_todo <= CARD_SECTOR_SIZE)
-			Issue_Fatal_Error(MAKE_STRING("failed to read from flash card @ " << hex << setw(8) << card_address << " + " << setw(8) << bytes_todo));
+			Issue_Fatal_Error(MAKE_STRING("failed to read from flash card @ " << std::hex << std::setw(8) << card_address << " + " << std::setw(8) << bytes_todo));
 
 	card_address += bytes_transferred;
 
@@ -2997,14 +2988,14 @@ void CCard_Memory::Read(nval32 card_address, nval8* data_buffer, nval32 bytes_to
 	nval32	tail_bytes;
 
 #ifdef VERBOSE
-	cout << endl << "!! card read " << hex << setw(8) << card_address << " + " << setw(8) << bytes_to_transfer << dec << endl;
+	std::cout << std::endl << "!! card read " << std::hex << std::setw(8) << card_address << " + " << std::setw(8) << bytes_to_transfer << std::dec << std::endl;
 #endif
 
 	if (bytes_to_transfer == 0)
 		return;
 
 	if ((lead_bytes = card_address % CARD_SECTOR_SIZE) != 0)
-		lead_bytes = min(CARD_SECTOR_SIZE - lead_bytes, bytes_to_transfer);
+		lead_bytes = std::min(CARD_SECTOR_SIZE - lead_bytes, bytes_to_transfer);
 
 	bytes_to_transfer -= lead_bytes;
 
@@ -3029,10 +3020,10 @@ void CCard_Memory::Read(nval32 card_address, nval8* data_buffer, nval32 bytes_to
 			// even if not going 'over the edge', so the code reverts to
 			// 'nibble' mode if the bigger fread (partially) fails.
 
-			nval32 bytes_to_nibble = min((nval32) CARD_NIBBLE_SIZE, bytes_to_transfer);
+			nval32 bytes_to_nibble = std::min((nval32) CARD_NIBBLE_SIZE, bytes_to_transfer);
 
 #ifdef VERBOSE
-			cout << "!! nibble !" << endl;
+			std::cout << "!! nibble !" << std::endl;
 #endif
 
 			bytes_to_transfer -= Read(io_file, card_address, data_buffer, bytes_to_nibble);
@@ -3045,7 +3036,7 @@ void CCard_Memory::Read(nval32 card_address, nval8* data_buffer, nval32 bytes_to
 	fclose(io_file);
 
 #ifdef VERBOSE
-	cout << endl;
+	std::cout << std::endl;
 #endif
 }
 
@@ -3063,7 +3054,7 @@ nval32 CCard_Memory::Write(FILE* io_file, nval32& card_address, const nval8*& da
 	nval8	sector_buffer[CARD_SECTOR_SIZE];
 
 #ifdef VERBOSE
-	cout << "   sub-write " << hex << setw(8) << card_address << " + " << setw(8) << bytes_to_transfer << dec << endl;
+	std::cout << "   sub-write " << std::hex << std::setw(8) << card_address << " + " << std::setw(8) << bytes_to_transfer << std::dec << std::endl;
 #endif
 
 	address_skew = card_address % CARD_SECTOR_SIZE;
@@ -3074,7 +3065,7 @@ nval32 CCard_Memory::Write(FILE* io_file, nval32& card_address, const nval8*& da
 
 		fflush(io_file); // We must, write <-> read transitions need flush or seek
 
-		FSEEK_64(io_file, -((off_t) fread(sector_buffer, 1, bytes_todo, io_file)), SEEK_CUR);
+		FSEEK_64(io_file, -((OFFT_64) fread(sector_buffer, 1, bytes_todo, io_file)), SEEK_CUR);
 
 		memcpy(&sector_buffer[address_skew], data_buffer, bytes_to_transfer);
 
@@ -3087,7 +3078,7 @@ nval32 CCard_Memory::Write(FILE* io_file, nval32& card_address, const nval8*& da
 		bytes_todo = bytes_to_transfer;
 
 		if (address_skew != 0)
-			Issue_Fatal_Error(MAKE_STRING("unaligned write to flash card @ " << hex << setw(8) << card_address << " + " << setw(8) << bytes_todo));
+			Issue_Fatal_Error(MAKE_STRING("unaligned write to flash card @ " << std::hex << std::setw(8) << card_address << " + " << std::setw(8) << bytes_todo));
 
 		bytes_done = fwrite(data_buffer, 1, bytes_todo, io_file);
 
@@ -3095,7 +3086,7 @@ nval32 CCard_Memory::Write(FILE* io_file, nval32& card_address, const nval8*& da
 	}
 
 	if (bytes_done < bytes_todo)
-		Issue_Fatal_Error(MAKE_STRING("failed to write to flash card @ " << hex << setw(8) << card_address << " + " << setw(8) << bytes_todo));
+		Issue_Fatal_Error(MAKE_STRING("failed to write to flash card @ " << std::hex << std::setw(8) << card_address << " + " << std::setw(8) << bytes_todo));
 
 	card_address += bytes_transferred;
 
@@ -3116,14 +3107,14 @@ void CCard_Memory::Write(nval32 card_address, const nval8* data_buffer, nval32 b
 	nval32	tail_bytes;
 
 #ifdef VERBOSE
-	cout << endl << "!! card write " << hex << setw(8) << card_address << " + " << setw(8) << bytes_to_transfer << dec << endl;
+	std::cout << std::endl << "!! card write " << std::hex << std::setw(8) << card_address << " + " << std::setw(8) << bytes_to_transfer << std::dec << std::endl;
 #endif
 
 	if (bytes_to_transfer == 0)
 		return;
 
 	if ((lead_bytes = card_address % CARD_SECTOR_SIZE) != 0)
-		lead_bytes = min(CARD_SECTOR_SIZE - lead_bytes, bytes_to_transfer);
+		lead_bytes = std::min(CARD_SECTOR_SIZE - lead_bytes, bytes_to_transfer);
 
 	bytes_to_transfer -= lead_bytes;
 
@@ -3147,7 +3138,7 @@ void CCard_Memory::Write(nval32 card_address, const nval8* data_buffer, nval32 b
 	fclose(io_file);
 
 #ifdef VERBOSE
-	cout << endl;
+	std::cout << std::endl;
 #endif
 }
 
@@ -3161,7 +3152,7 @@ nval8* CCard_Memory::Cache(nval32 card_address, nval32 bytes_to_cache)
 	nval8* reserved;
 
 #ifdef VERBOSE
-	cout << endl << "!! card cache " << hex << setw(8) << card_address << " + " << setw(8) << bytes_to_cache << dec << endl;
+	std::cout << std::endl << "!! card cache " << std::hex << std::setw(8) << card_address << " + " << std::setw(8) << bytes_to_cache << std::dec << std::endl;
 #endif
 
 	if (bytes_to_cache == 0)
@@ -3205,7 +3196,7 @@ nval8* CCard_Memory::Cache(nval32 card_address, nval32 bytes_to_cache)
 			cache_card_address += delta;
 
 #ifdef VERBOSE
-			cout << "   scroll down " << hex << setw(8) << delta << dec << " to make top room" << endl;
+			std::cout << "   scroll down " << std::hex << std::setw(8) << delta << std::dec << " to make top room" << std::endl;
 #endif
 		}
 
@@ -3228,7 +3219,7 @@ nval8* CCard_Memory::Cache(nval32 card_address, nval32 bytes_to_cache)
 			cache_card_address -= delta;
 
 #ifdef VERBOSE
-			cout << "   scroll up " << hex << setw(8) << delta << dec << " to make bottom room" << endl;
+			std::cout << "   scroll up " << std::hex << std::setw(8) << delta << std::dec << " to make bottom room" << std::endl;
 #endif
 		}
 
@@ -3238,7 +3229,7 @@ nval8* CCard_Memory::Cache(nval32 card_address, nval32 bytes_to_cache)
 	}
 
 #ifdef VERBOSE
-	cout << endl;
+	std::cout << std::endl;
 #endif
 
 	return reserved;
@@ -3256,7 +3247,7 @@ void CCard_Memory::Flush(void)
 	nval32		bytes_to_write;
 
 #ifdef VERBOSE
-	cout << "\n!! flush" << endl;
+	std::cout << "\n!! flush" << std::endl;
 #endif
 
 	if ((bytes_to_write = cache_fill_hi - cache_fill_lo) == 0)
@@ -3302,9 +3293,9 @@ void CCard_Memory::Read_Object(nval32 card_address, nval32 size_in_bytes, const 
 	nval32	part_address = card_address;
 	nval32	object_bytes = size_in_bytes;
 
-	for (list<Object_Part>::const_iterator current_part = object_plan.parts.begin(); current_part != object_plan.parts.end(); current_part++)
+	for (std::list<Object_Part>::const_iterator current_part = object_plan.parts.begin(); current_part != object_plan.parts.end(); current_part++)
 	{
-		part_bytes = min(object_bytes, current_part->size);
+		part_bytes = std::min(object_bytes, current_part->size);
 
 		if (part_bytes == 0)
 			continue;
@@ -3325,7 +3316,7 @@ void CCard_Memory::Read_Object(nval32 card_address, nval32 size_in_bytes, const 
 
 				while (bytes_left > 0)
 				{
-					bytes_todo = min(bytes_left, (nval32) CHUNK_BUFFER_SIZE);
+					bytes_todo = std::min(bytes_left, (nval32) CHUNK_BUFFER_SIZE);
 
 					Read(card_walker, data_buffer, bytes_todo);
 
@@ -3386,9 +3377,9 @@ void CCard_Memory::Write_Object(nval32 card_address, nval32 size_in_bytes, const
 		data_buffer = new nval8[buffer_size];
 	}
 
-	for (list<Object_Part>::const_iterator current_part = object_plan.parts.begin(); current_part != object_plan.parts.end(); current_part++)
+	for (std::list<Object_Part>::const_iterator current_part = object_plan.parts.begin(); current_part != object_plan.parts.end(); current_part++)
 	{
-		part_bytes = min(object_bytes, current_part->size);
+		part_bytes = std::min(object_bytes, current_part->size);
 
 		if (part_bytes == 0)
 			continue;
@@ -3413,7 +3404,7 @@ void CCard_Memory::Write_Object(nval32 card_address, nval32 size_in_bytes, const
 
 		while (bytes_left > 0)
 		{
-			bytes_todo = min(bytes_left, buffer_size);
+			bytes_todo = std::min(bytes_left, buffer_size);
 
 			switch (current_part->type)
 			{
@@ -3535,9 +3526,9 @@ CCard_Global_Header::CCard_Global_Header(bool make_up_header) : card_address(CRD
 
 	Issue_Warning("Flash card global header has wrong signature");
 
-	cout << "\n!! Making up a header for a (roughly) 1 MB MMC due to '-x' !!"
+	std::cout << "\n!! Making up a header for a (roughly) 1 MB MMC due to '-x' !!"
 		"\n!! Don't forget to reformat with MMCFO before any real use !!"
-		<< endl
+		<< std::endl
 		;
 
 	contents.signature = CRD_SIGN_GHD;
@@ -3570,13 +3561,13 @@ void CCard_Global_Header::Flush(void)
 	if (!dirty)
 		return;
 
-	cout << "\n- Flushing flash card global header" << endl;
+	std::cout << "\n- Flushing flash card global header" << std::endl;
 
 	contents.Export(raw);
 
 	The_Memory->Export_Data(card_address, raw, size_in_bytes);
 
-	cout << "- Flushing done" << endl;
+	std::cout << "- Flushing done" << std::endl;
 
 	dirty = false;
 }
@@ -3729,7 +3720,7 @@ void CCard_Catalogue::Flush(void)
 	if (!dirty)
 		return;
 
-	cout << "\n- Flushing flash card catalogue" << endl;
+	std::cout << "\n- Flushing flash card catalogue" << std::endl;
 
 	sort(contents.begin(), contents.end());
 
@@ -3738,7 +3729,7 @@ void CCard_Catalogue::Flush(void)
 
 	The_Memory->Export_Data(card_address, raw, Size_In_Bytes());
 
-	cout << "- Flushing done" << endl;
+	std::cout << "- Flushing done" << std::endl;
 
 	dirty = false;
 }
@@ -3833,24 +3824,24 @@ void CCard_Catalogue::List(void)
 //
 //
 {
-	cout << "\nCatalogue listing :\n" << endl;
+	std::cout << "\nCatalogue listing :\n" << std::endl;
 
 	for (nval32 index = 0; index < current_entries; index++)
 	{
 		const Catalogue_Entry& cat_entry = contents[index];
 
-		cout << hex;
-		cout << setw(2) << (int) cat_entry.type << " " << setw(2) << (int) cat_entry.subtype << " ";
-		cout << setw(8) << cat_entry.card_address << " + " << setw(8) << cat_entry.size_in_bytes << " ";
-		cout << cat_entry.name << endl;
-		cout << dec;
+		std::cout << std::hex;
+		std::cout << std::setw(2) << (int) cat_entry.type << " " << std::setw(2) << (int) cat_entry.subtype << " ";
+		std::cout << std::setw(8) << cat_entry.card_address << " + " << std::setw(8) << cat_entry.size_in_bytes << " ";
+		std::cout << cat_entry.name << std::endl;
+		std::cout << std::dec;
 	}
 
 	if (current_entries == 0)
-		cout << "<no entries>" << endl;
+		std::cout << "<no entries>" << std::endl;
 }
 
-const Catalogue_Entry* CCard_Catalogue::Entry_Exists(nval8 type, nval8 subtype, const string& name)
+const Catalogue_Entry* CCard_Catalogue::Entry_Exists(nval8 type, nval8 subtype, const std::string& name)
 //
 //
 // Check if an entry exists
@@ -3872,7 +3863,7 @@ const Catalogue_Entry* CCard_Catalogue::Entry_Exists(nval8 type, nval8 subtype, 
 			}
 			else if (subtype == CAT_SUBTYPE_NONE || cat_entry.subtype == subtype)
 			{
-				if (strcasecmp(cat_entry.name.c_str(), name.c_str()) == 0)
+				if (STRCASECMP(cat_entry.name.c_str(), name.c_str()) == 0)
 					return &cat_entry;
 			}
 		}
@@ -3881,7 +3872,7 @@ const Catalogue_Entry* CCard_Catalogue::Entry_Exists(nval8 type, nval8 subtype, 
 	return NULL;
 }
 
-const Catalogue_Entry* CCard_Catalogue::Checkup_Entry(nval8 type, nval8 subtype, const string& name, char fault, const Script_Line& script_line)
+const Catalogue_Entry* CCard_Catalogue::Checkup_Entry(nval8 type, nval8 subtype, const std::string& name, char fault, const Script_Line& script_line)
 //
 //
 // Check for (non-)existence of an entry
@@ -3907,7 +3898,7 @@ const Catalogue_Entry* CCard_Catalogue::Checkup_Entry(nval8 type, nval8 subtype,
 	return cat_entry;
 }
 
-const Catalogue_Entry* CCard_Catalogue::Add_Entry(nval8 type, nval8 subtype, const string& name, nval32 size_in_bytes)
+const Catalogue_Entry* CCard_Catalogue::Add_Entry(nval8 type, nval8 subtype, const std::string& name, nval32 size_in_bytes)
 //
 //
 // Add a new entry
@@ -3950,7 +3941,7 @@ void CCard_Catalogue::Delete_Entry(const Catalogue_Entry* cat_entry)
 	dirty = true;
 }
 
-void CCard_Catalogue::Rename_Entry(const Catalogue_Entry* cat_entry, const string& new_name)
+void CCard_Catalogue::Rename_Entry(const Catalogue_Entry* cat_entry, const std::string& new_name)
 //
 //
 // Rename an entry
@@ -4065,8 +4056,8 @@ void CCard_Objects::Object_To_Card(const Catalogue_Entry& cat_entry, const Objec
 
 void main_actual(int argument_count, char** argument_list)
 {
-	string			card_spec;
-	list<Script_Line>	script_lines;
+	std::string		card_spec;
+	std::list<Script_Line>	script_lines;
 	int			argument_index;
 	char*			argument_value;
 	int			area_number = 1;
@@ -4079,7 +4070,7 @@ void main_actual(int argument_count, char** argument_list)
 	// Announce
 	//
 
-	cout << "\n" CODE_NAME " " CODE_VERSION ", " CODE_COPYRIGHT << endl;
+	std::cout << "\n" CODE_NAME " " CODE_VERSION ", " CODE_COPYRIGHT << std::endl;
 
 	//
 	// Process arguments
@@ -4175,7 +4166,7 @@ void main_actual(int argument_count, char** argument_list)
 	// Process
 	//
 
-	The_Area = (((off_t) area_number) - 1) << 32;
+	The_Area = (((OFFT_64) area_number) - 1) << 32;
 
 	The_Memory = new CCard_Memory(card_spec, CACHE_BUFFER_SIZE);
 
@@ -4185,7 +4176,7 @@ void main_actual(int argument_count, char** argument_list)
 
 	if (perform_format)
 	{
-		cout << "\n!! Discarding old flash card contents, due to '-f' !!" << endl;
+		std::cout << "\n!! Discarding old flash card contents, due to '-f' !!" << std::endl;
 
 		The_Global_Header->Catalogue_Entries(0);
 
@@ -4198,12 +4189,12 @@ void main_actual(int argument_count, char** argument_list)
 
 	The_Old_Objects = new CCard_Objects(0);
 
-	cout << "\n- Reading commands" << endl;
+	std::cout << "\n- Reading commands" << std::endl;
 
-	for (list<Script_Line>::const_iterator walker = script_lines.begin(); walker != script_lines.end(); walker++)
+	for (std::list<Script_Line>::const_iterator walker = script_lines.begin(); walker != script_lines.end(); walker++)
 		The_Input.Add_Line(*walker);
 
-	cout << "- Reading done" << endl;
+	std::cout << "- Reading done" << std::endl;
 
 	The_Input.Added_Lines();
 
@@ -4213,22 +4204,22 @@ void main_actual(int argument_count, char** argument_list)
 
 	The_Input.Script_Update();
 
-	cout << "\n"
+	std::cout << "\n"
 		"Flash card info + changes\n"
 		"=========================\n"
 		"Catalogue entries : " << The_Old_Catalogue->Size_In_Entries() << " (grows to " << The_New_Catalogue->Size_In_Entries() << ")"
-		<< endl
+		<< std::endl
 		;
 
-	cout <<	hex
-		<< "Catalogue at      : " << setw(8) << The_Old_Catalogue->Base_Address() << " + " << setw(8) << The_Old_Catalogue->Size_In_Bytes()
-		<< " (+ " << setw(8) << (The_New_Catalogue->Size_In_Bytes() - The_Old_Catalogue->Size_In_Bytes())
-		<< " -> " << setw(8) << The_New_Catalogue->Base_Address() << " + " << setw(8) << The_New_Catalogue->Size_In_Bytes() << ")\n"
-		<< "Objects at        : " << setw(8) << The_Old_Objects->Base_Address() << " + " << setw(8) << The_Old_Objects->Size_In_Bytes()
-		<< " (+ " << setw(8) << (The_New_Objects->Size_In_Bytes() - The_Old_Objects->Size_In_Bytes())
-		<< " -> " << setw(8) << The_New_Objects->Base_Address() << " + " << setw(8) << The_New_Objects->Size_In_Bytes() << ")\n"
-		<< dec
-		<< flush
+	std::cout << std::hex
+		<< "Catalogue at      : " << std::setw(8) << The_Old_Catalogue->Base_Address() << " + " << std::setw(8) << The_Old_Catalogue->Size_In_Bytes()
+		<< " (+ " << std::setw(8) << (The_New_Catalogue->Size_In_Bytes() - The_Old_Catalogue->Size_In_Bytes())
+		<< " -> " << std::setw(8) << The_New_Catalogue->Base_Address() << " + " << std::setw(8) << The_New_Catalogue->Size_In_Bytes() << ")\n"
+		<< "Objects at        : " << std::setw(8) << The_Old_Objects->Base_Address() << " + " << std::setw(8) << The_Old_Objects->Size_In_Bytes()
+		<< " (+ " << std::setw(8) << (The_New_Objects->Size_In_Bytes() - The_Old_Objects->Size_In_Bytes())
+		<< " -> " << std::setw(8) << The_New_Objects->Base_Address() << " + " << std::setw(8) << The_New_Objects->Size_In_Bytes() << ")\n"
+		<< std::dec
+		<< std::flush
 		;
 
 	if (The_New_Objects->Base_Address() < The_New_Catalogue->End_Address())
@@ -4253,28 +4244,28 @@ void main_actual(int argument_count, char** argument_list)
 	// Finish
 	//
 
-	cout << "\nFinished !\n";
+	std::cout << "\nFinished !\n";
 }
 
 void my_new_handler(void)
 {
-	throw bad_alloc();
+	throw std::bad_alloc();
 }
 
 int main(int argument_count, char** argument_list)
 {
-	cout << setfill('0');
+	std::cout << std::setfill('0');
 
-	set_new_handler(&my_new_handler);
+	std::set_new_handler(&my_new_handler);
 
-	if (sizeof(off_t) < 8)
+	if (sizeof(OFFT_64) < 8)
 		Issue_Fatal_Error("no 64-bit file access");
 
 	try
 	{
 		main_actual(argument_count, argument_list);
 	}
-	catch (bad_alloc)
+	catch (std::bad_alloc)
 	{
 		Issue_Fatal_Error("unexpectedly out of memory");
 	}

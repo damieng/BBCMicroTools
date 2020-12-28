@@ -6,7 +6,7 @@
 LIB_DIR		= ./lib
 
 GCC		= g++
-GCC_CFLAGS	= -Wall -I$(LIB_DIR) -O2 -DWINDOWS -DGOSDC
+GCC_CFLAGS	= -Wall -I$(LIB_DIR) -O2 -DWINDOWS_CW -DGOSDC
 GCC_LFLAGS	= -static
 
 all:		gosdcio
